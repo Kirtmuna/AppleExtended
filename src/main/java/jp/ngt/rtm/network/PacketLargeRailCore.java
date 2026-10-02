@@ -60,6 +60,9 @@ public class PacketLargeRailCore extends PacketCustom implements IMessageHandler
         if (tile instanceof TileEntityLargeRailSectionCore) {
             ((TileEntityLargeRailSectionCore) tile).writeSectionData(nbt);
         }
+        if (tile instanceof TileEntityLargeRailSwitchCore) {
+            ((TileEntityLargeRailSwitchCore) tile).writeApiOverrides(nbt);
+        }
         this.property = nbt;
         this.railPositions = tile.getRailPositions();
 
@@ -132,6 +135,9 @@ public class PacketLargeRailCore extends PacketCustom implements IMessageHandler
             TileEntityLargeRailCore tile0 = (TileEntityLargeRailCore) tile;
             tile0.setStartPoint(message.sX, message.sY, message.sZ);
             tile0.readRailStates(message.property);
+            if (tile0 instanceof TileEntityLargeRailSwitchCore) {
+                ((TileEntityLargeRailSwitchCore) tile0).readApiOverrides(message.property);
+            }
             tile0.setRailPositions(message.railPositions);
             if (message.dataType == TYPE_NORMAL && tile instanceof TileEntityLargeRailNormalCore) {
                 ;

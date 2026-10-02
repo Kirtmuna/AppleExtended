@@ -19,6 +19,8 @@ import jp.ngt.ngtlib.math.Vec3;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
+import javax.annotation.Nullable;
+
 /**
  * 分岐レールの各構成点
  */
@@ -62,7 +64,11 @@ public final class Point {
 
     /**
      * 分岐あり点
+     * APIによる強制転換状態。null=RS入力に従う、true=REVERSE、false=NORMAL
      */
+    @Nullable
+    private Boolean forcedReversed = null;
+
     public Point(RailPosition railPos, RailMapSwitch rms1, RailMapSwitch rms2) {
         this.rpRoot = railPos;
         boolean b0 = rms1.getLength() <= rms2.getLength();//短い方を本線、長い方を支線に
@@ -87,6 +93,23 @@ public final class Point {
         this.branchDirIsPositive = false;
     }
 
+    /** APIからの強制転換を設定する。null でRS入力に戻す */
+    public void setForcedReversed(@Nullable Boolean reversed) {
+        this.forcedReversed = reversed;
+    }
+    
+    @Nullable
+    public Boolean getForcedReversed() {
+        return this.forcedReversed;
+    }
+
+    /** 実際に分岐が「反位」と見なされるか。API優先、なければRS入力 */
+    private boolean resolveReversed(World world) {
+        if (this.forcedReversed != null) {
+            return this.forcedReversed;
+        }
+        return this.rpRoot.checkRSInput(world);
+    }
     /**
      * rms1に対するrms2の向き
      */
@@ -100,7 +123,7 @@ public final class Point {
      * TileEntity.updateEntity()のタイミングで呼ばれる
      */
     public void onUpdate(World world) {
-        boolean hasRSInput = this.rpRoot.checkRSInput(world);
+        boolean hasRSInput = this.resolveReversed(world);
 
         if (hasRSInput) {
             if (this.moveCount < MAX_COUNT) {
@@ -121,8 +144,7 @@ public final class Point {
         if (this.branchDir == RailDir.NONE) {
             return this.rmMain;
         } else {
-            boolean hasRSInput = this.rpRoot.checkRSInput(world);
-            return hasRSInput ? this.rmBranch : this.rmMain;
+            return this.resolveReversed(world) ? this.rmBranch : this.rmMain;
         }
     }
 

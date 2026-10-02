@@ -22,17 +22,22 @@ import jp.ngt.rtm.network.PacketLargeRailCore;
 import jp.ngt.rtm.rail.util.*;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class TileEntityLargeRailSwitchCore extends TileEntityLargeRailCore {
     private SwitchType switchObj;
 
     private List<RailMapSwitch> openedRails = new ArrayList<RailMapSwitch>();
+    private final Map<Integer, Boolean> apiPointOverrides = new HashMap<>();
 
     public TileEntityLargeRailSwitchCore() {
         super();
@@ -40,6 +45,13 @@ public class TileEntityLargeRailSwitchCore extends TileEntityLargeRailCore {
 
     @Override
     protected void readRailData(NBTTagCompound nbt) {
+        apiPointOverrides.clear();
+        NBTTagList ovr = nbt.getTagList("ApiPointOverrides", 10);
+        for (int i = 0; i < ovr.tagCount(); i++) {
+            NBTTagCompound t = ovr.getCompoundTagAt(i);
+            apiPointOverrides.put(t.getInteger("I"), t.getBoolean("R"));
+        }
+        
         byte size = nbt.getByte("Size");
         this.railPositions = new RailPosition[size];
 
@@ -48,6 +60,12 @@ public class TileEntityLargeRailSwitchCore extends TileEntityLargeRailCore {
         }
 
         this.fixRTMRailMapVersion = nbt.getInteger("fixRTMRailMapVersion");
+
+        // switchObj が既に作られていれば、読み込んだ override を反映
+        if (this.switchObj != null) {
+            this.applyApiOverridesToPoints();
+            this.applyPointStatesToRailMaps();
+        }
     }
 
     private RailPosition getRP(int x, int y, int z, byte dir, boolean b) {
@@ -58,6 +76,15 @@ public class TileEntityLargeRailSwitchCore extends TileEntityLargeRailCore {
 
     @Override
     protected void writeRailData(NBTTagCompound nbt) {
+        NBTTagList ovr = new NBTTagList();
+        for (Map.Entry<Integer, Boolean> e : apiPointOverrides.entrySet()) {
+            NBTTagCompound t = new NBTTagCompound();
+            t.setInteger("I", e.getKey());
+            t.setBoolean("R", e.getValue());
+            ovr.appendTag(t);
+        }
+        nbt.setTag("ApiPointOverrides", ovr);
+        
         nbt.setByte("Size", (byte) this.railPositions.length);
 
         for (int i = 0; i < this.railPositions.length; ++i) {
@@ -77,6 +104,24 @@ public class TileEntityLargeRailSwitchCore extends TileEntityLargeRailCore {
     public void createRailMap() {
         if (this.isLoaded() && this.switchObj == null) {
             this.switchObj = (new RailMaker(this.getWorld(), this.railPositions, this.fixRTMRailMapVersion)).getSwitch();
+            this.applyApiOverridesToPoints();
+            this.applyPointStatesToRailMaps();
+        }
+    }
+    /** switchObj の各 Point に override を書き込む */
+    private void applyApiOverridesToPoints() {
+        if (this.switchObj == null) return;
+        Point[] points = this.switchObj.getPoints();
+        if (points == null) return;
+        
+        for (Point p : points) {
+            p.setForcedReversed(null);
+        }
+        for (Map.Entry<Integer, Boolean> e : this.apiPointOverrides.entrySet()) {
+            int idx = e.getKey();
+            if (idx >= 0 && idx < points.length) {
+                points[idx].setForcedReversed(e.getValue());
+            }
         }
     }
 
@@ -103,6 +148,8 @@ public class TileEntityLargeRailSwitchCore extends TileEntityLargeRailCore {
 
     public void onBlockChanged() {
         this.getSwitch().onBlockChanged(this.getWorld());
+        this.applyApiOverridesToPoints();
+        this.applyPointStatesToRailMaps();
         if (!this.getWorld().isRemote) {
             this.sendPacket();
         }
@@ -197,6 +244,91 @@ public class TileEntityLargeRailSwitchCore extends TileEntityLargeRailCore {
                         (TileEntityLargeRailSwitchBase) BlockUtil.getTileEntity(this.world, newRp.blockX, newRp.blockY, newRp.blockZ);
                 base.setStartPoint(start[0], start[1], start[2]);
             }
+        }
+    }
+    /**
+     * APIからポイントを転換する。clearApiPointPositionが呼ばれるまで
+     * RS入力より優先される。
+     * @param pointIndex SwitchType.getPoints() の index
+     * @param reversed true=REVERSE, false=NORMAL
+     */
+    public void setApiPointPosition(int pointIndex, boolean reversed) {
+        apiPointOverrides.put(pointIndex, reversed);
+        if (this.switchObj != null) {
+            Point[] points = this.switchObj.getPoints();
+            if (points != null && pointIndex >= 0 && pointIndex < points.length) {
+                points[pointIndex].setForcedReversed(reversed);
+            }
+        }
+        this.applyPointStatesToRailMaps();
+        this.markDirty();
+        if (this.world != null && !this.world.isRemote) {
+            this.sendPacket();
+        }
+    }
+
+    public void clearApiPointPosition(int pointIndex) {
+        if (apiPointOverrides.remove(pointIndex) != null) {
+            if (this.switchObj != null) {
+                Point[] points = this.switchObj.getPoints();
+                if (points != null && pointIndex >= 0 && pointIndex < points.length) {
+                    points[pointIndex].setForcedReversed(null);
+                }
+                this.switchObj.onBlockChanged(this.getWorld());
+                this.applyPointStatesToRailMaps();
+            }
+            this.markDirty();
+            if (this.world != null && !this.world.isRemote) {
+                this.sendPacket();
+            }
+        }
+    }
+
+    @Nullable
+    public Boolean getApiPointPosition(int pointIndex) {
+        return apiPointOverrides.get(pointIndex);
+    }
+    /** API を RailMapSwitch の state に反映して描画を更新する */
+    private void applyPointStatesToRailMaps() {
+        if (this.switchObj == null) return;
+        Point[] points = this.switchObj.getPoints();
+        if (points == null) return;
+
+        for (Point p : points) {
+            if (p == null || p.getForcedReversed() == null) continue;
+            if (p.branchDir == RailDir.NONE) continue;
+
+            boolean reversed = p.getForcedReversed();
+            p.rmMain.setState(!reversed);
+            p.rmBranch.setState(reversed);
+        }
+
+        if (this.world != null && this.world.isRemote) {
+            this.shouldRerenderRail = true;
+            this.shouldRerenderBlock = true;
+        }
+    }
+    /** apiPointOverrides を NBT に書き出す */
+    public void writeApiOverrides(NBTTagCompound nbt) {
+        NBTTagList ovr = new NBTTagList();
+        for (Map.Entry<Integer, Boolean> e : apiPointOverrides.entrySet()) {
+            NBTTagCompound t = new NBTTagCompound();
+            t.setInteger("I", e.getKey());
+            t.setBoolean("R", e.getValue());
+            ovr.appendTag(t);
+        }
+        nbt.setTag("ApiPointOverrides", ovr);
+    }
+    /** NBT から apiPointOverrides を読み込む */
+    public void readApiOverrides(NBTTagCompound nbt) {
+        apiPointOverrides.clear();
+        NBTTagList ovr = nbt.getTagList("ApiPointOverrides", 10);
+        for (int i = 0; i < ovr.tagCount(); i++) {
+            NBTTagCompound t = ovr.getCompoundTagAt(i);
+            apiPointOverrides.put(t.getInteger("I"), t.getBoolean("R"));
+        }
+        if (this.switchObj != null) {
+            this.applyApiOverridesToPoints();
         }
     }
 }
