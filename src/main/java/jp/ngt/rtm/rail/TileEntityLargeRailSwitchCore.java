@@ -45,12 +45,7 @@ public class TileEntityLargeRailSwitchCore extends TileEntityLargeRailCore {
 
     @Override
     protected void readRailData(NBTTagCompound nbt) {
-        apiPointOverrides.clear();
-        NBTTagList ovr = nbt.getTagList("ApiPointOverrides", 10);
-        for (int i = 0; i < ovr.tagCount(); i++) {
-            NBTTagCompound t = ovr.getCompoundTagAt(i);
-            apiPointOverrides.put(t.getInteger("I"), t.getBoolean("R"));
-        }
+        this.readApiOverrides(nbt);
         
         byte size = nbt.getByte("Size");
         this.railPositions = new RailPosition[size];
@@ -76,14 +71,7 @@ public class TileEntityLargeRailSwitchCore extends TileEntityLargeRailCore {
 
     @Override
     protected void writeRailData(NBTTagCompound nbt) {
-        NBTTagList ovr = new NBTTagList();
-        for (Map.Entry<Integer, Boolean> e : apiPointOverrides.entrySet()) {
-            NBTTagCompound t = new NBTTagCompound();
-            t.setInteger("I", e.getKey());
-            t.setBoolean("R", e.getValue());
-            ovr.appendTag(t);
-        }
-        nbt.setTag("ApiPointOverrides", ovr);
+        this.writeApiOverrides(nbt);
         
         nbt.setByte("Size", (byte) this.railPositions.length);
 
@@ -254,12 +242,7 @@ public class TileEntityLargeRailSwitchCore extends TileEntityLargeRailCore {
      */
     public void setApiPointPosition(int pointIndex, boolean reversed) {
         apiPointOverrides.put(pointIndex, reversed);
-        if (this.switchObj != null) {
-            Point[] points = this.switchObj.getPoints();
-            if (points != null && pointIndex >= 0 && pointIndex < points.length) {
-                points[pointIndex].setForcedReversed(reversed);
-            }
-        }
+        this.applyApiOverridesToPoints();
         this.applyPointStatesToRailMaps();
         this.markDirty();
         if (this.world != null && !this.world.isRemote) {
@@ -270,13 +253,11 @@ public class TileEntityLargeRailSwitchCore extends TileEntityLargeRailCore {
     public void clearApiPointPosition(int pointIndex) {
         if (apiPointOverrides.remove(pointIndex) != null) {
             if (this.switchObj != null) {
-                Point[] points = this.switchObj.getPoints();
-                if (points != null && pointIndex >= 0 && pointIndex < points.length) {
-                    points[pointIndex].setForcedReversed(null);
-                }
                 this.switchObj.onBlockChanged(this.getWorld());
-                this.applyPointStatesToRailMaps();
             }
+            this.applyApiOverridesToPoints();
+            this.applyPointStatesToRailMaps();
+            
             this.markDirty();
             if (this.world != null && !this.world.isRemote) {
                 this.sendPacket();
@@ -326,9 +307,6 @@ public class TileEntityLargeRailSwitchCore extends TileEntityLargeRailCore {
         for (int i = 0; i < ovr.tagCount(); i++) {
             NBTTagCompound t = ovr.getCompoundTagAt(i);
             apiPointOverrides.put(t.getInteger("I"), t.getBoolean("R"));
-        }
-        if (this.switchObj != null) {
-            this.applyApiOverridesToPoints();
         }
     }
 }
