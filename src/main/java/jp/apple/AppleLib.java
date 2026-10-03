@@ -56,7 +56,7 @@ import static jp.apple.artpe.ARTPECore.trainPlacerBlock;
 public class AppleLib {
     public static final String MODID = "applelib";
     public static final String NAME = "AppleLib";
-    public static final String VERSION = "2.5.2";
+    public static final String VERSION = "2.5.3";
     public static final Logger LOGGER = LogManager.getLogger(NAME);
     public static final CreativeTabs tabAppleLib = new CreativeTabs("applelib_tab") {
         @Override
