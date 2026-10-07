@@ -723,4 +723,11 @@ public final class EntityBogie extends Entity implements Lockable, jp.ngt.rtm.wo
             this.ticket = null;
         }
     }
+    /**
+     * 現在このボギーが乗っているレールのコア。
+     * まだレールに乗っていない場合は null。
+     */
+    public TileEntityLargeRailCore getCurrentRailObj() {
+        return this.currentRailObj;
+    }
 }

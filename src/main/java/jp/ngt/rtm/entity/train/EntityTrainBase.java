@@ -85,6 +85,13 @@ public abstract class EntityTrainBase extends EntityVehicleBase<ModelSetTrain> i
     public boolean complessorActive;
 
     private float wave;
+    // ATS制動制御用
+    private boolean atsBraking = false;
+    private float atsTargetSpeed = 0.0F;
+    /** ATS制動時の1tickあたり減速量。engageAtsBrake で車両性能から算出 */
+    private float atsDecelPerTick = 0.0F;
+    /** 減速度が取得できなかった場合のフォールバック */
+    private static final float ATS_DECEL_FALLBACK = 0.005F;
 
     public EntityTrainBase(World world) {
         super(world);
@@ -479,6 +486,33 @@ public abstract class EntityTrainBase extends EntityVehicleBase<ModelSetTrain> i
 
     protected void updateSpeed() {
         if (!this.onRail) {
+            return;
+        }
+
+        if (this.atsBraking) {
+            if (this.isControlCar() && this.formation != null && !this.world.isRemote) {
+                float current = this.getSpeed();
+                float target = this.atsTargetSpeed;
+                float decel = this.atsDecelPerTick;
+                if (decel <= 0.0F) decel = ATS_DECEL_FALLBACK;
+
+                if (Math.abs(current) > Math.abs(target) + 1.0E-3F) {
+                    float sign = Math.signum(current);
+
+                    float speedDiff = Math.abs(current - target);
+                    float ratio = Math.min(1.0F, speedDiff / 0.05F);
+
+                    float actualDecel = decel * (0.3F + 0.7F * ratio);
+                    float newSpeed = current - sign * actualDecel;
+
+                    if (Math.signum(newSpeed) != sign) {
+                        newSpeed = target;
+                    } else if (Math.abs(newSpeed) < Math.abs(target)) {
+                        newSpeed = target;
+                    }
+                    this.setSpeed(newSpeed);
+                }
+            }
             return;
         }
 
@@ -1068,5 +1102,45 @@ public abstract class EntityTrainBase extends EntityVehicleBase<ModelSetTrain> i
     private void setupChunks(int xChunk, int zChunk) {
         int rad = this.getVehicleState(TrainStateType.ChunkLoader);
         RTMChunkManager.INSTANCE.getChunksAround(this.loadedChunks, xChunk, zChunk, rad);
+    }
+    /**
+     * ATS制動を開始する。ノッチ操作は無視され、targetSpeed に向かって
+     * この車両の最大減速度で減速する
+     */
+    public void engageAtsBrake(float targetSpeed) {
+        if (!this.isControlCar()) return;
+        this.atsBraking = true;
+        this.atsTargetSpeed = targetSpeed;
+        this.atsDecelPerTick = computeMaxDecelPerTick();
+    }
+    /**
+     * この車両の常用最大減速度を返す
+     */
+    private float computeMaxDecelPerTick() {
+        try {
+            ModelSetTrain ms = this.getResourceState().getResourceSet();
+            if (ms == null || ms.getConfig() == null) return ATS_DECEL_FALLBACK;
+            float[] decels = ms.getConfig().deccelerations;
+            if (decels == null || decels.length == 0) return ATS_DECEL_FALLBACK;
+            
+            int index = decels.length > 1 ? decels.length - 2 : 0;
+            float decel = Math.abs(decels[index]);
+            if (decel <= 0.0F) return ATS_DECEL_FALLBACK;
+            
+            return decel;
+        } catch (Exception e) {
+            return ATS_DECEL_FALLBACK;
+        }
+    }
+    /**
+     * ATS制動を解除する。以降は通常のノッチ制御に戻る。
+     */
+    public void releaseAtsBrake() {
+        if (!this.isControlCar()) return;
+        this.atsBraking = false;
+    }
+
+    public boolean isAtsBraking() {
+        return this.atsBraking;
     }
 }
