@@ -25,5 +25,14 @@
 				"stream": false
 			}
 		]
+	},
+	"ats.chime": {
+		"category": "master",
+		"sounds": [
+			{
+				"name": "rtm:bell1",
+				"stream": false
+			}
+		]
 	}
 }
