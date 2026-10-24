@@ -373,10 +373,12 @@ public class AtsAeTickHandler {
 
         // 制動: パターン超過 or 制限速度超過。両方の場合は低い方の目標速度へ
         boolean overLimit = st.accelWarned;
-        boolean brake = overPattern || overLimit;
+        boolean holdStop = nextLimit == 0.0 && target.distance <= 0.0;
+        boolean overNext = overPattern || holdStop;
+        boolean brake = overNext || overLimit;
         double brakeTarget = nextLimit;
         if (overLimit) {
-            brakeTarget = overPattern ? Math.min(nextLimit, limit) : limit;
+            brakeTarget = overNext ? Math.min(nextLimit, limit) : limit;
         }
         applyBrake(train, brake, brakeTarget);
         // 7. 表示同期

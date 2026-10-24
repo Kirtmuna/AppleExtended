@@ -513,6 +513,8 @@ public abstract class EntityTrainBase extends EntityVehicleBase<ModelSetTrain> i
                         newSpeed = target;
                     }
                     this.setSpeed(newSpeed);
+                } else if (Math.abs(current) > Math.abs(target)) {
+                    this.setSpeed(Math.signum(current) * Math.abs(target));
                 }
             }
             return;
