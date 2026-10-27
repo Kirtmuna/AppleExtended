@@ -21,6 +21,7 @@ import jp.apple.appleextended.highlight.HighlightItemChecker;
 import jp.apple.appleextended.highlight.HighlightRegistry;
 import jp.apple.appleextended.reloader.ReloadGuiHandler;
 import jp.apple.appleextended.render.item.CustomIconModelHandler;
+import jp.apple.appleextended.train.PlayerCameraCant;
 import jp.apple.appleextended.train.PlayerCameraTrain;
 import jp.apple.appleextended.train.SoundBlocker;
 import jp.ngt.mcte.block.BlockMiniature;
@@ -43,6 +44,7 @@ public class ClientProxy implements IProxy {
         MinecraftForge.EVENT_BUS.register(new SoundBlocker());
         MinecraftForge.EVENT_BUS.register(new BlockHighlightHandler());
         MinecraftForge.EVENT_BUS.register(new PlayerCameraTrain());
+        MinecraftForge.EVENT_BUS.register(new PlayerCameraCant());
         MinecraftForge.EVENT_BUS.register(new CustomIconModelHandler());
 
         HighlightRegistry.register( //試しにやってみたけど別に需要ないなと後から気づいたコネクター

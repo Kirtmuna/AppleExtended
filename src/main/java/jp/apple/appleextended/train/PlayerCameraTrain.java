@@ -92,6 +92,10 @@ public class PlayerCameraTrain {
         return EntityTrainBase.TRAIN_WIDTH / 2.0D;
     }
 
+    static EntityTrainBase getStandingTrain() {
+        return lastTrain;
+    }
+
     @SubscribeEvent
     public void onRenderTick(TickEvent.RenderTickEvent event) {
         if (event.phase != TickEvent.Phase.START) return;
