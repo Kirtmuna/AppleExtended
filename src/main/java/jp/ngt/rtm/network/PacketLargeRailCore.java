@@ -119,12 +119,9 @@ public class PacketLargeRailCore extends PacketCustom implements IMessageHandler
 
     @Override
     public IMessage onMessage(final PacketLargeRailCore message, MessageContext ctx) {
-        TickProcessQueue.getInstance(Side.CLIENT).add(new TickProcessEntry() {
-            @Override
-            public boolean process(World world) {
-                return PacketLargeRailCore.this.processPacket(message);
-            }
-        }, PacketLargeRailBase.RETRY, PacketLargeRailBase.INTERVAL);
+        TickProcessQueue.getInstance(Side.CLIENT).add(
+                world -> PacketLargeRailCore.this.processPacket(message),
+                PacketLargeRailBase.RETRY, PacketLargeRailBase.INTERVAL);
         return null;
     }
 
