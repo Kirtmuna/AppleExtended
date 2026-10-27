@@ -46,6 +46,9 @@ public final class GLHelper {
     private List<GLObject> activeGLLists = new ArrayList<>();
     private List<GLObject> deleteGLLists = new ArrayList<>();
 
+    private static boolean lightGradientActive = false;
+    private static boolean lightGradientSuspended = false;
+
     private GLHelper() {
     }
 
@@ -161,18 +164,57 @@ public final class GLHelper {
         float a = (float) alpha / 255.0F;
         GL11.glColor4f(r, g, b, a);
     }
+    
+    public static void beginLightGradientState() {
+        lightGradientActive = true;
+        lightGradientSuspended = false;
+    }
+
+    public static void endLightGradientState() {
+        lightGradientActive = false;
+        lightGradientSuspended = false;
+    }
+
+    private static void setLightGradientEnabled(boolean enabled) {
+        OpenGlHelper.setActiveTexture(OpenGlHelper.lightmapTexUnit);
+        if (enabled) {
+            GL11.glEnable(GL11.GL_TEXTURE_GEN_S);
+            GL11.glEnable(GL11.GL_TEXTURE_GEN_T);
+        } else {
+            GL11.glDisable(GL11.GL_TEXTURE_GEN_S);
+            GL11.glDisable(GL11.GL_TEXTURE_GEN_T);
+        }
+        OpenGlHelper.setActiveTexture(OpenGlHelper.defaultTexUnit);
+    }
+
+    private static void suspendLightGradient() {
+        if (lightGradientActive && !lightGradientSuspended) {
+            setLightGradientEnabled(false);
+            lightGradientSuspended = true;
+        }
+    }
+
+    private static void resumeLightGradient() {
+        if (lightGradientActive && lightGradientSuspended) {
+            setLightGradientEnabled(true);
+            lightGradientSuspended = false;
+        }
+    }
 
     public static void setBrightness(int par1) {
+        suspendLightGradient();
         int x = par1 & 0xFFFF;
         int y = par1 >> 16;
         OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float) x, (float) y);
     }
 
     public static void setLightmapMaxBrightness() {
+        suspendLightGradient();
         OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240.0F, 240.0F);
     }
 
     public static void enableLighting() {
+        resumeLightGradient();
         GL11.glEnable(GL11.GL_LIGHTING);
     }
 

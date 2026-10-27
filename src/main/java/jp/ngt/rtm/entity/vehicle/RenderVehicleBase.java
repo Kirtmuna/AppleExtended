@@ -36,6 +36,7 @@ import jp.ngt.rtm.render.PartsRenderer;
 import jp.ngt.rtm.render.RenderPass;
 import jp.ngt.rtm.util.RenderUtil;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.culling.ICamera;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
@@ -47,13 +48,16 @@ import net.minecraft.world.World;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Vector3f;
+
+import java.nio.FloatBuffer;
 
 @SideOnly(Side.CLIENT)
 public class RenderVehicleBase extends Render<EntityVehicleBase> {
     protected static final int DAYLIGHT_LIMIT = 7;
-
+    private final FloatBuffer lightPlaneBuf = BufferUtils.createFloatBuffer(4);
     protected Vector3f lightVecF = new Vector3f();
 
     public RenderVehicleBase(RenderManager renderManager) {
@@ -180,6 +184,9 @@ public class RenderVehicleBase extends Render<EntityVehicleBase> {
 
         this.preRenderBody(modelSet, state, useInteriorLighting, customLighting);
 
+        boolean maxBright = (state > 0 && useInteriorLighting) || customLighting;
+        boolean gradient = !maxBright && this.beginLightGradient(vehicle, modelSet, par4);
+
         boolean canUseColor = (modelSet.getConfig().useCustomColor);
         if (canUseColor) {
             GLHelper.setColor(vehicle.getResourceState().color, 0xFF);
@@ -189,6 +196,10 @@ public class RenderVehicleBase extends Render<EntityVehicleBase> {
 
         if (canUseColor) {
             GLHelper.setColor(0xFFFFFF, 0xFF);
+        }
+
+        if (gradient) {
+            this.endLightGradient();
         }
 
         this.postRenderBody(modelSet, useInteriorLighting, customLighting);
@@ -261,7 +272,11 @@ public class RenderVehicleBase extends Render<EntityVehicleBase> {
                     default:
                         pass = RenderPass.LIGHT;
                 }
+                boolean gradient = !isLightON && this.beginLightGradient(vehicle, modelSet, par4);
                 this.renderBody(vehicle, modelSet, pass, par4);
+                if (gradient) {
+                    this.endLightGradient();
+                }
 
                 if (isLightON) {
                     GL11.glDisable(GL11.GL_BLEND);
@@ -285,7 +300,12 @@ public class RenderVehicleBase extends Render<EntityVehicleBase> {
         GL11.glAlphaFunc(GL11.GL_LESS, 1.0F);
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+        //boolean gradient = this.beginLightGradient(vehicle, modelSet, par4);
+        boolean gradient = false; // 透過テクスチャの挙動が変なのでとりま勾配OFF
         this.renderBody(vehicle, modelSet, RenderPass.TRANSPARENT, par4);
+        if (gradient) {
+            this.endLightGradient();
+        }
         GL11.glDisable(GL11.GL_BLEND);
         GL11.glAlphaFunc(GL11.GL_GREATER, 0.1F);
     }
@@ -342,6 +362,79 @@ public class RenderVehicleBase extends Render<EntityVehicleBase> {
         int skyLight = skyLight1 * skyLight2 / 15;
         int blockLight = world.getLightFor(EnumSkyBlock.BLOCK, pos);
         return skyLight > blockLight ? skyLight : blockLight;
+    }
+
+    private boolean beginLightGradient(EntityVehicleBase vehicle, ModelSetVehicleBase modelSet, float partialTick) {
+        if (NGTUtilClient.usingShader() || !(modelSet.getConfig() instanceof TrainConfig)
+                || this.isBodyMaxBright(vehicle, modelSet)) {
+            return false;
+        }
+        double half = ((TrainConfig) modelSet.getConfig()).trainDistance;
+        if (half < 0.5D) {
+            return false;
+        }
+
+        double cx = vehicle.lastTickPosX + (vehicle.posX - vehicle.lastTickPosX) * partialTick;
+        double cy = vehicle.lastTickPosY + (vehicle.posY - vehicle.lastTickPosY) * partialTick;
+        double cz = vehicle.lastTickPosZ + (vehicle.posZ - vehicle.lastTickPosZ) * partialTick;
+        float yawDeg = vehicle.prevRotationYaw
+                + NGTMath.wrapAngle(vehicle.rotationYaw - vehicle.prevRotationYaw) * partialTick;
+        double yaw = Math.toRadians(yawDeg);
+        double dx = Math.sin(yaw) * half;
+        double dz = Math.cos(yaw) * half;
+        int y = NGTMath.floor(cy + 0.5D);
+
+        World world = vehicle.world;
+        BlockPos frontPos = new BlockPos(NGTMath.floor(cx + dx), y, NGTMath.floor(cz + dz));
+        BlockPos rearPos = new BlockPos(NGTMath.floor(cx - dx), y, NGTMath.floor(cz - dz));
+        if (!world.isBlockLoaded(frontPos) || !world.isBlockLoaded(rearPos)) {
+            return false;
+        }
+        int front = world.getCombinedLight(frontPos, 0);
+        int rear = world.getCombinedLight(rearPos, 0);
+        if (front == rear) {
+            return false;
+        }
+
+        float uF = front & 0xFFFF, vF = front >> 16;
+        float uR = rear & 0xFFFF, vR = rear >> 16;
+        float len2 = (float) (2.0D * half);
+        float offsetZ = modelSet.getConfig().offset[2];
+
+        GLHelper.beginLightGradientState();
+        OpenGlHelper.setActiveTexture(
+                OpenGlHelper.lightmapTexUnit);
+        this.setLightPlane(GL11.GL_S, (uF - uR) / len2, (uF + uR) * 0.5F, offsetZ);
+        this.setLightPlane(GL11.GL_T, (vF - vR) / len2, (vF + vR) * 0.5F, offsetZ);
+        OpenGlHelper.setActiveTexture(
+                OpenGlHelper.defaultTexUnit);
+        return true;
+    }
+
+    private boolean isBodyMaxBright(EntityVehicleBase vehicle, ModelSetVehicleBase modelSet) {
+        byte state = vehicle.getVehicleState(TrainStateType.InteriorLight);
+        boolean useInteriorLighting = modelSet.getConfig().interiorLights != null
+                && this.getLightValue(vehicle) < DAYLIGHT_LIMIT;
+        return (state > 0 && useInteriorLighting) || modelSet.modelObj.useShader;
+    }
+
+    private void setLightPlane(int coord, float k, float center, float offsetZ) {
+        this.lightPlaneBuf.clear();
+        this.lightPlaneBuf.put(0.0F).put(0.0F).put(k).put(center + k * offsetZ);
+        this.lightPlaneBuf.flip();
+        GL11.glTexGeni(coord, GL11.GL_TEXTURE_GEN_MODE, GL11.GL_EYE_LINEAR);
+        GL11.glTexGen(coord, GL11.GL_EYE_PLANE, this.lightPlaneBuf);
+        GL11.glEnable(coord == GL11.GL_S ? GL11.GL_TEXTURE_GEN_S : GL11.GL_TEXTURE_GEN_T);
+    }
+
+    private void endLightGradient() {
+        GLHelper.endLightGradientState();
+        OpenGlHelper.setActiveTexture(
+                OpenGlHelper.lightmapTexUnit);
+        GL11.glDisable(GL11.GL_TEXTURE_GEN_S);
+        GL11.glDisable(GL11.GL_TEXTURE_GEN_T);
+        OpenGlHelper.setActiveTexture(
+                OpenGlHelper.defaultTexUnit);
     }
 
     private void renderLightEffect(EntityVehicleBase vehicle, ModelSetVehicleBase modelset) {
