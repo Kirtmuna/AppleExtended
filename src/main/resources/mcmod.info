@@ -3,7 +3,7 @@
   "modid": "appleextended",
   "name": "AppleExtended",
   "description": "A derivative patch mod based on fixRTM by anatawa12. Includes numerous Java fixes for RTM/NGTLib.",
-  "version": "2.4.4",
+  "version": "2.5.4",
   "mcversion": "1.12.2",
   "authorList": ["Apple", "anatawa12"],
   "credits": "Original fixRTM by anatawa12. RealTrainMod by NGT5479.",
