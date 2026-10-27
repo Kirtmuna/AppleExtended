@@ -15,6 +15,7 @@
 package jp.apple.appleextended.proxy;
 
 import jp.apple.appleextended.block.BlockTrainModel;
+import jp.apple.appleextended.config.AppleConfigButtonHandler;
 import jp.apple.appleextended.highlight.BlockHighlightHandler;
 import jp.apple.appleextended.highlight.HighlightEntry;
 import jp.apple.appleextended.highlight.HighlightItemChecker;
@@ -45,6 +46,7 @@ public class ClientProxy implements IProxy {
         MinecraftForge.EVENT_BUS.register(new BlockHighlightHandler());
         MinecraftForge.EVENT_BUS.register(new PlayerCameraTrain());
         MinecraftForge.EVENT_BUS.register(new PlayerCameraCant());
+        MinecraftForge.EVENT_BUS.register(new AppleConfigButtonHandler());
         MinecraftForge.EVENT_BUS.register(new CustomIconModelHandler());
 
         HighlightRegistry.register( //試しにやってみたけど別に需要ないなと後から気づいたコネクター

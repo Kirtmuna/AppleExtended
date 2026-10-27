@@ -17,6 +17,7 @@ package jp.apple.appleextended;
 import jp.apple.appleextended.block.BlockTrainModel;
 import jp.apple.appleextended.compat.ReplaySyncManager;
 import jp.apple.appleextended.config.AppleConfig;
+import jp.apple.appleextended.config.AppleConfigHandler;
 import jp.apple.appleextended.item.ItemBlockTrainModel;
 import jp.apple.appleextended.log.AppleLogger;
 import jp.apple.appleextended.log.BlockLogHandler;
@@ -52,7 +53,8 @@ import java.io.File;
 
 import static jp.apple.appleextended.artpe.ARTPECore.trainPlacerBlock;
 
-@Mod(modid = AppleLib.MODID, name = AppleLib.NAME, version = AppleLib.VERSION)
+@Mod(modid = AppleLib.MODID, name = AppleLib.NAME, version = AppleLib.VERSION,
+        guiFactory = "jp.apple.appleextended.config.AppleGuiFactory")
 public class AppleLib {
     public static final String MODID = Tags.MOD_ID;
     public static final String NAME = Tags.MOD_NAME;
@@ -80,6 +82,7 @@ public class AppleLib {
         AppleLogger.init();
         AppleConfig.init(event.getSuggestedConfigurationFile());
         MinecraftForge.EVENT_BUS.register(new BlockLogHandler());
+        MinecraftForge.EVENT_BUS.register(new AppleConfigHandler());
         ReplaySyncManager.init();
 
         proxy.preInit(event);

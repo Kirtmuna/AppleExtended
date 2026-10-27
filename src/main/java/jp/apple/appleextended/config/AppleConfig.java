@@ -23,6 +23,7 @@ public class AppleConfig {
     public static final String CATEGORY_SECURITY = "security";
     public static final String CATEGORY_SOUND = "sound";
     public static final String CATEGORY_SOUND_RANGE = "sound_range";
+    public static final String CATEGORY_RENDER = "render";
 
     public static float runningSoundRange = 16.0F;
     public static float crossingSoundRange = 64.0F;
@@ -34,10 +35,26 @@ public class AppleConfig {
     public static boolean enableJointSound = true;
     public static boolean enableNotchSound = true;
 
+    public static boolean enableCantCamera = true;
+    public static boolean enableSmoothLight = true;
+
+    private static Configuration config;
+
+    public static Configuration getConfig() {
+        return config;
+    }
+
     public static void init(File file) {
-        Configuration cfg = new Configuration(file);
+        config = new Configuration(file);
+        sync(true);
+    }
+    
+    public static void sync(boolean load) {
+        Configuration cfg = config;
         try {
-            cfg.load();
+            if (load) {
+                cfg.load();
+            }
             notchRepeatInterval = cfg.getInt("notchRepeatInterval", CATEGORY_CONTROL, 1, 1, 20, "Interval for A/D notch repeat (ticks)");
             enableBlockChangeLog = cfg.getBoolean(
                     "enableBlockChangeLog",
@@ -54,6 +71,10 @@ public class AppleConfig {
                     64.0F, 1.0F, 1024.0F, "Set the range in which sound can be heard.");
             hornSoundRange = cfg.getFloat("hornSoundRange", CATEGORY_SOUND_RANGE,
                     16.0F, 1.0F, 1024.0F, "Set the range in which sound can be heard.");
+            enableCantCamera = cfg.getBoolean("enableCantCamera", CATEGORY_RENDER, true,
+                    "Tilt the player's view along with the train's cant");
+            enableSmoothLight = cfg.getBoolean("enableSmoothLight", CATEGORY_RENDER, true,
+                    "Smooth the per-car brightness gradient between blocks");
 
         } catch (Exception e) {
             e.printStackTrace();
