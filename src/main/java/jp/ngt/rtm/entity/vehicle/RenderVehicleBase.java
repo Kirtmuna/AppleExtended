@@ -14,6 +14,7 @@
 
 package jp.ngt.rtm.entity.vehicle;
 
+import jp.apple.appleextended.config.AppleConfig;
 import jp.ngt.ngtlib.math.NGTMath;
 import jp.ngt.ngtlib.math.PooledVec3;
 import jp.ngt.ngtlib.math.Vec3;
@@ -385,19 +386,56 @@ public class RenderVehicleBase extends Render<EntityVehicleBase> {
         int y = NGTMath.floor(cy + 0.5D);
 
         World world = vehicle.world;
-        BlockPos frontPos = new BlockPos(NGTMath.floor(cx + dx), y, NGTMath.floor(cz + dz));
-        BlockPos rearPos = new BlockPos(NGTMath.floor(cx - dx), y, NGTMath.floor(cz - dz));
-        if (!world.isBlockLoaded(frontPos) || !world.isBlockLoaded(rearPos)) {
-            return false;
-        }
-        int front = world.getCombinedLight(frontPos, 0);
-        int rear = world.getCombinedLight(rearPos, 0);
-        if (front == rear) {
-            return false;
-        }
+        float uF, vF, uR, vR;
 
-        float uF = front & 0xFFFF, vF = front >> 16;
-        float uR = rear & 0xFFFF, vR = rear >> 16;
+        if (AppleConfig.enableSmoothLight) {
+            double[] px = {cx + dx, cx - dx};
+            double[] pz = {cz + dz, cz - dz};
+            float[] us = new float[2];
+            float[] vs = new float[2];
+            for (int n = 0; n < 2; ++n) {
+                double fx = px[n] - 0.5D;
+                double fz = pz[n] - 0.5D;
+                int x0 = NGTMath.floor(fx);
+                int z0 = NGTMath.floor(fz);
+                float tx = (float) (fx - x0);
+                float tz = (float) (fz - z0);
+                for (int k = 0; k < 4; ++k) {
+                    int ox = k & 1;
+                    int oz = k >> 1;
+                    BlockPos p = new BlockPos(x0 + ox, y, z0 + oz);
+                    if (!world.isBlockLoaded(p)) {
+                        return false;
+                    }
+                    float w = (ox == 0 ? 1.0F - tx : tx) * (oz == 0 ? 1.0F - tz : tz);
+                    int l = world.getCombinedLight(p, 0);
+                    us[n] += (l & 0xFFFF) * w;
+                    vs[n] += (l >> 16) * w;
+                }
+            }
+            uF = us[0];
+            vF = vs[0];
+            uR = us[1];
+            vR = vs[1];
+            if (uF == uR && vF == vR) {
+                return false;
+            }
+        } else {
+            BlockPos frontPos = new BlockPos(NGTMath.floor(cx + dx), y, NGTMath.floor(cz + dz));
+            BlockPos rearPos = new BlockPos(NGTMath.floor(cx - dx), y, NGTMath.floor(cz - dz));
+            if (!world.isBlockLoaded(frontPos) || !world.isBlockLoaded(rearPos)) {
+                return false;
+            }
+            int front = world.getCombinedLight(frontPos, 0);
+            int rear = world.getCombinedLight(rearPos, 0);
+            if (front == rear) {
+                return false;
+            }
+            uF = front & 0xFFFF;
+            vF = front >> 16;
+            uR = rear & 0xFFFF;
+            vR = rear >> 16;
+        }
         float len2 = (float) (2.0D * half);
         float offsetZ = modelSet.getConfig().offset[2];
 
