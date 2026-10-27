@@ -23,6 +23,7 @@ import jp.ngt.ngtlib.block.BlockContainerCustom;
 import jp.ngt.ngtlib.block.NGTObject;
 import jp.ngt.ngtlib.math.NGTMath;
 import jp.ngt.ngtlib.util.NGTUtil;
+import jp.ngt.rtm.RTMItem;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -64,7 +65,7 @@ public class BlockMiniature extends BlockContainerCustom {
 
     @Override
     public boolean onBlockActivated(BlockArgHolder holder, float hitX, float hitY, float hitZ) {
-        if (NGTUtil.isEquippedItem(holder.getPlayer(), jp.ngt.rtm.RTMItem.crowbar)) {
+        if (NGTUtil.isEquippedItem(holder.getPlayer(), RTMItem.crowbar)) {
             if (holder.getWorld().isRemote) {
                 AppleGuiHelper.openOffsetGui(
                         this.getMiniatureTileEntity(holder.getWorld(), holder.getBlockPos()));
