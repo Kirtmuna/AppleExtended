@@ -16,6 +16,7 @@ package jp.ngt.rtm.entity.train;
 
 import com.anatawa12.fixRtm.rtm.entity.train.EntityBogieKt;
 import jp.apple.appleextended.rail.srbxpatch.FreeEndpointRailResolver;
+import jp.apple.appleextended.train.render.TrainBodySway;
 import jp.ngt.ngtlib.math.NGTMath;
 import jp.ngt.ngtlib.math.PooledVec3;
 import jp.ngt.ngtlib.math.Vec3;
@@ -239,6 +240,8 @@ public final class EntityBogie extends Entity implements Lockable, IChunkLoader 
             return false;
         } else {
             if (this.currentRailObj != tileentitylargerailcore) {
+                TileEntityLargeRailCore previousRail = this.currentRailObj;
+
                 RailMap railMap;
                 if (tileentitylargerailcore instanceof TileEntityLargeRailSwitchCore) {
                     TileEntityLargeRailSwitchCore tileentitylargerailswitchcore = (TileEntityLargeRailSwitchCore) tileentitylargerailcore;
@@ -250,7 +253,13 @@ public final class EntityBogie extends Entity implements Lockable, IChunkLoader 
                 this.currentRailMap = railMap;
                 this.split = (int) (this.currentRailMap.getLength() * SPLITS_PER_METER);
                 this.prevPosIndex = -1;
-                this.onChangeRail(tileentitylargerailcore);
+                boolean sameLogicalRail = previousRail != null
+                        && previousRail.isSameLogicalRail(tileentitylargerailcore);
+                if (!sameLogicalRail) {
+                    this.onChangeRail(tileentitylargerailcore);
+                } else {
+                    this.reverbSound = tileentitylargerailcore.isReberbSound();
+                }
             }
 
             return true;
