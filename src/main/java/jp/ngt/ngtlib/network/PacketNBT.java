@@ -14,8 +14,10 @@
 
 package jp.ngt.ngtlib.network;
 
+import com.anatawa12.fixRtm.Deprecation;
 import io.netty.buffer.ByteBuf;
 import jp.ngt.ngtlib.NGTCore;
+import jp.ngt.ngtlib.block.BlockUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -107,7 +109,7 @@ public class PacketNBT extends PacketCustom {
                 tileEntity.readFromNBT(this.nbtData);
                 if (!world.isRemote) {
                     tileEntity.markDirty();
-                    jp.ngt.ngtlib.block.BlockUtil.markBlockForUpdate(tileEntity.getWorld(), tileEntity.getPos());
+                    BlockUtil.markBlockForUpdate(tileEntity.getWorld(), tileEntity.getPos());
                 }
                 return true;
             }
@@ -160,7 +162,7 @@ public class PacketNBT extends PacketCustom {
 
     @Deprecated
     public static void sendToClient(final TileEntity entity) {
-        com.anatawa12.fixRtm.Deprecation.found("PacketNBT#sendToClient");
+        Deprecation.found("PacketNBT#sendToClient");
         NGTCore.NETWORK_WRAPPER.sendToAll(new PacketNBT(entity, true));
     }
 }

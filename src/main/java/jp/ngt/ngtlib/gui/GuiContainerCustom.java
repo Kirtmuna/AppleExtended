@@ -14,6 +14,7 @@
 
 package jp.ngt.ngtlib.gui;
 
+import com.anatawa12.fixRtm.ngtlib.gui.GUINumberFieldCustom;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.inventory.Container;
@@ -56,12 +57,12 @@ public abstract class GuiContainerCustom extends GuiContainer {
         return configureTextField(guitextfieldcustom, text);
     }
 
-    protected com.anatawa12.fixRtm.ngtlib.gui.GUINumberFieldCustom setIntegerField(int xPos, int yPos, int w, int h, String text) {
-        return configureTextField(new com.anatawa12.fixRtm.ngtlib.gui.GUINumberFieldCustom(NEXT_FIELD_ID++, this.fontRenderer, xPos, yPos, w, h, this, false), text);
+    protected GUINumberFieldCustom setIntegerField(int xPos, int yPos, int w, int h, String text) {
+        return configureTextField(new GUINumberFieldCustom(NEXT_FIELD_ID++, this.fontRenderer, xPos, yPos, w, h, this, false), text);
     }
 
-    protected com.anatawa12.fixRtm.ngtlib.gui.GUINumberFieldCustom setFloatField(int xPos, int yPos, int w, int h, String text) {
-        return configureTextField(new com.anatawa12.fixRtm.ngtlib.gui.GUINumberFieldCustom(NEXT_FIELD_ID++, this.fontRenderer, xPos, yPos, w, h, this, true), text);
+    protected GUINumberFieldCustom setFloatField(int xPos, int yPos, int w, int h, String text) {
+        return configureTextField(new GUINumberFieldCustom(NEXT_FIELD_ID++, this.fontRenderer, xPos, yPos, w, h, this, true), text);
     }
 
     protected <T extends GuiTextFieldCustom> T configureTextField(T guitextfieldcustom, String text) {
@@ -93,7 +94,7 @@ public abstract class GuiContainerCustom extends GuiContainer {
     protected void keyTyped(char par1, int par2) throws IOException {
         super.keyTyped(par1, par2);
 
-        if (par2 == org.lwjgl.input.Keyboard.KEY_TAB) {
+        if (par2 == Keyboard.KEY_TAB) {
             if (this.currentTextField != null) {
                 this.currentTextField.setFocused(false);
             }

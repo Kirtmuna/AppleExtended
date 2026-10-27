@@ -14,6 +14,8 @@
 
 package jp.ngt.ngtlib.io;
 
+import com.anatawa12.fixRtm.scripting.FIXScriptUtil;
+import jdk.nashorn.api.scripting.NashornScriptEngineFactory;
 import net.minecraft.launchwrapper.Launch;
 import net.minecraft.launchwrapper.LaunchClassLoader;
 import net.minecraft.util.ResourceLocation;
@@ -62,13 +64,13 @@ public final class ScriptUtil {
         }
 
         com.anatawa12.fixRtm.ngtlib.io.ScriptUtil.INSTANCE.prepareSystemProperty();
-        ScriptEngine se = new jdk.nashorn.api.scripting.NashornScriptEngineFactory().getScriptEngine("-doe", "--language=es6");
+        ScriptEngine se = new NashornScriptEngineFactory().getScriptEngine("-doe", "--language=es6");
 
         try {
             se.eval("load(\"nashorn:mozilla_compat.js\");");
             se.eval(s);
             if (fileName != null)
-                se.put(com.anatawa12.fixRtm.scripting.FIXScriptUtil.SCRIPT_NAME_PROPERTY, fileName);
+                se.put(FIXScriptUtil.SCRIPT_NAME_PROPERTY, fileName);
             return se;
         } catch (ScriptException e) {
             throw new RuntimeException("Script exec error: " + fileName, e);
@@ -100,7 +102,7 @@ public final class ScriptUtil {
 
     private static String scriptName(ScriptEngine engine) {
         try {
-            Object name = engine.get(com.anatawa12.fixRtm.scripting.FIXScriptUtil.SCRIPT_NAME_PROPERTY);
+            Object name = engine.get(FIXScriptUtil.SCRIPT_NAME_PROPERTY);
             if (name == null) return null;
             return name.toString();
         } catch (Throwable t) {

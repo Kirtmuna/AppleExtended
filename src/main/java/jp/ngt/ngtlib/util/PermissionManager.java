@@ -14,6 +14,8 @@
 
 package jp.ngt.ngtlib.util;
 
+import com.anatawa12.fixRtm.asm.config.MainConfig;
+import com.anatawa12.fixRtm.utils.SortedSetListView;
 import jp.ngt.ngtlib.NGTCore;
 import jp.ngt.ngtlib.io.NGTLog;
 import jp.ngt.ngtlib.io.NGTText;
@@ -23,10 +25,14 @@ import net.minecraft.server.MinecraftServer;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 public final class PermissionManager {
     public static final PermissionManager INSTANCE = new PermissionManager();
@@ -36,7 +42,7 @@ public final class PermissionManager {
 
     private final File saveDir;
     private final File saveFile;
-    private final Map<String, java.util.SortedSet<String>> permissionMap = new HashMap<>();
+    private final Map<String, SortedSet<String>> permissionMap = new HashMap<>();
 
     private PermissionManager() {
         this.saveDir = new File(NGTCore.proxy.getMinecraftDirectory("ngt").getAbsolutePath());
@@ -46,7 +52,7 @@ public final class PermissionManager {
     public void save() {
         String[] sa = new String[this.permissionMap.size()];
         int i = 0;
-        for (Entry<String, java.util.SortedSet<String>> entry : this.permissionMap.entrySet()) {
+        for (Entry<String, SortedSet<String>> entry : this.permissionMap.entrySet()) {
             StringBuilder sb = new StringBuilder();
             sb.append(entry.getKey()).append(":");
             for (String s : entry.getValue()) {
@@ -65,9 +71,9 @@ public final class PermissionManager {
         for (String s : slist) {
             String[] sa2 = s.split(":");
             if (sa2.length == 2) {
-                java.util.Set<String> list = this.getPlayerSet(sa2[0]);
+                Set<String> list = this.getPlayerSet(sa2[0]);
                 String[] sa3 = sa2[1].split(",");
-                java.util.Collections.addAll(list, sa3);
+                Collections.addAll(list, sa3);
             }
         }
     }
@@ -87,22 +93,22 @@ public final class PermissionManager {
     }
 
     public List<String> getPlayerList(String par1) {
-        return new com.anatawa12.fixRtm.utils.SortedSetListView<>(getPlayerSortedSet(par1));
+        return new SortedSetListView<>(getPlayerSortedSet(par1));
     }
 
-    public java.util.Set<String> getPlayerSet(String par1) {
+    public Set<String> getPlayerSet(String par1) {
         return getPlayerSortedSet(par1);
     }
 
-    private java.util.SortedSet<String> getPlayerSortedSet(String par1) {
+    private SortedSet<String> getPlayerSortedSet(String par1) {
         if (!this.permissionMap.containsKey(par1)) {
-            this.permissionMap.put(par1, new java.util.TreeSet<>());
+            this.permissionMap.put(par1, new TreeSet<>());
         }
         return this.permissionMap.get(par1);
     }
 
     public void showPermissionList(ICommandSender player) {
-        for (Entry<String, java.util.SortedSet<String>> entry : this.permissionMap.entrySet()) {
+        for (Entry<String, SortedSet<String>> entry : this.permissionMap.entrySet()) {
             StringBuilder sb = new StringBuilder();
             sb.append(entry.getKey()).append(":");
             for (String s : entry.getValue()) {
@@ -140,19 +146,19 @@ public final class PermissionManager {
     }
 
     public boolean hasPermissionInternal(ICommandSender player, String category) {
-        if (com.anatawa12.fixRtm.asm.config.MainConfig.addNegativePermissionEnabled) {
+        if (MainConfig.addNegativePermissionEnabled) {
             if (this.getPlayerSet("negative.".concat(category)).contains(player.getName())) {
                 return false;
             }
         }
-        if (com.anatawa12.fixRtm.asm.config.MainConfig.addAllowAllPermissionEnabled) {
+        if (MainConfig.addAllowAllPermissionEnabled) {
             if (!category.equals("fixrtm.all_permit") && hasPermissionInternal(player, "fixrtm.all_permit"))
                 return true;
         }
         if (this.isOp(player)) {
             return true;
         } else {
-            java.util.Set<String> list = this.getPlayerSet(category);
+            Set<String> list = this.getPlayerSet(category);
             if (list.contains(player.getName()) || list.contains(ALL)) {
                 return true;
             } else {

@@ -14,7 +14,9 @@
 
 package jp.ngt.ngtlib.renderer.model;
 
+import com.anatawa12.fixRtm.ngtlib.renderer.model.PolygonModelCharsetDetector;
 import jp.ngt.ngtlib.renderer.NGTTessellator;
+import kotlin.Pair;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
@@ -22,6 +24,7 @@ import org.lwjgl.opengl.GL11;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -64,7 +67,7 @@ public abstract class PolygonModel implements IModelNGT {
     static Pattern repS = Pattern.compile("\\s+");
 
     private void loadModel(InputStream inputStream) {
-        kotlin.Pair<java.nio.charset.Charset, InputStream> pair = com.anatawa12.fixRtm.ngtlib.renderer.model.PolygonModelCharsetDetector.INSTANCE.detectCharset(inputStream);
+        Pair<Charset, InputStream> pair = PolygonModelCharsetDetector.INSTANCE.detectCharset(inputStream);
         inputStream = pair.component2();
         BufferedReader bufferedreader = new BufferedReader(new InputStreamReader(inputStream, pair.component1()));
         Stream<String> stream = bufferedreader.lines();

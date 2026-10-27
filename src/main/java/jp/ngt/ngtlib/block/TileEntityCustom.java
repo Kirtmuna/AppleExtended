@@ -15,6 +15,7 @@
 package jp.ngt.ngtlib.block;
 
 import jp.ngt.ngtlib.util.NGTUtil;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
@@ -58,7 +59,7 @@ public class TileEntityCustom extends TileEntity {
 
     protected void sendPacket() {
         if (this.world != null && !this.world.isRemote) {
-            net.minecraft.block.state.IBlockState state = getWorld().getBlockState(getPos());
+            IBlockState state = getWorld().getBlockState(getPos());
             getWorld().notifyBlockUpdate(getPos(), state, state, 0);
         }
     }

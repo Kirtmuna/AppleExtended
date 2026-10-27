@@ -14,6 +14,7 @@
 
 package jp.ngt.ngtlib.command;
 
+import com.anatawa12.fixRtm.ngtlib.command.CommandPermitKt;
 import jp.ngt.ngtlib.io.NGTLog;
 import jp.ngt.ngtlib.util.PermissionManager;
 import net.minecraft.command.CommandBase;
@@ -71,6 +72,6 @@ public class CommandPermit extends CommandBase {
 
     @Override
     public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] args, BlockPos targetPos) {
-        return com.anatawa12.fixRtm.ngtlib.command.CommandPermitKt.getTabCompletions(server, args);
+        return CommandPermitKt.getTabCompletions(server, args);
     }
 }

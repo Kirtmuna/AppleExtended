@@ -14,10 +14,13 @@
 
 package jp.ngt.ngtlib.protection;
 
+import com.anatawa12.fixRtm.asm.config.MainConfig;
 import jp.ngt.ngtlib.NGTCore;
 import jp.ngt.ngtlib.block.BlockUtil;
 import jp.ngt.ngtlib.io.NGTLog;
 import jp.ngt.ngtlib.network.PacketProtection;
+import jp.ngt.rtm.RTMItem;
+import jp.ngt.rtm.rail.TileEntityLargeRailBase;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -75,7 +78,7 @@ public class ProtectionManager {
 
     public boolean rightClickObject(EntityPlayer player, Object target) {
         NBTTagCompound nbt = this.getKeyNBT(player);
-        if (com.anatawa12.fixRtm.asm.config.MainConfig.allowPlacingVehiclesOnProtectedRail && target instanceof jp.ngt.rtm.rail.TileEntityLargeRailBase && player.inventory.getCurrentItem().getItem() == jp.ngt.rtm.RTMItem.itemtrain)
+        if (MainConfig.allowPlacingVehiclesOnProtectedRail && target instanceof TileEntityLargeRailBase && player.inventory.getCurrentItem().getItem() == RTMItem.itemtrain)
             return false;
         if (nbt != null) {
             return this.useKey(player, nbt, target);

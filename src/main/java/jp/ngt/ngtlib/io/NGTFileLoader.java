@@ -14,6 +14,7 @@
 
 package jp.ngt.ngtlib.io;
 
+import com.anatawa12.fixRtm.io.FIXFileLoader;
 import jp.ngt.ngtlib.NGTCore;
 import net.minecraft.util.ResourceLocation;
 import org.apache.commons.io.IOUtils;
@@ -26,6 +27,7 @@ import java.io.*;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.jar.JarFile;
 import java.util.zip.ZipEntry;
@@ -150,9 +152,9 @@ public final class NGTFileLoader {
             return MODS_DIR;
         }
 
-        java.util.LinkedHashSet<File> mods = new java.util.LinkedHashSet<>();
+        LinkedHashSet<File> mods = new LinkedHashSet<>();
 
-        for (File jarOrDir : com.anatawa12.fixRtm.io.FIXFileLoader.INSTANCE.getModsOrJars()) {
+        for (File jarOrDir : FIXFileLoader.INSTANCE.getModsOrJars()) {
             if (jarOrDir.isDirectory())
                 mods.add(jarOrDir);
             else
@@ -225,7 +227,7 @@ public final class NGTFileLoader {
     }
 
     public static InputStream getInputStream(ResourceLocation par1) throws IOException {
-        return com.anatawa12.fixRtm.io.FIXFileLoader.INSTANCE.getInputStream(par1);
+        return FIXFileLoader.INSTANCE.getInputStream(par1);
     }
 
     public static InputStream getInputStreamFromFile(File file) throws IOException {

@@ -14,6 +14,7 @@
 
 package jp.ngt.ngtlib.item.craft;
 
+import com.anatawa12.fixRtm.UtilsKt;
 import jp.ngt.ngtlib.item.ItemUtil;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
@@ -120,7 +121,7 @@ public final class RecipeManager {
     }
 
     public ItemStack[] getRecipeItems(IRecipe par1) {
-        ItemStack[] items = com.anatawa12.fixRtm.UtilsKt.arrayOfItemStack(25);
+        ItemStack[] items = UtilsKt.arrayOfItemStack(25);
 
         if (par1 instanceof ShapedRecipes55) {
             ShapedRecipes55 recipe = (ShapedRecipes55) par1;

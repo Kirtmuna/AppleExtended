@@ -14,6 +14,7 @@
 
 package jp.ngt.ngtlib.renderer.model;
 
+import com.anatawa12.fixRtm.ngtlib.renderer.model.ModelLoaderKt;
 import jp.ngt.ngtlib.io.FileType;
 import jp.ngt.ngtlib.io.NGTFileLoader;
 import jp.ngt.ngtlib.io.ResourceLocationCustom;
@@ -31,7 +32,7 @@ public final class ModelLoader {
     }
 
     public static PolygonModel loadModel(ResourceLocation resource, VecAccuracy par1, Object... args) {
-        return com.anatawa12.fixRtm.ngtlib.renderer.model.ModelLoaderKt.loadModel(resource, par1, args);
+        return ModelLoaderKt.loadModel(resource, par1, args);
     }
 
     public static PolygonModel loadModel__NGTLIB(ResourceLocation resource, VecAccuracy par1, Object... args) {

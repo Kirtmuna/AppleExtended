@@ -14,6 +14,8 @@
 
 package jp.ngt.ngtlib.item.craft;
 
+import com.anatawa12.fixRtm.UtilsKt;
+import com.anatawa12.fixRtm.ngtlib.item.craft.OreDictionaryUtil;
 import jp.ngt.ngtlib.item.ItemUtil;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.InventoryCrafting;
@@ -22,6 +24,7 @@ import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
 public class ShapedRecipes55 extends IForgeRegistryEntry.Impl<IRecipe> implements IRecipe {
@@ -48,7 +51,7 @@ public class ShapedRecipes55 extends IForgeRegistryEntry.Impl<IRecipe> implement
 
         for (int i = 0; i < nonnulllist.size(); ++i) {
             ItemStack itemstack = inv.getStackInSlot(i);
-            nonnulllist.set(i, net.minecraftforge.common.ForgeHooks.getContainerItem(itemstack));
+            nonnulllist.set(i, ForgeHooks.getContainerItem(itemstack));
         }
 
         return nonnulllist;
@@ -114,7 +117,7 @@ public class ShapedRecipes55 extends IForgeRegistryEntry.Impl<IRecipe> implement
     }
 
     public ItemStack[] getRecipeItems() {
-        ItemStack[] aitemstack = com.anatawa12.fixRtm.UtilsKt.arrayOfItemStack(25);
+        ItemStack[] aitemstack = UtilsKt.arrayOfItemStack(25);
 
         for (int i = 0; i < 5 && i < this.recipeHeight; ++i) {
             for (int j = 0; j < 5 && j < this.recipeWidth; ++j) {
@@ -130,8 +133,8 @@ public class ShapedRecipes55 extends IForgeRegistryEntry.Impl<IRecipe> implement
             if (target.getItem() == Items.DYE) {
                 return ItemUtil.isItemEqual(target, inInventory);
             } else {
-                int[] aint = com.anatawa12.fixRtm.ngtlib.item.craft.OreDictionaryUtil.getOreIDs(target);
-                int[] aint1 = com.anatawa12.fixRtm.ngtlib.item.craft.OreDictionaryUtil.getOreIDs(inInventory);
+                int[] aint = OreDictionaryUtil.getOreIDs(target);
+                int[] aint1 = OreDictionaryUtil.getOreIDs(inInventory);
                 if (aint.length > 0 && aint1.length > 0) {
                     for (int i = 0; i < aint.length; ++i) {
                         for (int j = 0; j < aint1.length; ++j) {

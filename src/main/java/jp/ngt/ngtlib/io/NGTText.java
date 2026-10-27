@@ -14,9 +14,12 @@
 
 package jp.ngt.ngtlib.io;
 
+import com.anatawa12.fixRtm.ngtlib.renderer.model.PolygonModelCharsetDetector;
+import kotlin.Pair;
 import net.minecraft.util.ResourceLocation;
 
 import java.io.*;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
@@ -66,7 +69,7 @@ public final class NGTText {
         List<String> list = new ArrayList<>();
         InputStreamReader inputstreamreader;
         if (encoding == null || encoding.isEmpty()) {
-            kotlin.Pair<java.nio.charset.Charset, InputStream> pair = com.anatawa12.fixRtm.ngtlib.renderer.model.PolygonModelCharsetDetector.INSTANCE.detectCharset(is, java.nio.charset.Charset.defaultCharset());
+            Pair<Charset, InputStream> pair = PolygonModelCharsetDetector.INSTANCE.detectCharset(is, Charset.defaultCharset());
             inputstreamreader = new InputStreamReader(pair.component2(), pair.component1());
         } else {
             try {

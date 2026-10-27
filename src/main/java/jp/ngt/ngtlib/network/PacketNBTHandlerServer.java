@@ -14,6 +14,7 @@
 
 package jp.ngt.ngtlib.network;
 
+import com.anatawa12.fixRtm.ThreadUtil;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
@@ -24,7 +25,7 @@ public class PacketNBTHandlerServer implements IMessageHandler<PacketNBT, IMessa
     public IMessage onMessage(PacketNBT message, MessageContext ctx) {
         if (!message.nbtData.getBoolean("ToClient")) {
             World world = ctx.getServerHandler().player.world;
-            com.anatawa12.fixRtm.ThreadUtil.runOnServerThread(() -> message.onGetPacket(world));
+            ThreadUtil.runOnServerThread(() -> message.onGetPacket(world));
         }
         return null;
     }
