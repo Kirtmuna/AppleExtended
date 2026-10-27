@@ -15,7 +15,8 @@ public final class GroovyScriptEngine {
     private static final Map<String, groovy.lang.GroovyClassLoader> LOADER_CACHE =
             new ConcurrentHashMap<>();
 
-    private GroovyScriptEngine() {}
+    private GroovyScriptEngine() {
+    }
 
     public static ScriptEngine getEngineForScript(String scriptPath) {
         groovy.lang.GroovyClassLoader gcl = resolveClassLoader(scriptPath);

@@ -29,14 +29,14 @@ import java.util.List;
 public class GuiSoundSelector extends GuiScreen {
     private TileEntitySounder tileEntity;
     private GuiTextField searchField;
-    private List<String> allSounds;
-    private List<String> filteredSounds;
+    private final List<String> allSounds;
+    private final List<String> filteredSounds;
     private int scrollOffset = 0;
-    private int maxVisible = 20;
+    private final int maxVisible = 20;
     private boolean isDraggingScrollBar = false;
     private int scrollBarDragStartY = 0;
     private String lastSearch = "";
-    private int targetSlot;
+    private final int targetSlot;
 
     public GuiSoundSelector(TileEntitySounder te, int slot) {
         this.tileEntity = te;

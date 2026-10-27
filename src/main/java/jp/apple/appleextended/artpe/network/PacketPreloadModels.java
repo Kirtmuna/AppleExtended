@@ -56,6 +56,25 @@ public class PacketPreloadModels implements IMessage {
     }
 
     public static class Handler implements IMessageHandler<PacketPreloadModels, IMessage> {
+        private static jp.ngt.rtm.modelpack.ResourceType getTrainResourceType(String modelName) {
+            if (modelName == null || modelName.isEmpty()) {
+                return jp.ngt.rtm.RTMResource.TRAIN_EC;
+            }
+            String lowerModelName = modelName.toLowerCase();
+            if (lowerModelName.contains("ec_") || lowerModelName.matches(".*\\bec\\b.*")) {
+                return jp.ngt.rtm.RTMResource.TRAIN_EC;
+            } else if (lowerModelName.contains("dc_") || lowerModelName.matches(".*\\bdc\\b.*")) {
+                return jp.ngt.rtm.RTMResource.TRAIN_DC;
+            } else if (lowerModelName.contains("cc_") || lowerModelName.matches(".*\\bcc\\b.*")) {
+                return jp.ngt.rtm.RTMResource.TRAIN_CC;
+            } else if (lowerModelName.contains("tc_") || lowerModelName.matches(".*\\btc\\b.*")) {
+                return jp.ngt.rtm.RTMResource.TRAIN_TC;
+            } else if (lowerModelName.contains("test") || lowerModelName.matches(".*\\btest\\b.*")) {
+                return jp.ngt.rtm.RTMResource.TRAIN_TEST;
+            }
+            return jp.ngt.rtm.RTMResource.TRAIN_EC;
+        }
+
         @Override
         @SideOnly(Side.CLIENT)
         public IMessage onMessage(PacketPreloadModels message, MessageContext ctx) {
@@ -81,26 +100,6 @@ public class PacketPreloadModels implements IMessage {
                 }
             });
             return null;
-        }
-
-
-        private static jp.ngt.rtm.modelpack.ResourceType getTrainResourceType(String modelName) {
-            if (modelName == null || modelName.isEmpty()) {
-                return jp.ngt.rtm.RTMResource.TRAIN_EC;
-            }
-            String lowerModelName = modelName.toLowerCase();
-            if (lowerModelName.contains("ec_") || lowerModelName.matches(".*\\bec\\b.*")) {
-                return jp.ngt.rtm.RTMResource.TRAIN_EC;
-            } else if (lowerModelName.contains("dc_") || lowerModelName.matches(".*\\bdc\\b.*")) {
-                return jp.ngt.rtm.RTMResource.TRAIN_DC;
-            } else if (lowerModelName.contains("cc_") || lowerModelName.matches(".*\\bcc\\b.*")) {
-                return jp.ngt.rtm.RTMResource.TRAIN_CC;
-            } else if (lowerModelName.contains("tc_") || lowerModelName.matches(".*\\btc\\b.*")) {
-                return jp.ngt.rtm.RTMResource.TRAIN_TC;
-            } else if (lowerModelName.contains("test") || lowerModelName.matches(".*\\btest\\b.*")) {
-                return jp.ngt.rtm.RTMResource.TRAIN_TEST;
-            }
-            return jp.ngt.rtm.RTMResource.TRAIN_EC;
         }
     }
 }

@@ -24,17 +24,16 @@ import org.lwjgl.input.Keyboard;
 import java.io.IOException;
 
 public class GuiTrainPlacer extends GuiContainer {
-    private final ContainerTrainPlacer container;
-    private GuiTextField nameField;
-    private String currentName = "車両";
     private static final int MAX_COLS = 5;
     private static final int MAX_SLOTS = 20;
-
     private static final int SLOT_W = 50;
     private static final int SLOT_H = 20;
     private static final int MARGIN = 4;
     private static final int GUI_W = 15 + MAX_COLS * (SLOT_W + MARGIN) - MARGIN + 15;
     private static final int GUI_H = 25 + 4 * (SLOT_H + MARGIN) - MARGIN + 10 + 20 + 10;
+    private final ContainerTrainPlacer container;
+    private GuiTextField nameField;
+    private String currentName = "車両";
 
     public GuiTrainPlacer(ContainerTrainPlacer inventorySlotsIn) {
         super(inventorySlotsIn);

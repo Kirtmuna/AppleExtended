@@ -59,7 +59,7 @@ public class TrainSafetyManager {
     private static void notifyDriver(EntityTrainBase train, String message) {
         Entity driver = train.getFirstPassenger();
         if (driver instanceof EntityPlayer) {
-            ((EntityPlayer) driver).sendMessage(new TextComponentString(message));
+            driver.sendMessage(new TextComponentString(message));
         }
     }
 

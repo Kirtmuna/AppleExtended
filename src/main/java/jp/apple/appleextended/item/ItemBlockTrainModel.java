@@ -14,9 +14,10 @@
 
 package jp.apple.appleextended.item;
 
-import jp.apple.appleextended.AppleLib;import jp.apple.appleextended.tileentity.TileEntityTrainModel;
+import jp.apple.appleextended.AppleLib;
+import jp.apple.appleextended.tileentity.TileEntityTrainModel;
 import jp.ngt.ngtlib.item.ItemArgHolderBase.ItemArgHolder;
-import jp.ngt.rtm.RTMResource; 
+import jp.ngt.rtm.RTMResource;
 import jp.ngt.rtm.item.ItemWithModel;
 import jp.ngt.rtm.modelpack.ResourceType;
 import jp.ngt.rtm.modelpack.state.ResourceState;
@@ -49,28 +50,28 @@ public class ItemBlockTrainModel extends ItemWithModel {
 
     @Override
     protected ResourceType getModelType(ItemStack itemStack) {
-        
+
         return RTMResource.TRAIN_EC;
     }
 
     @Override
     protected ResourceState getNewState(ItemStack itemStack, ResourceType type) {
-        
-        ResourceState state = new ResourceState(type, (Object) null);
-        state.setResourceName("Dummy"); 
+
+        ResourceState state = new ResourceState(type, null);
+        state.setResourceName("Dummy");
         return state;
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public GuiScreen newGuiScreen(ItemArgHolder holder) {
-        
+
         return this.newGuiSelectModel(holder);
     }
 
     @Override
     protected ActionResult<ItemStack> onItemRightClick(ItemArgHolder holder) {
-        
+
         return super.onItemRightClick(holder);
     }
 
@@ -82,7 +83,7 @@ public class ItemBlockTrainModel extends ItemWithModel {
         BlockPos pos = holder.getBlockPos();
         EnumFacing facing = holder.getFacing();
 
-        
+
         if (player.isSneaking()) {
             return super.onItemUse(holder, hitX, hitY, hitZ);
         }

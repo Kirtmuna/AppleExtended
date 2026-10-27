@@ -20,19 +20,21 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.BlockPos;
 
-import java.io.*;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class AppleLogger {
-    private static File currentLogFile;
     private static final SimpleDateFormat logDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     private static final SimpleDateFormat fileDateFormat = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
-
-    private static BufferedWriter writer;
     private static final BlockingQueue<String> queue = new LinkedBlockingQueue<>();
+    private static File currentLogFile;
+    private static BufferedWriter writer;
     private static Thread writerThread;
     private static volatile boolean running = false;
 

@@ -1,50 +1,50 @@
 /*
  *
  *  * AppleExtended
- *  * 
+ *  *
  *  * Original code (c) 2020 anatawa12 and other contributors.
  *  * Modifications (c) 2026 Applepie.
- *  * 
+ *  *
  *  * This file is part of AppleExtended, which is a derivative work of fixRTM.
  *  * Both are licensed under the GNU Lesser General Public License version 3.
  *  * See LICENSE.txt in the mod root for full license text.
- *  
+ *
  *
  */
 
 package jp.apple.appleextended;
 
+import jp.apple.appleextended.block.BlockTrainModel;
+import jp.apple.appleextended.compat.ReplaySyncManager;
 import jp.apple.appleextended.config.AppleConfig;
 import jp.apple.appleextended.log.AppleLogger;
 import jp.apple.appleextended.log.BlockLogHandler;
 import jp.apple.appleextended.proxy.IProxy;
-import jp.apple.appleextended.compat.ReplaySyncManager;
-import jp.apple.appleextended.util.AppleDir;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.SidedProxy;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import jp.apple.appleextended.block.BlockTrainModel;
-import jp.apple.appleextended.tileentity.TileEntityTrainModel;
 import jp.apple.appleextended.render.RenderTileEntityTrainModel;
+import jp.apple.appleextended.tileentity.TileEntityTrainModel;
+import jp.apple.appleextended.util.AppleDir;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
+import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
+import net.minecraftforge.fml.common.SidedProxy;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 

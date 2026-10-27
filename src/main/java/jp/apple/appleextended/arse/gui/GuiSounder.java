@@ -23,7 +23,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 
 public class GuiSounder extends GuiScreen {
-    private TileEntitySounder tileEntity;
+    private final TileEntitySounder tileEntity;
 
     public GuiSounder(TileEntitySounder te) {
         this.tileEntity = te;

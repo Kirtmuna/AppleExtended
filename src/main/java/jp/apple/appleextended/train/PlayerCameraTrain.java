@@ -34,45 +34,6 @@ public class PlayerCameraTrain {
     private static EntityTrainBase lastTrain = null;
     private static float lastAppliedTrainYaw = Float.NaN;
 
-    @SubscribeEvent
-    public void onRenderTick(TickEvent.RenderTickEvent event) {
-        if (event.phase != TickEvent.Phase.START) return;
-
-        EntityPlayer player = Minecraft.getMinecraft().player;
-        if (player == null || player.isRiding()) {
-            lastAppliedTrainYaw = Float.NaN;
-            lastTrain = null;
-            return;
-        }
-
-        EntityTrainBase train = findNearestTrainPlayerIsOn(player);
-        if (train == null) {
-            lastAppliedTrainYaw = Float.NaN;
-            lastTrain = null;
-            return;
-        }
-
-        if (train != lastTrain) {
-            lastTrain = train;
-            lastAppliedTrainYaw = Float.NaN;
-        }
-
-        float partialTicks = (float) Minecraft.getMinecraft().getRenderPartialTicks();
-        float interpolatedYaw = train.prevRotationYaw
-                + MathHelper.wrapDegrees(train.rotationYaw - train.prevRotationYaw) * partialTicks;
-
-        if (Float.isNaN(lastAppliedTrainYaw)) {
-            lastAppliedTrainYaw = interpolatedYaw;
-            return;
-        }
-
-        float frameDYaw = MathHelper.wrapDegrees(interpolatedYaw - lastAppliedTrainYaw);
-        if (frameDYaw != 0.0F) {
-            player.rotationYaw -= frameDYaw;
-        }
-        lastAppliedTrainYaw = interpolatedYaw;
-    }
-
     private static EntityTrainBase findNearestTrainPlayerIsOn(EntityPlayer player) {
         AxisAlignedBB box = player.getEntityBoundingBox().grow(SEARCH_RANGE, 3.0D, SEARCH_RANGE);
         List<Entity> list = player.world.getEntitiesWithinAABB(EntityTrainBase.class, box);
@@ -80,7 +41,7 @@ public class PlayerCameraTrain {
         double nearestDistSq = Double.MAX_VALUE;
         for (Entity e : list) {
             EntityTrainBase train = (EntityTrainBase) e;
-            
+
             if (!isPlayerStandingOnTrain(player, train)) {
                 continue;
             }
@@ -93,6 +54,7 @@ public class PlayerCameraTrain {
         }
         return nearest;
     }
+
     private static boolean isPlayerStandingOnTrain(EntityPlayer player, EntityTrainBase train) {
         double halfLength = getHalfLength(train);
         double halfWidth = EntityTrainBase.TRAIN_WIDTH / 2.0D + 0.15D;
@@ -118,6 +80,7 @@ public class PlayerCameraTrain {
         double trainTopY = train.posY + EntityTrainBase.TRAIN_HEIGHT;
         return feetY >= trainTopY - 1.0D && feetY <= trainTopY + 0.5D;
     }
+
     private static double getHalfLength(EntityTrainBase train) {
         if (train.getResourceState() != null && train.getResourceState().getResourceSet() != null) {
             jp.ngt.rtm.modelpack.cfg.TrainConfig cfg = train.getResourceState().getResourceSet().getConfig();
@@ -126,5 +89,44 @@ public class PlayerCameraTrain {
             }
         }
         return EntityTrainBase.TRAIN_WIDTH / 2.0D;
+    }
+
+    @SubscribeEvent
+    public void onRenderTick(TickEvent.RenderTickEvent event) {
+        if (event.phase != TickEvent.Phase.START) return;
+
+        EntityPlayer player = Minecraft.getMinecraft().player;
+        if (player == null || player.isRiding()) {
+            lastAppliedTrainYaw = Float.NaN;
+            lastTrain = null;
+            return;
+        }
+
+        EntityTrainBase train = findNearestTrainPlayerIsOn(player);
+        if (train == null) {
+            lastAppliedTrainYaw = Float.NaN;
+            lastTrain = null;
+            return;
+        }
+
+        if (train != lastTrain) {
+            lastTrain = train;
+            lastAppliedTrainYaw = Float.NaN;
+        }
+
+        float partialTicks = Minecraft.getMinecraft().getRenderPartialTicks();
+        float interpolatedYaw = train.prevRotationYaw
+                + MathHelper.wrapDegrees(train.rotationYaw - train.prevRotationYaw) * partialTicks;
+
+        if (Float.isNaN(lastAppliedTrainYaw)) {
+            lastAppliedTrainYaw = interpolatedYaw;
+            return;
+        }
+
+        float frameDYaw = MathHelper.wrapDegrees(interpolatedYaw - lastAppliedTrainYaw);
+        if (frameDYaw != 0.0F) {
+            player.rotationYaw -= frameDYaw;
+        }
+        lastAppliedTrainYaw = interpolatedYaw;
     }
 }

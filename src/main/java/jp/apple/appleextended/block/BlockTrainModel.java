@@ -57,10 +57,14 @@ public class BlockTrainModel extends BlockContainer {
     }
 
     @Override
-    public boolean isOpaqueCube(IBlockState state) { return false; }
+    public boolean isOpaqueCube(IBlockState state) {
+        return false;
+    }
 
     @Override
-    public boolean isFullCube(IBlockState state) { return false; }
+    public boolean isFullCube(IBlockState state) {
+        return false;
+    }
 
     @Override
     public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state,
@@ -79,16 +83,16 @@ public class BlockTrainModel extends BlockContainer {
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state,
                                     EntityPlayer playerIn, EnumHand hand,
                                     EnumFacing facing, float hitX, float hitY, float hitZ) {
-        
+
         if (worldIn.isRemote) {
             TileEntity te = worldIn.getTileEntity(pos);
             if (te instanceof TileEntityTrainModel) {
-                
+
                 if (playerIn.getHeldItem(hand).getItem() == jp.ngt.rtm.RTMItem.crowbar) {
                     jp.apple.appleextended.gui.AppleGuiHelper.openOffsetGui(te);
                     return true;
                 }
-                
+
                 if (playerIn.isSneaking()) {
                     playerIn.openGui(RTMCore.instance,
                             RTMCore.guiIdSelectTileEntityModel,

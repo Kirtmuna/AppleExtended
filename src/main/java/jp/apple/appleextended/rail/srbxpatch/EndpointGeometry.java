@@ -17,10 +17,17 @@
  */
 package jp.apple.appleextended.rail.srbxpatch;
 
-/** Pure geometry shared by the runtime and regression tests. */
+/**
+ * Pure geometry shared by the runtime and regression tests.
+ */
 public final class EndpointGeometry {
-    private EndpointGeometry() {}
-    public static boolean finite(double value) { return !Double.isNaN(value) && !Double.isInfinite(value); }
+    private EndpointGeometry() {
+    }
+
+    public static boolean finite(double value) {
+        return !Double.isNaN(value) && !Double.isInfinite(value);
+    }
+
     public static boolean interior(double x, double z, double sx, double sz, double ex, double ez,
                                    double startYaw, double endYaw) {
         double s = Math.toRadians(startYaw), e = Math.toRadians(endYaw);
@@ -28,6 +35,7 @@ public final class EndpointGeometry {
         return (x - sx) * Math.sin(s) + (z - sz) * Math.cos(s) >= -1.0E-7
                 && (x - ex) * Math.sin(e) + (z - ez) * Math.cos(e) <= 1.0E-7;
     }
+
     public static boolean freeInteriorEndpoint(double x, double z, double yaw) {
         double angle = Math.toRadians(yaw);
         boolean xFace = Math.abs(Math.sin(angle)) > 1.0E-6 && Math.abs(x - Math.rint(x)) <= 1.0E-7;

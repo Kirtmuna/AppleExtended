@@ -34,6 +34,10 @@ public class SoundGuard {
     public SoundGuard() {
     }
 
+    public static void register() {
+        MinecraftForge.EVENT_BUS.register(new SoundGuard());
+    }
+
     @SubscribeEvent
     public void onEntityJoin(EntityJoinWorldEvent event) {
         if (!event.getWorld().isRemote)
@@ -70,10 +74,6 @@ public class SoundGuard {
         } catch (Throwable e) {
             NGTLog.debug("[SoundGuard] Unexpected error: %s", e.getMessage());
         }
-    }
-
-    public static void register() {
-        MinecraftForge.EVENT_BUS.register(new SoundGuard());
     }
 }
 // u~n^_^

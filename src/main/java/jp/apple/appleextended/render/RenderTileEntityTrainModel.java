@@ -34,18 +34,18 @@ public class RenderTileEntityTrainModel extends TileEntitySpecialRenderer<TileEn
 
         GL11.glPushMatrix();
 
-        
+
         GL11.glTranslated(x + 0.5D, y, z + 0.5D);
         GL11.glTranslatef(te.getOffsetX(), te.getOffsetY(), te.getOffsetZ());
 
-        
+
         GL11.glRotatef(-te.getRotation(), 0.0F, 1.0F, 0.0F);
 
-        
+
         if (te.getRotationX() != 0.0F) GL11.glRotatef(te.getRotationX(), 1.0F, 0.0F, 0.0F);
         if (te.getRotationZ() != 0.0F) GL11.glRotatef(te.getRotationZ(), 0.0F, 0.0F, 1.0F);
 
-        
+
         float s = te.getScale();
         if (s != 1.0F) GL11.glScalef(s, s, s);
 

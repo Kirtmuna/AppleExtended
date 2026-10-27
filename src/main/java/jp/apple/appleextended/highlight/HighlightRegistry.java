@@ -26,7 +26,8 @@ public class HighlightRegistry {
 
     private static final List<HighlightEntry> ENTRIES = new CopyOnWriteArrayList<>();
 
-    private HighlightRegistry() {}
+    private HighlightRegistry() {
+    }
 
     public static void register(HighlightEntry entry) {
         ENTRIES.add(entry);

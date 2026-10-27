@@ -50,18 +50,6 @@ public class ARSE {
 
     public static SimpleNetworkWrapper network;
 
-    @EventHandler
-    public void preInit(FMLPreInitializationEvent event) {
-        new ARSEBlocks().preInit();
-        proxy.preInit();
-
-        network = NetworkRegistry.INSTANCE.newSimpleChannel(ARSE.MODID);
-        network.registerMessage(PacketArsePlaySound.Handler.class, PacketArsePlaySound.class, 0, Side.CLIENT);
-        network.registerMessage(PacketArseSetSound.Handler.class, PacketArseSetSound.class, 1, Side.SERVER);
-        GameRegistry.registerTileEntity(TileEntitySounder.class, ARSE.MODID + ":sounder");
-        GameRegistry.registerTileEntity(TileEntitySoundRemover.class, new ResourceLocation("arse", "tile_remover"));
-    }
-
     @SubscribeEvent
     public static void registerBlocks(RegistryEvent.Register<Block> event) {
         event.getRegistry().register(ARSEBlocks.sounder);
@@ -80,6 +68,18 @@ public class ARSE {
                 .setRegistryName(ARSEBlocks.soundRemover.getRegistryName());
         event.getRegistry().register(itemRemover);
         proxy.registerModel(itemRemover, 0);
+    }
+
+    @EventHandler
+    public void preInit(FMLPreInitializationEvent event) {
+        new ARSEBlocks().preInit();
+        proxy.preInit();
+
+        network = NetworkRegistry.INSTANCE.newSimpleChannel(ARSE.MODID);
+        network.registerMessage(PacketArsePlaySound.Handler.class, PacketArsePlaySound.class, 0, Side.CLIENT);
+        network.registerMessage(PacketArseSetSound.Handler.class, PacketArseSetSound.class, 1, Side.SERVER);
+        GameRegistry.registerTileEntity(TileEntitySounder.class, ARSE.MODID + ":sounder");
+        GameRegistry.registerTileEntity(TileEntitySoundRemover.class, new ResourceLocation("arse", "tile_remover"));
     }
 
 }

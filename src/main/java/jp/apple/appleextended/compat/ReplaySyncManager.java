@@ -33,14 +33,12 @@ import java.util.Map;
 
 public class ReplaySyncManager {
 
-    private static boolean isReplayModLoaded = false;
-    private static boolean checked = false;
-
     private static final DataParameter<String> SYNC_MODEL_TRAIN =
             EntityDataManager.createKey(jp.ngt.rtm.entity.train.EntityTrainBase.class, DataSerializers.STRING);
-
     private static final DataParameter<String> SYNC_MODEL_CARGO =
             EntityDataManager.createKey(jp.ngt.rtm.entity.train.parts.EntityCargoWithModel.class, DataSerializers.STRING);
+    private static boolean isReplayModLoaded = false;
+    private static boolean checked = false;
 
     public static void init() {
         if (!checked) {

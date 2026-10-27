@@ -49,7 +49,7 @@ public final class RailMapSection extends RailMap {
     public double getEndRatio() {
         return this.endRatio;
     }
-    
+
     public double sourceRatio(double localRatio) {
         double clamped = Math.max(0.0D, Math.min(1.0D, localRatio));
         return this.startRatio + this.ratioLength * clamped;

@@ -13,7 +13,8 @@ public final class GroovyScriptUtil {
     private static final String SCRIPT_NAME_PROPERTY =
             com.anatawa12.fixRtm.scripting.FIXScriptUtil.SCRIPT_NAME_PROPERTY;
 
-    private GroovyScriptUtil() {}
+    private GroovyScriptUtil() {
+    }
 
     public static ScriptEngine doScript(String source) {
         return doScript(source, null);

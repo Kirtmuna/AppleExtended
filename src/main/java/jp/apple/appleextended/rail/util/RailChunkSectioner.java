@@ -18,21 +18,16 @@ import jp.ngt.ngtlib.math.NGTMath;
 import jp.ngt.rtm.rail.util.RailMapBasic;
 import jp.ngt.rtm.rail.util.RailPosition;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 
 public final class RailChunkSectioner {
     private static final double RATIO_EPSILON = 1.0E-7;
     private static final double SAMPLE_PER_METER = 4.0;
+    private static final double MIN_SECTION_LENGTH_METERS = 2.0D;
 
     private RailChunkSectioner() {
     }
-
-    private static final double MIN_SECTION_LENGTH_METERS = 2.0D;
 
     public static List<RailSection> split(RailMapBasic source) {
         if (source.getLength() <= 0.0D) {
@@ -218,6 +213,27 @@ public final class RailChunkSectioner {
         target.cantRandom = source.cantRandom;
     }
 
+    private static List<Double> enforceMinimumSectionLength(List<Double> boundaries, double totalLength) {
+        if (boundaries.isEmpty() || totalLength <= 0.0D) {
+            return boundaries;
+        }
+        double minRatio = MIN_SECTION_LENGTH_METERS / totalLength;
+
+        List<Double> result = new ArrayList<>();
+        double lastRatio = 0.0D;
+        for (double boundary : boundaries) {
+            if (boundary - lastRatio >= minRatio) {
+                result.add(boundary);
+                lastRatio = boundary;
+            }
+        }
+        if (!result.isEmpty() && 1.0D - result.get(result.size() - 1) < minRatio) {
+            result.remove(result.size() - 1);
+        }
+
+        return result;
+    }
+
     private static final class SectionStart {
         final double ratio;
         final RailPosition rp;
@@ -273,26 +289,5 @@ public final class RailChunkSectioner {
         public int hashCode() {
             return (x * 31 + y) * 31 + z;
         }
-    }
-
-    private static List<Double> enforceMinimumSectionLength(List<Double> boundaries, double totalLength) {
-        if (boundaries.isEmpty() || totalLength <= 0.0D) {
-            return boundaries;
-        }
-        double minRatio = MIN_SECTION_LENGTH_METERS / totalLength;
-
-        List<Double> result = new ArrayList<>();
-        double lastRatio = 0.0D;
-        for (double boundary : boundaries) {
-            if (boundary - lastRatio >= minRatio) {
-                result.add(boundary);
-                lastRatio = boundary;
-            }
-        }
-        if (!result.isEmpty() && 1.0D - result.get(result.size() - 1) < minRatio) {
-            result.remove(result.size() - 1);
-        }
-
-        return result;
     }
 }

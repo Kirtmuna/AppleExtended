@@ -23,7 +23,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class HighlightItemChecker {
 
-    private HighlightItemChecker() {}
+    private HighlightItemChecker() {
+    }
 
     public static boolean isHoldingConnectorItem(EntityPlayer player) {
         return isConnectorItem(player.getHeldItemMainhand())
@@ -38,6 +39,7 @@ public class HighlightItemChecker {
         return type == ItemInstalledObject.IstlObjType.CONNECTOR_IN
                 || type == ItemInstalledObject.IstlObjType.CONNECTOR_OUT;
     }
+
     public static boolean isInsulatorItem(ItemStack stack) {
         if (stack.isEmpty()) return false;
         if (!(stack.getItem() instanceof ItemInstalledObject)) return false;
@@ -58,10 +60,12 @@ public class HighlightItemChecker {
         return ItemInstalledObject.IstlObjType.getType(stack.getMetadata())
                 == ItemInstalledObject.IstlObjType.LIGHT;
     }
+
     public static boolean isMiniatureItem(ItemStack stack) {
         if (stack.isEmpty()) return false;
         return stack.getItem() instanceof jp.ngt.mcte.item.ItemMiniature;
     }
+
     public static boolean isItemBlockTrainModel(ItemStack stack) {
         if (stack.isEmpty()) return false;
         return stack.getItem() instanceof jp.apple.appleextended.item.ItemBlockTrainModel;

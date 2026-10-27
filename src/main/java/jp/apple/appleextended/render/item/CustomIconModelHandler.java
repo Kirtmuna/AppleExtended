@@ -39,15 +39,40 @@ import java.util.Map;
 public class CustomIconModelHandler {
 
     private static final IBakedModel BUILTIN_EMPTY = new IBakedModel() {
-        @Override public List<BakedQuad> getQuads(IBlockState s, EnumFacing side, long rand) { return Collections.emptyList(); }
-        @Override public boolean isAmbientOcclusion() { return false; }
-        @Override public boolean isGui3d() { return false; }
-        @Override public boolean isBuiltInRenderer() { return true; }
-        @Override public TextureAtlasSprite getParticleTexture() {
+        @Override
+        public List<BakedQuad> getQuads(IBlockState s, EnumFacing side, long rand) {
+            return Collections.emptyList();
+        }
+
+        @Override
+        public boolean isAmbientOcclusion() {
+            return false;
+        }
+
+        @Override
+        public boolean isGui3d() {
+            return false;
+        }
+
+        @Override
+        public boolean isBuiltInRenderer() {
+            return true;
+        }
+
+        @Override
+        public TextureAtlasSprite getParticleTexture() {
             return net.minecraft.client.Minecraft.getMinecraft().getTextureMapBlocks().getMissingSprite();
         }
-        @Override public ItemOverrideList getOverrides() { return ItemOverrideList.NONE; }
-        @Override public ItemCameraTransforms getItemCameraTransforms() { return ItemCameraTransforms.DEFAULT; }
+
+        @Override
+        public ItemOverrideList getOverrides() {
+            return ItemOverrideList.NONE;
+        }
+
+        @Override
+        public ItemCameraTransforms getItemCameraTransforms() {
+            return ItemCameraTransforms.DEFAULT;
+        }
     };
 
     @SubscribeEvent

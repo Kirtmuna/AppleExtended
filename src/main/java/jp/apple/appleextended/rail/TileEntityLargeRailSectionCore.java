@@ -1,19 +1,20 @@
 /*
  *
  *  * AppleExtended
- *  * 
+ *  *
  *  * Original code (c) 2020 anatawa12 and other contributors.
  *  * Modifications (c) 2026 Applepie.
- *  * 
+ *  *
  *  * This file is part of AppleExtended, which is a derivative work of fixRTM.
  *  * Both are licensed under the GNU Lesser General Public License version 3.
  *  * See LICENSE.txt in the mod root for full license text.
- *  
+ *
  *
  */
 
 package jp.apple.appleextended.rail;
 
+import jp.apple.appleextended.rail.util.RailMapSection;
 import jp.ngt.ngtlib.block.BlockUtil;
 import jp.ngt.rtm.modelpack.state.ResourceStateRail;
 import jp.ngt.rtm.network.PacketLargeRailCore;
@@ -23,7 +24,6 @@ import jp.ngt.rtm.rail.TileEntityLargeRailNormalCore;
 import jp.ngt.rtm.rail.util.RailMap;
 import jp.ngt.rtm.rail.util.RailMapBasic;
 import jp.ngt.rtm.rail.util.RailPosition;
-import jp.apple.appleextended.rail.util.RailMapSection;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
@@ -43,6 +43,22 @@ public class TileEntityLargeRailSectionCore extends TileEntityLargeRailNormalCor
     private double sectionStartRatio = 0.0D;
     private double sectionEndRatio = 1.0D;
     private int[][] railGroupCorePositions = new int[0][];
+
+    private static RailPosition[] copyRailPositions(RailPosition[] positions) {
+        RailPosition[] result = new RailPosition[positions.length];
+        for (int i = 0; i < positions.length; ++i) {
+            result[i] = RailPosition.readFromNBT(positions[i].writeToNBT());
+        }
+        return result;
+    }
+
+    private static int[][] copyPositions(List<int[]> positions) {
+        int[][] result = new int[positions.size()][];
+        for (int i = 0; i < positions.size(); ++i) {
+            result[i] = positions.get(i).clone();
+        }
+        return result;
+    }
 
     public void configureRailSection(UUID groupId, RailPosition[] logicalPositions, RailPosition[] sectionPositions,
                                      double startRatio, double endRatio, List<int[]> corePositions) {
@@ -95,7 +111,7 @@ public class TileEntityLargeRailSectionCore extends TileEntityLargeRailNormalCor
         }
         return result;
     }
-    
+
     @Override
     protected void readRailData(NBTTagCompound nbt) {
         super.readRailData(nbt);
@@ -167,7 +183,7 @@ public class TileEntityLargeRailSectionCore extends TileEntityLargeRailNormalCor
         section.setTag("CorePositions", positions);
         parent.setTag(SECTION_TAG, section);
     }
-    
+
     @Override
     public void createRailMap() {
         if (!this.isLoaded()) {
@@ -187,7 +203,7 @@ public class TileEntityLargeRailSectionCore extends TileEntityLargeRailNormalCor
     protected void invalidateRailMapCache() {
         this.railmap = null;
     }
-    
+
     @Override
     public void replaceRail(ResourceStateRail state) {
         if (!this.isRailSection() || this.world == null) {
@@ -249,7 +265,7 @@ public class TileEntityLargeRailSectionCore extends TileEntityLargeRailNormalCor
     private boolean isLocallyOccupied() {
         return this.isCollidedTrain;
     }
-    
+
     @Override
     public int getRailRenderMinimumSplit() {
         return this.isRailSection() ? 1 : 0;
@@ -269,7 +285,7 @@ public class TileEntityLargeRailSectionCore extends TileEntityLargeRailNormalCor
     public boolean shouldRenderRailEndCap() {
         return !this.isRailSection() || this.sectionEndRatio >= 1.0D - RATIO_EPSILON;
     }
-    
+
     @Override
     public void breakLogicalRail() {
         if (!this.isRailSection() || this.world == null) {
@@ -315,7 +331,7 @@ public class TileEntityLargeRailSectionCore extends TileEntityLargeRailNormalCor
             this.world.setBlockToAir(pos);
         }
     }
-    
+
     @Override
     public void setPos(int x, int y, int z, int prevX, int prevY, int prevZ) {
         int difX = x - prevX;
@@ -334,21 +350,20 @@ public class TileEntityLargeRailSectionCore extends TileEntityLargeRailNormalCor
         super.setPos(x, y, z, prevX, prevY, prevZ);
         this.invalidateRailMapCache();
     }
-    
+
     @Override
     public String getRailShapeName() {
         if (!this.isRailSection()) {
             return super.getRailShapeName();
         }
         RailPosition[] positions = this.logicalRailPositions;
-        StringBuilder sb = new StringBuilder();
-        sb.append("Type:Normal(Section), ");
-        sb.append("X:").append(positions[1].blockX - positions[0].blockX).append(", ");
-        sb.append("Y:").append(positions[1].blockY - positions[0].blockY).append(", ");
-        sb.append("Z:").append(positions[1].blockZ - positions[0].blockZ);
-        return sb.toString();
+        String sb = "Type:Normal(Section), " +
+                "X:" + (positions[1].blockX - positions[0].blockX) + ", " +
+                "Y:" + (positions[1].blockY - positions[0].blockY) + ", " +
+                "Z:" + (positions[1].blockZ - positions[0].blockZ);
+        return sb;
     }
-    
+
     private List<TileEntityLargeRailSectionCore> groupCores() {
         if (!this.isRailSection() || this.world == null) {
             return java.util.Collections.singletonList(this);
@@ -376,22 +391,6 @@ public class TileEntityLargeRailSectionCore extends TileEntityLargeRailNormalCor
             }
         }
         return false;
-    }
-
-    private static RailPosition[] copyRailPositions(RailPosition[] positions) {
-        RailPosition[] result = new RailPosition[positions.length];
-        for (int i = 0; i < positions.length; ++i) {
-            result[i] = RailPosition.readFromNBT(positions[i].writeToNBT());
-        }
-        return result;
-    }
-
-    private static int[][] copyPositions(List<int[]> positions) {
-        int[][] result = new int[positions.size()][];
-        for (int i = 0; i < positions.size(); ++i) {
-            result[i] = positions.get(i).clone();
-        }
-        return result;
     }
 
     @Override

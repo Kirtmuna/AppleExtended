@@ -90,6 +90,7 @@ public class AtsAeTickHandler {
     // 車両ごとの状態
     // ========================================================================
     private static final Map<EntityTrainBase, AtsState> STATES = new WeakHashMap<>();
+
     // ========================================================================
     // 0. ON/OFF
     // ========================================================================
@@ -122,6 +123,7 @@ public class AtsAeTickHandler {
         }
         return new double[]{mx, mz};
     }
+
     /**
      * 無視中の信号が変わったら(=区間が進んだら)解除する
      */
@@ -130,6 +132,7 @@ public class AtsAeTickHandler {
             st.ignoredSignal = null;
         }
     }
+
     // ========================================================================
     // 3. 次信号の目標
     // ========================================================================
@@ -169,6 +172,7 @@ public class AtsAeTickHandler {
     // ========================================================================
     // 2. 通過済み / 間に合わない赤 の無視
     // ========================================================================
+
     /**
      * 区間が変わった時は、接近中に見えていた進行系現示の制限を引き継ぐ
      * (在線中の始端信号は必ず赤になるため、始端信号の現示は読まない)
@@ -193,12 +197,14 @@ public class AtsAeTickHandler {
         }
         return limit;
     }
+
     private static void saveSnapshot(AtsState st, SectionState section, double limit, double nextLimit) {
         st.hasPrev = true;
         st.prevSection = section;
         st.prevLimit = limit;
         st.prevNextLimit = nextLimit;
     }
+
     /**
      * パターン速度を km/h で返す。算出できない場合は Double.MAX_VALUE
      */
@@ -235,6 +241,7 @@ public class AtsAeTickHandler {
                 return -1.0;
         }
     }
+
     /**
      * 制限速度を ACCEL_DANGER_MARGIN 超過した時、1回だけ3回警報を鳴らす
      * accelWarned は超過中のラッチ
@@ -253,6 +260,7 @@ public class AtsAeTickHandler {
     // ========================================================================
     // 5. パターン速度
     // ========================================================================
+
     /**
      * 減速中: パターンへの接近度に応じて段階を上げ、上がった分だけ鳴らす
      */
@@ -278,6 +286,7 @@ public class AtsAeTickHandler {
         }
         st.stage = newStage;
     }
+
     /**
      * パターン超過なら目標速度まで自動制動、それ以外は解除
      */
@@ -291,6 +300,7 @@ public class AtsAeTickHandler {
     // ========================================================================
     // 6. 警報・制動
     // ========================================================================
+
     /**
      * キューに溜まったチャイムを所定間隔で鳴らす
      */
@@ -304,6 +314,7 @@ public class AtsAeTickHandler {
             st.pendingChimes--;
         }
     }
+
     private static void playChime(EntityTrainBase train) {
         train.world.playSound(
                 null,
@@ -312,6 +323,7 @@ public class AtsAeTickHandler {
                 SoundCategory.MASTER,
                 1.0F, 1.0F);
     }
+
     // ========================================================================
     // 7. 表示同期
     // ========================================================================
@@ -411,6 +423,7 @@ public class AtsAeTickHandler {
         boolean accelWarned = false;
         Double lastSpeed;
     }
+
     /**
      * 次信号に対する目標
      */

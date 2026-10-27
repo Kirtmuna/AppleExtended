@@ -1,13 +1,14 @@
 package jp.apple.appleextended.script.api.gif;
 
+import jdk.nashorn.api.scripting.ScriptObjectMirror;
 import jp.ngt.rtm.modelpack.ModelPackManager;
 import jp.ngt.rtm.render.ModelObject;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.ResourceLocation;
+
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
-import jdk.nashorn.api.scripting.ScriptObjectMirror; // 追加
 
 public class ScriptGifRenderer {
     private static final Map<String, GifAnimation> GIF_CACHE = new HashMap<>();

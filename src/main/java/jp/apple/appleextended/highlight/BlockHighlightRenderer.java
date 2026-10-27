@@ -35,7 +35,8 @@ public class BlockHighlightRenderer {
 
     private static final int SCAN_RADIUS = 16;
 
-    private BlockHighlightRenderer() {}
+    private BlockHighlightRenderer() {
+    }
 
     public static void onRenderWorldLast(RenderWorldLastEvent event) {
         Minecraft mc = Minecraft.getMinecraft();
@@ -108,18 +109,30 @@ public class BlockHighlightRenderer {
 
     private static void drawAABBOutline(AxisAlignedBB b) {
         GL11.glBegin(GL11.GL_LINES);
-        GL11.glVertex3d(b.minX, b.minY, b.minZ); GL11.glVertex3d(b.maxX, b.minY, b.minZ);
-        GL11.glVertex3d(b.maxX, b.minY, b.minZ); GL11.glVertex3d(b.maxX, b.minY, b.maxZ);
-        GL11.glVertex3d(b.maxX, b.minY, b.maxZ); GL11.glVertex3d(b.minX, b.minY, b.maxZ);
-        GL11.glVertex3d(b.minX, b.minY, b.maxZ); GL11.glVertex3d(b.minX, b.minY, b.minZ);
-        GL11.glVertex3d(b.minX, b.maxY, b.minZ); GL11.glVertex3d(b.maxX, b.maxY, b.minZ);
-        GL11.glVertex3d(b.maxX, b.maxY, b.minZ); GL11.glVertex3d(b.maxX, b.maxY, b.maxZ);
-        GL11.glVertex3d(b.maxX, b.maxY, b.maxZ); GL11.glVertex3d(b.minX, b.maxY, b.maxZ);
-        GL11.glVertex3d(b.minX, b.maxY, b.maxZ); GL11.glVertex3d(b.minX, b.maxY, b.minZ);
-        GL11.glVertex3d(b.minX, b.minY, b.minZ); GL11.glVertex3d(b.minX, b.maxY, b.minZ);
-        GL11.glVertex3d(b.maxX, b.minY, b.minZ); GL11.glVertex3d(b.maxX, b.maxY, b.minZ);
-        GL11.glVertex3d(b.maxX, b.minY, b.maxZ); GL11.glVertex3d(b.maxX, b.maxY, b.maxZ);
-        GL11.glVertex3d(b.minX, b.minY, b.maxZ); GL11.glVertex3d(b.minX, b.maxY, b.maxZ);
+        GL11.glVertex3d(b.minX, b.minY, b.minZ);
+        GL11.glVertex3d(b.maxX, b.minY, b.minZ);
+        GL11.glVertex3d(b.maxX, b.minY, b.minZ);
+        GL11.glVertex3d(b.maxX, b.minY, b.maxZ);
+        GL11.glVertex3d(b.maxX, b.minY, b.maxZ);
+        GL11.glVertex3d(b.minX, b.minY, b.maxZ);
+        GL11.glVertex3d(b.minX, b.minY, b.maxZ);
+        GL11.glVertex3d(b.minX, b.minY, b.minZ);
+        GL11.glVertex3d(b.minX, b.maxY, b.minZ);
+        GL11.glVertex3d(b.maxX, b.maxY, b.minZ);
+        GL11.glVertex3d(b.maxX, b.maxY, b.minZ);
+        GL11.glVertex3d(b.maxX, b.maxY, b.maxZ);
+        GL11.glVertex3d(b.maxX, b.maxY, b.maxZ);
+        GL11.glVertex3d(b.minX, b.maxY, b.maxZ);
+        GL11.glVertex3d(b.minX, b.maxY, b.maxZ);
+        GL11.glVertex3d(b.minX, b.maxY, b.minZ);
+        GL11.glVertex3d(b.minX, b.minY, b.minZ);
+        GL11.glVertex3d(b.minX, b.maxY, b.minZ);
+        GL11.glVertex3d(b.maxX, b.minY, b.minZ);
+        GL11.glVertex3d(b.maxX, b.maxY, b.minZ);
+        GL11.glVertex3d(b.maxX, b.minY, b.maxZ);
+        GL11.glVertex3d(b.maxX, b.maxY, b.maxZ);
+        GL11.glVertex3d(b.minX, b.minY, b.maxZ);
+        GL11.glVertex3d(b.minX, b.maxY, b.maxZ);
         GL11.glEnd();
     }
 }

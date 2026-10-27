@@ -12,9 +12,10 @@ import java.nio.charset.StandardCharsets;
 
 public final class ScriptLoader {
 
-    private ScriptLoader() {}
-
     private static final Object GROOVY_COMPILE_LOCK = new Object();
+
+    private ScriptLoader() {
+    }
 
     public static ScriptEngine load(String scriptPath) {
         if (scriptPath == null) {

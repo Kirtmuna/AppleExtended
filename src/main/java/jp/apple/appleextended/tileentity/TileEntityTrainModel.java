@@ -65,7 +65,7 @@ public class TileEntityTrainModel extends TileEntityPlaceable implements IResour
 
     @Override
     public void readFromNBT(NBTTagCompound compound) {
-        super.readFromNBT(compound); 
+        super.readFromNBT(compound);
         if (compound.hasKey("State")) {
             this.resourceState.readFromNBT(compound.getCompoundTag("State"));
         } else {
@@ -75,7 +75,7 @@ public class TileEntityTrainModel extends TileEntityPlaceable implements IResour
 
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound compound) {
-        super.writeToNBT(compound); 
+        super.writeToNBT(compound);
         compound.setTag("State", this.resourceState.writeToNBT());
         return compound;
     }

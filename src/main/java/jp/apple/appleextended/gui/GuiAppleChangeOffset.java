@@ -22,7 +22,7 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.resources.I18n;
 
 public class GuiAppleChangeOffset extends GuiScreenCustom {
-    private TileEntityPlaceable tileEntity;
+    private final TileEntityPlaceable tileEntity;
     private GuiTextFieldCustom fieldOffsetX, fieldOffsetY, fieldOffsetZ;
     private GuiTextFieldCustom fieldRotX, fieldRotY, fieldRotZ;
     private GuiTextFieldCustom fieldScale;

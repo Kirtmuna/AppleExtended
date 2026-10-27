@@ -39,7 +39,6 @@ public class SoundBlocker {
         if (!AppleConfig.enableNotchSound) {
             if (soundName.contains("sounds/train/lever")) {
                 event.setResultSound(null);
-                return;
             }
         }
     }

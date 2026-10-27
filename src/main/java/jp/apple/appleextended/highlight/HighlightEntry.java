@@ -59,7 +59,9 @@ public class HighlightEntry {
         }
 
         public Builder color(float r, float g, float b) {
-            this.r = r; this.g = g; this.b = b;
+            this.r = r;
+            this.g = g;
+            this.b = b;
             return this;
         }
 

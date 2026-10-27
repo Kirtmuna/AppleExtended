@@ -94,7 +94,7 @@ public class PacketFinishEditing implements IMessage {
 
                     for (int i = 0; i < validModels.size(); i++) {
                         if (i > 0) {
-                            currentZ += (double) (distances[i - 1] + distances[i]);
+                            currentZ += distances[i - 1] + distances[i];
                         }
 
                         NBTTagCompound trainTag = new NBTTagCompound();

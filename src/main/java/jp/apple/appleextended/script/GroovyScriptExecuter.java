@@ -17,7 +17,7 @@ public class GroovyScriptExecuter extends ScriptExecuter {
     @Override
     protected Object callMethod(IResourceSelector selector, String name, Object... args) {
         ModelSetBase set = (ModelSetBase) selector.getResourceState().getResourceSet();
-        if (set.serverSE != null && isGroovyEngine(set.serverSE)) {
+        if (isGroovyEngine(set.serverSE)) {
             return GroovyScriptUtil.doScriptIgnoreError(set.serverSE, name, args);
         }
         return super.callMethod(selector, name, args);
