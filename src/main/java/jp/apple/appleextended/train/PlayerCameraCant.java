@@ -37,6 +37,9 @@ public class PlayerCameraCant {
 
     @SubscribeEvent
     public void onCameraSetup(EntityViewRenderEvent.CameraSetup event) {
+        if (!AppleConfig.enableCantCamera) {
+            return;
+        }
         EntityPlayer player = Minecraft.getMinecraft().player;
         
         if (player == null || event.getEntity() != player) return;
