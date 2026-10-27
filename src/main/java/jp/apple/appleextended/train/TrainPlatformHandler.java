@@ -15,7 +15,9 @@
 package jp.apple.appleextended.train;
 
 import jp.ngt.rtm.entity.train.EntityTrainBase;
+import jp.ngt.rtm.modelpack.cfg.TrainConfig;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.MoverType;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.play.server.SPacketEntityVelocity;
@@ -95,7 +97,7 @@ public class TrainPlatformHandler {
         double yError = trainTopY - player.posY;
         double yCorrection = MathHelper.clamp(yError * Y_CORRECTION_FACTOR, -MAX_Y_CORRECTION, MAX_Y_CORRECTION);
 
-        player.move(net.minecraft.entity.MoverType.SELF, addX, dy + yCorrection, addZ);
+        player.move(MoverType.SELF, addX, dy + yCorrection, addZ);
 
         player.motionY = 0.0D;
         player.fallDistance = 0.0F;
@@ -103,7 +105,7 @@ public class TrainPlatformHandler {
     }
 
     private static double getHalfLength(EntityTrainBase train) {
-        jp.ngt.rtm.modelpack.cfg.TrainConfig cfg = train.getResourceState().getResourceSet().getConfig();
+        TrainConfig cfg = train.getResourceState().getResourceSet().getConfig();
         if (cfg == null) {
             return EntityTrainBase.TRAIN_WIDTH / 2.0D;
         }

@@ -15,6 +15,7 @@
 package jp.apple.appleextended.tileentity;
 
 import jp.ngt.ngtlib.block.TileEntityPlaceable;
+import jp.ngt.rtm.RTMResource;
 import jp.ngt.rtm.modelpack.IResourceSelector;
 import jp.ngt.rtm.modelpack.modelset.ModelSetTrain;
 import jp.ngt.rtm.modelpack.state.ResourceState;
@@ -29,7 +30,7 @@ public class TileEntityTrainModel extends TileEntityPlaceable implements IResour
 
     public TileEntityTrainModel() {
         this.resourceState = new ResourceState<>(
-                jp.ngt.rtm.RTMResource.TRAIN_EC,
+                RTMResource.TRAIN_EC,
                 this
         );
         if (this.resourceState.getResourceName() == null) {

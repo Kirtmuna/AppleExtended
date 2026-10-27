@@ -50,7 +50,7 @@ public class ARTPECore {
 
 
         if (event.getSide() == Side.CLIENT) {
-            jp.apple.appleextended.artpe.SoundGuard.register();
+            SoundGuard.register();
             network.registerMessage(PacketPreloadModels.Handler.class, PacketPreloadModels.class, 2, Side.CLIENT);
         }
     }

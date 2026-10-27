@@ -1,7 +1,9 @@
 package jp.apple.appleextended.script;
 
+import groovy.lang.GroovyClassLoader;
 import jp.ngt.ngtlib.io.NGTFileLoader;
 import jp.ngt.ngtlib.io.NGTLog;
+import jp.ngt.rtm.modelpack.ModelPackManager;
 import org.codehaus.groovy.jsr223.GroovyScriptEngineImpl;
 
 import javax.script.ScriptEngine;
@@ -12,19 +14,19 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public final class GroovyScriptEngine {
 
-    private static final Map<String, groovy.lang.GroovyClassLoader> LOADER_CACHE =
+    private static final Map<String, GroovyClassLoader> LOADER_CACHE =
             new ConcurrentHashMap<>();
 
     private GroovyScriptEngine() {
     }
 
     public static ScriptEngine getEngineForScript(String scriptPath) {
-        groovy.lang.GroovyClassLoader gcl = resolveClassLoader(scriptPath);
+        GroovyClassLoader gcl = resolveClassLoader(scriptPath);
         return new GroovyScriptEngineImpl(gcl);
     }
 
     public static void clearCache() {
-        for (groovy.lang.GroovyClassLoader gcl : LOADER_CACHE.values()) {
+        for (GroovyClassLoader gcl : LOADER_CACHE.values()) {
             try {
                 gcl.close();
             } catch (Exception e) {
@@ -40,7 +42,7 @@ public final class GroovyScriptEngine {
         return p.contains(":") ? p.substring(p.indexOf(":") + 1) : p;
     }
 
-    private static groovy.lang.GroovyClassLoader resolveClassLoader(String scriptPath) {
+    private static GroovyClassLoader resolveClassLoader(String scriptPath) {
         File scriptFile = resolveScriptFile(scriptPath);
         String packRootKey = getPackRootKey(scriptFile, scriptPath);
 
@@ -49,7 +51,7 @@ public final class GroovyScriptEngine {
                 URL rootUrl = getPackRootUrl(scriptFile, scriptPath);
                 NGTLog.debug("[GroovyScriptEngine] Creating ClassLoader for: " + rootUrl);
 
-                groovy.lang.GroovyClassLoader gcl = new groovy.lang.GroovyClassLoader(
+                GroovyClassLoader gcl = new GroovyClassLoader(
                         GroovyScriptEngine.class.getClassLoader()
                 );
                 gcl.addURL(rootUrl);
@@ -81,7 +83,7 @@ public final class GroovyScriptEngine {
 
     private static File resolveScriptFile(String scriptPath) {
         String normalized = stripDomain(scriptPath);
-        for (File f : jp.ngt.rtm.modelpack.ModelPackManager.INSTANCE.fileCache) {
+        for (File f : ModelPackManager.INSTANCE.fileCache) {
             String absPath = f.getAbsolutePath().replace("\\", "/");
             if (absPath.endsWith(normalized)) {
                 return f;

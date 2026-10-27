@@ -15,6 +15,8 @@
 package jp.apple.appleextended.compat;
 
 import com.replaymod.replay.ReplayModReplay;
+import jp.ngt.rtm.RTMResource;
+import jp.ngt.rtm.block.tileentity.TileEntityMachineBase;
 import jp.ngt.rtm.entity.train.EntityTrainBase;
 import jp.ngt.rtm.entity.train.parts.EntityCargoWithModel;
 import jp.ngt.rtm.modelpack.IResourceSelector;
@@ -22,6 +24,8 @@ import jp.ngt.rtm.modelpack.ModelPackManager;
 import jp.ngt.rtm.modelpack.ResourceType;
 import jp.ngt.rtm.modelpack.modelset.ResourceSet;
 import jp.ngt.rtm.modelpack.state.ResourceState;
+import jp.ngt.rtm.modelpack.state.ResourceStateRail;
+import jp.ngt.rtm.rail.TileEntityLargeRailCore;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
@@ -34,9 +38,9 @@ import java.util.Map;
 public class ReplaySyncManager {
 
     private static final DataParameter<String> SYNC_MODEL_TRAIN =
-            EntityDataManager.createKey(jp.ngt.rtm.entity.train.EntityTrainBase.class, DataSerializers.STRING);
+            EntityDataManager.createKey(EntityTrainBase.class, DataSerializers.STRING);
     private static final DataParameter<String> SYNC_MODEL_CARGO =
-            EntityDataManager.createKey(jp.ngt.rtm.entity.train.parts.EntityCargoWithModel.class, DataSerializers.STRING);
+            EntityDataManager.createKey(EntityCargoWithModel.class, DataSerializers.STRING);
     private static boolean isReplayModLoaded = false;
     private static boolean checked = false;
 
@@ -58,7 +62,7 @@ public class ReplaySyncManager {
 
     public static void registerData(Entity entity) {
         if (!isReplayModLoaded) return;
-        if (entity instanceof jp.ngt.rtm.entity.train.EntityTrainBase) {
+        if (entity instanceof EntityTrainBase) {
             entity.getDataManager().register(SYNC_MODEL_TRAIN, "");
         } else if (entity instanceof EntityCargoWithModel) {
             entity.getDataManager().register(SYNC_MODEL_CARGO, "");
@@ -146,21 +150,21 @@ public class ReplaySyncManager {
         }
     }
 
-    public static void patchRailMetadata(jp.ngt.rtm.rail.TileEntityLargeRailCore tile, NBTTagCompound nbt) {
+    public static void patchRailMetadata(TileEntityLargeRailCore tile, NBTTagCompound nbt) {
         if (!isReplayActive()) return;
 
         if (nbt.hasKey("State")) {
             String modelName = nbt.getCompoundTag("State").getString("ResourceName");
             if (isValidName(modelName)) {
-                forceRegisterModelToSmpMap(jp.ngt.rtm.RTMResource.RAIL, modelName);
+                forceRegisterModelToSmpMap(RTMResource.RAIL, modelName);
             }
         }
     }
 
-    public static void checkRailModel(jp.ngt.rtm.rail.TileEntityLargeRailCore tile) {
+    public static void checkRailModel(TileEntityLargeRailCore tile) {
         if (!isReplayActive()) return;
 
-        jp.ngt.rtm.modelpack.state.ResourceStateRail state = tile.getResourceState();
+        ResourceStateRail state = tile.getResourceState();
 
         if (state.getResourceSet().isDummy()) {
             String name = state.getResourceName();
@@ -190,13 +194,13 @@ public class ReplaySyncManager {
     public static void checkModelSync(IResourceSelector<?> selector) {
         if (!isReplayActive()) return;
 
-        jp.ngt.rtm.modelpack.state.ResourceState<?> state = selector.getResourceState();
+        ResourceState<?> state = selector.getResourceState();
         if (state.getResourceSet().isDummy()) {
             String name = state.getResourceName();
             if (isValidName(name)) {
                 forceRegisterModelToSmpMap(state.type, name);
                 state.setResourceName(name);
-                if (selector instanceof jp.ngt.rtm.block.tileentity.TileEntityMachineBase) {
+                if (selector instanceof TileEntityMachineBase) {
                 }
             }
         }

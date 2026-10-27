@@ -16,6 +16,10 @@ package jp.apple.appleextended.artpe.network;
 
 import io.netty.buffer.ByteBuf;
 import jp.apple.appleextended.artpe.ARTPECore;
+import jp.ngt.rtm.RTMResource;
+import jp.ngt.rtm.modelpack.ModelPackManager;
+import jp.ngt.rtm.modelpack.ResourceType;
+import jp.ngt.rtm.modelpack.modelset.ModelSetTrain;
 import jp.ngt.rtm.modelpack.state.ResourceState;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -110,7 +114,7 @@ public class PacketFinishEditing implements IMessage {
                     }
 
                     rootTag.setTag("formations", formationListNBT);
-                    ResourceState state = new ResourceState(jp.ngt.rtm.RTMResource.TRAIN_EC, null);
+                    ResourceState state = new ResourceState(RTMResource.TRAIN_EC, null);
                     state.setResourceName(validModels.get(0));
                     rootTag.setTag("State", state.writeToNBT());
 
@@ -133,14 +137,14 @@ public class PacketFinishEditing implements IMessage {
         }
 
         private float getTrainDistance(String modelName) {
-            jp.ngt.rtm.modelpack.ResourceType[] types = {
-                    jp.ngt.rtm.RTMResource.TRAIN_EC, jp.ngt.rtm.RTMResource.TRAIN_DC,
-                    jp.ngt.rtm.RTMResource.TRAIN_CC, jp.ngt.rtm.RTMResource.TRAIN_TC,
-                    jp.ngt.rtm.RTMResource.TRAIN_TEST
+            ResourceType[] types = {
+                    RTMResource.TRAIN_EC, RTMResource.TRAIN_DC,
+                    RTMResource.TRAIN_CC, RTMResource.TRAIN_TC,
+                    RTMResource.TRAIN_TEST
             };
-            for (jp.ngt.rtm.modelpack.ResourceType type : types) {
-                jp.ngt.rtm.modelpack.modelset.ModelSetTrain set =
-                        jp.ngt.rtm.modelpack.ModelPackManager.INSTANCE.getResourceSet(type, modelName);
+            for (ResourceType type : types) {
+                ModelSetTrain set =
+                        ModelPackManager.INSTANCE.getResourceSet(type, modelName);
                 if (set != null && !set.isDummy()) {
                     return set.getConfig().trainDistance;
                 }

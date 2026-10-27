@@ -30,6 +30,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.UUID;
 
@@ -301,7 +303,7 @@ public class TileEntityLargeRailSectionCore extends TileEntityLargeRailNormalCor
         RailPosition[] logical = copyRailPositions(this.logicalRailPositions);
         RailMapBasic fullMap = new RailMapBasic(logical[0], logical[1], this.fixRTMRailMapVersion);
 
-        java.util.LinkedHashSet<BlockPos> candidates = new java.util.LinkedHashSet<>();
+        LinkedHashSet<BlockPos> candidates = new LinkedHashSet<>();
         for (int[] pos : fullMap.getRailBlockList(this.getResourceState(), true)) {
             candidates.add(new BlockPos(pos[0], pos[1], pos[2]));
         }
@@ -317,7 +319,7 @@ public class TileEntityLargeRailSectionCore extends TileEntityLargeRailNormalCor
             candidates.add(new BlockPos(pos[0], pos[1], pos[2]));
         }
 
-        java.util.LinkedHashSet<BlockPos> targets = new java.util.LinkedHashSet<>();
+        LinkedHashSet<BlockPos> targets = new LinkedHashSet<>();
         for (BlockPos pos : candidates) {
             TileEntity tile = this.world.getTileEntity(pos);
             if (tile instanceof TileEntityLargeRailBase) {
@@ -366,7 +368,7 @@ public class TileEntityLargeRailSectionCore extends TileEntityLargeRailNormalCor
 
     private List<TileEntityLargeRailSectionCore> groupCores() {
         if (!this.isRailSection() || this.world == null) {
-            return java.util.Collections.singletonList(this);
+            return Collections.singletonList(this);
         }
         List<TileEntityLargeRailSectionCore> result = new ArrayList<>();
         for (int[] pos : this.railGroupCorePositions) {

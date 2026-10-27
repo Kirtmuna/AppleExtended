@@ -14,17 +14,22 @@
 
 package jp.apple.appleextended.artpe.gui;
 
+import jp.apple.appleextended.artpe.tileentity.TileEntityTrainPlacer;
 import jp.ngt.rtm.RTMCore;
+import jp.ngt.rtm.RTMResource;
 import jp.ngt.rtm.gui.GuiSelectModel;
 import jp.ngt.rtm.modelpack.IResourceSelector;
 import jp.ngt.rtm.modelpack.ModelPackManager;
 import jp.ngt.rtm.modelpack.cfg.TrainConfig;
 import jp.ngt.rtm.modelpack.modelset.ResourceSet;
+import jp.ngt.rtm.modelpack.state.ResourceState;
 import jp.ngt.rtm.network.PacketSelectResource;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.world.World;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,9 +42,9 @@ public class GuiSelectModelFilter extends GuiSelectModel {
 
     private void rebuildTrainListForEcAndDc() {
         try {
-            java.lang.reflect.Field field = GuiSelectModel.class.getDeclaredField("modelListAll");
+            Field field = GuiSelectModel.class.getDeclaredField("modelListAll");
             field.setAccessible(true);
-            List<ResourceSet> allTrainModels = ModelPackManager.INSTANCE.getModelList(jp.ngt.rtm.RTMResource.TRAIN_EC);
+            List<ResourceSet> allTrainModels = ModelPackManager.INSTANCE.getModelList(RTMResource.TRAIN_EC);
             List<ResourceSet> filtered = new ArrayList<>();
             for (ResourceSet set : allTrainModels) {
                 Object cfg = set.getConfig();
@@ -63,7 +68,7 @@ public class GuiSelectModelFilter extends GuiSelectModel {
 
         rebuildTrainListForEcAndDc();
         try {
-            java.lang.reflect.Method m = GuiSelectModel.class.getDeclaredMethod("resetModelList");
+            Method m = GuiSelectModel.class.getDeclaredMethod("resetModelList");
             m.setAccessible(true);
             m.invoke(this);
         } catch (Exception e) {
@@ -79,13 +84,13 @@ public class GuiSelectModelFilter extends GuiSelectModel {
         }
 
         try {
-            java.lang.reflect.Field fList = GuiSelectModel.class.getDeclaredField("modelListSelect");
+            Field fList = GuiSelectModel.class.getDeclaredField("modelListSelect");
             fList.setAccessible(true);
-            java.util.List listSelect = (java.util.List) fList.get(this);
+            List listSelect = (List) fList.get(this);
 
-            java.lang.reflect.Field fState = GuiSelectModel.class.getDeclaredField("resourceState");
+            Field fState = GuiSelectModel.class.getDeclaredField("resourceState");
             fState.setAccessible(true);
-            jp.ngt.rtm.modelpack.state.ResourceState state = (jp.ngt.rtm.modelpack.state.ResourceState) fState
+            ResourceState state = (ResourceState) fState
                     .get(this);
 
             if (listSelect != null && button.id >= 0 && button.id < listSelect.size()) {
@@ -99,14 +104,14 @@ public class GuiSelectModelFilter extends GuiSelectModel {
                 state.setResourceName(selectedModelName);
 
                 try {
-                    java.lang.reflect.Field fColor = GuiSelectModel.class.getDeclaredField("modelColor");
+                    Field fColor = GuiSelectModel.class.getDeclaredField("modelColor");
                     fColor.setAccessible(true);
                     state.color = fColor.getInt(this);
                 } catch (Exception ignored) {
                 }
 
                 try {
-                    java.lang.reflect.Field fArgField = GuiSelectModel.class.getDeclaredField("argField");
+                    Field fArgField = GuiSelectModel.class.getDeclaredField("argField");
                     fArgField.setAccessible(true);
                     GuiTextField aF = (GuiTextField) fArgField.get(this);
                     String argText = (aF != null && aF.getText() != null) ? aF.getText() : "";
@@ -116,8 +121,8 @@ public class GuiSelectModelFilter extends GuiSelectModel {
 
                 if (this.selector != null) {
 
-                    if (this.selector instanceof jp.apple.appleextended.artpe.tileentity.TileEntityTrainPlacer) {
-                        jp.apple.appleextended.artpe.tileentity.TileEntityTrainPlacer te = (jp.apple.appleextended.artpe.tileentity.TileEntityTrainPlacer) this.selector;
+                    if (this.selector instanceof TileEntityTrainPlacer) {
+                        TileEntityTrainPlacer te = (TileEntityTrainPlacer) this.selector;
                         if (te.editingIndex < te.trainModels.size()) {
                             te.trainModels.set(te.editingIndex, selectedModelName);
                             te.markDirty();

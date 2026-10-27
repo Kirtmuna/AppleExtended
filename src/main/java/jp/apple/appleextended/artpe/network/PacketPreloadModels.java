@@ -15,6 +15,9 @@
 package jp.apple.appleextended.artpe.network;
 
 import io.netty.buffer.ByteBuf;
+import jp.ngt.rtm.RTMResource;
+import jp.ngt.rtm.modelpack.ResourceType;
+import jp.ngt.rtm.modelpack.state.ResourceState;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
@@ -56,23 +59,23 @@ public class PacketPreloadModels implements IMessage {
     }
 
     public static class Handler implements IMessageHandler<PacketPreloadModels, IMessage> {
-        private static jp.ngt.rtm.modelpack.ResourceType getTrainResourceType(String modelName) {
+        private static ResourceType getTrainResourceType(String modelName) {
             if (modelName == null || modelName.isEmpty()) {
-                return jp.ngt.rtm.RTMResource.TRAIN_EC;
+                return RTMResource.TRAIN_EC;
             }
             String lowerModelName = modelName.toLowerCase();
             if (lowerModelName.contains("ec_") || lowerModelName.matches(".*\\bec\\b.*")) {
-                return jp.ngt.rtm.RTMResource.TRAIN_EC;
+                return RTMResource.TRAIN_EC;
             } else if (lowerModelName.contains("dc_") || lowerModelName.matches(".*\\bdc\\b.*")) {
-                return jp.ngt.rtm.RTMResource.TRAIN_DC;
+                return RTMResource.TRAIN_DC;
             } else if (lowerModelName.contains("cc_") || lowerModelName.matches(".*\\bcc\\b.*")) {
-                return jp.ngt.rtm.RTMResource.TRAIN_CC;
+                return RTMResource.TRAIN_CC;
             } else if (lowerModelName.contains("tc_") || lowerModelName.matches(".*\\btc\\b.*")) {
-                return jp.ngt.rtm.RTMResource.TRAIN_TC;
+                return RTMResource.TRAIN_TC;
             } else if (lowerModelName.contains("test") || lowerModelName.matches(".*\\btest\\b.*")) {
-                return jp.ngt.rtm.RTMResource.TRAIN_TEST;
+                return RTMResource.TRAIN_TEST;
             }
-            return jp.ngt.rtm.RTMResource.TRAIN_EC;
+            return RTMResource.TRAIN_EC;
         }
 
         @Override
@@ -86,10 +89,10 @@ public class PacketPreloadModels implements IMessage {
                     if (name == null || name.isEmpty() || name.equals("未選択"))
                         continue;
 
-                    jp.ngt.rtm.modelpack.ResourceType trainResourceType = getTrainResourceType(name);
+                    ResourceType trainResourceType = getTrainResourceType(name);
 
                     try {
-                        jp.ngt.rtm.modelpack.state.ResourceState rs = new jp.ngt.rtm.modelpack.state.ResourceState(
+                        ResourceState rs = new ResourceState(
                                 trainResourceType, null);
                         rs.setResourceName(name);
                         rs.getResourceSet();

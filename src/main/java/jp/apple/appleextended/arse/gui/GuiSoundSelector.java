@@ -14,7 +14,10 @@
 
 package jp.apple.appleextended.arse.gui;
 
+import jp.apple.appleextended.arse.core.ARSE;
+import jp.apple.appleextended.arse.network.PacketArseSetSound;
 import jp.apple.appleextended.arse.tileentity.TileEntitySounder;
+import jp.ngt.rtm.RTMSound;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
@@ -56,7 +59,7 @@ public class GuiSoundSelector extends GuiScreen {
         }
 
         try {
-            List<String> rtmOggList = jp.ngt.rtm.RTMSound.ALL_OGG_FILES;
+            List<String> rtmOggList = RTMSound.ALL_OGG_FILES;
             if (rtmOggList != null) {
                 for (String oggPath : rtmOggList) {
                     if (!allSounds.contains(oggPath)) {
@@ -150,7 +153,7 @@ public class GuiSoundSelector extends GuiScreen {
 
     private void sync() {
 
-        jp.apple.appleextended.arse.core.ARSE.network.sendToServer(new jp.apple.appleextended.arse.network.PacketArseSetSound(
+        ARSE.network.sendToServer(new PacketArseSetSound(
                 tileEntity.getPos(),
                 tileEntity.getSelectedSound(),
                 tileEntity.getSelectedSound2(),

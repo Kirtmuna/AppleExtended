@@ -3,6 +3,7 @@ package jp.apple.appleextended.script;
 import com.anatawa12.fixRtm.scripting.FIXScriptUtil;
 import jp.ngt.ngtlib.io.NGTFileLoader;
 import jp.ngt.rtm.modelpack.ModelPackManager;
+import net.minecraft.util.ResourceLocation;
 
 import javax.script.ScriptEngine;
 import javax.script.ScriptException;
@@ -37,7 +38,7 @@ public final class ScriptLoader {
         try {
             ScriptEngine engine = GroovyScriptEngine.getEngineForScript(scriptPath);
 
-            net.minecraft.util.ResourceLocation rl =
+            ResourceLocation rl =
                     ModelPackManager.INSTANCE.getResource(scriptPath);
 
             synchronized (GROOVY_COMPILE_LOCK) {
@@ -47,7 +48,7 @@ public final class ScriptLoader {
                 }
             }
 
-            engine.put(com.anatawa12.fixRtm.scripting.FIXScriptUtil.SCRIPT_NAME_PROPERTY, scriptPath);
+            engine.put(FIXScriptUtil.SCRIPT_NAME_PROPERTY, scriptPath);
             return engine;
 
         } catch (ScriptException e) {

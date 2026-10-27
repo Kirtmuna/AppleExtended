@@ -28,6 +28,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.TimeUnit;
 
 public class AppleLogger {
     private static final SimpleDateFormat logDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -66,7 +67,7 @@ public class AppleLogger {
     private static void processQueue() {
         while (running || !queue.isEmpty()) {
             try {
-                String line = queue.poll(500, java.util.concurrent.TimeUnit.MILLISECONDS);
+                String line = queue.poll(500, TimeUnit.MILLISECONDS);
                 if (line != null) {
                     writer.write(line);
                     writer.newLine();

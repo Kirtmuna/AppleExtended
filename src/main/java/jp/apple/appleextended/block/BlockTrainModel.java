@@ -14,8 +14,10 @@
 
 package jp.apple.appleextended.block;
 
+import jp.apple.appleextended.gui.AppleGuiHelper;
 import jp.apple.appleextended.tileentity.TileEntityTrainModel;
 import jp.ngt.rtm.RTMCore;
+import jp.ngt.rtm.RTMItem;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -88,8 +90,8 @@ public class BlockTrainModel extends BlockContainer {
             TileEntity te = worldIn.getTileEntity(pos);
             if (te instanceof TileEntityTrainModel) {
 
-                if (playerIn.getHeldItem(hand).getItem() == jp.ngt.rtm.RTMItem.crowbar) {
-                    jp.apple.appleextended.gui.AppleGuiHelper.openOffsetGui(te);
+                if (playerIn.getHeldItem(hand).getItem() == RTMItem.crowbar) {
+                    AppleGuiHelper.openOffsetGui(te);
                     return true;
                 }
 

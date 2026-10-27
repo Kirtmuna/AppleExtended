@@ -18,8 +18,11 @@ import jp.apple.appleextended.artpe.block.BlockTrainPlacer;
 import jp.apple.appleextended.artpe.item.ItemArtpeTrain;
 import jp.apple.appleextended.artpe.tileentity.TileEntityTrainPlacer;
 import net.minecraft.block.Block;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
+import net.minecraftforge.client.event.ModelRegistryEvent;
+import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -45,18 +48,18 @@ public class RegistryHandler {
     }
 
     @SubscribeEvent
-    public static void registerModels(net.minecraftforge.client.event.ModelRegistryEvent event) {
-        net.minecraftforge.client.model.ModelLoader.setCustomModelResourceLocation(
+    public static void registerModels(ModelRegistryEvent event) {
+        ModelLoader.setCustomModelResourceLocation(
                 Item.getItemFromBlock(ARTPECore.trainPlacerBlock),
                 0,
-                new net.minecraft.client.renderer.block.model.ModelResourceLocation(
+                new ModelResourceLocation(
                         ARTPECore.trainPlacerBlock.getRegistryName(), "inventory"));
 
 
-        net.minecraftforge.client.model.ModelLoader.setCustomModelResourceLocation(
+        ModelLoader.setCustomModelResourceLocation(
                 ARTPECore.itemArtpeTrain,
                 0,
-                new net.minecraft.client.renderer.block.model.ModelResourceLocation(
+                new ModelResourceLocation(
                         ARTPECore.itemArtpeTrain.getRegistryName(), "inventory"));
     }
 

@@ -17,9 +17,12 @@ package jp.apple.appleextended.arse.network;
 import io.netty.buffer.ByteBuf;
 import jp.ngt.ngtlib.util.NGTUtil;
 import jp.ngt.rtm.entity.train.EntityTrainBase;
+import jp.ngt.rtm.sound.MovingSoundEntity;
+import jp.ngt.rtm.sound.MovingSoundMaker;
 import jp.ngt.rtm.sound.MovingSoundTrain;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.ISound;
+import net.minecraft.client.audio.MovingSound;
 import net.minecraft.client.audio.SoundHandler;
 import net.minecraft.client.audio.SoundManager;
 import net.minecraft.entity.Entity;
@@ -89,7 +92,7 @@ public class PacketArsePlaySound implements IMessage {
                     }
 
                     try {
-                        ISound rtmSound = jp.ngt.rtm.sound.MovingSoundMaker.create(train, message.soundName,
+                        ISound rtmSound = MovingSoundMaker.create(train, message.soundName,
                                 message.loop);
                         if (rtmSound != null) {
                             Minecraft.getMinecraft().getSoundHandler().playSound(rtmSound);
@@ -116,13 +119,13 @@ public class PacketArsePlaySound implements IMessage {
                     if (sound instanceof MovingSoundTrain) {
                         MovingSoundTrain mst = (MovingSoundTrain) sound;
 
-                        Entity soundEntity = ReflectionHelper.getPrivateValue(jp.ngt.rtm.sound.MovingSoundEntity.class,
+                        Entity soundEntity = ReflectionHelper.getPrivateValue(MovingSoundEntity.class,
                                 mst, "entity");
 
                         if (soundEntity != null && soundEntity.getEntityId() == train.getEntityId()) {
 
-                            ReflectionHelper.setPrivateValue(net.minecraft.client.audio.MovingSound.class,
-                                    (net.minecraft.client.audio.MovingSound) mst, true, "donePlaying",
+                            ReflectionHelper.setPrivateValue(MovingSound.class,
+                                    (MovingSound) mst, true, "donePlaying",
                                     "field_147668_b");
                             System.out
                                     .println("[ARSE] Force Stopped active sound for train ID: " + train.getEntityId());

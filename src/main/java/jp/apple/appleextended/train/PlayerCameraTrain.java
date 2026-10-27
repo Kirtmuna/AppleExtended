@@ -15,6 +15,7 @@
 package jp.apple.appleextended.train;
 
 import jp.ngt.rtm.entity.train.EntityTrainBase;
+import jp.ngt.rtm.modelpack.cfg.TrainConfig;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -83,7 +84,7 @@ public class PlayerCameraTrain {
 
     private static double getHalfLength(EntityTrainBase train) {
         if (train.getResourceState() != null && train.getResourceState().getResourceSet() != null) {
-            jp.ngt.rtm.modelpack.cfg.TrainConfig cfg = train.getResourceState().getResourceSet().getConfig();
+            TrainConfig cfg = train.getResourceState().getResourceSet().getConfig();
             if (cfg != null) {
                 return cfg.trainDistance;
             }

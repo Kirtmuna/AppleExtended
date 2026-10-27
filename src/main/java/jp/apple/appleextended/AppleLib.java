@@ -17,11 +17,13 @@ package jp.apple.appleextended;
 import jp.apple.appleextended.block.BlockTrainModel;
 import jp.apple.appleextended.compat.ReplaySyncManager;
 import jp.apple.appleextended.config.AppleConfig;
+import jp.apple.appleextended.item.ItemBlockTrainModel;
 import jp.apple.appleextended.log.AppleLogger;
 import jp.apple.appleextended.log.BlockLogHandler;
 import jp.apple.appleextended.proxy.IProxy;
 import jp.apple.appleextended.render.RenderTileEntityTrainModel;
 import jp.apple.appleextended.tileentity.TileEntityTrainModel;
+import jp.apple.appleextended.train.TrainTickHandler;
 import jp.apple.appleextended.util.AppleDir;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -85,7 +87,7 @@ public class AppleLib {
 
     @Mod.EventHandler
     public void init(FMLInitializationEvent event) {
-        MinecraftForge.EVENT_BUS.register(new jp.apple.appleextended.train.TrainTickHandler());
+        MinecraftForge.EVENT_BUS.register(new TrainTickHandler());
         proxy.init(event);
     }
 
@@ -94,7 +96,7 @@ public class AppleLib {
 
         public static final BlockTrainModel BLOCK_TRAIN_MODEL = new BlockTrainModel();
 
-        public static final Item ITEM_TRAIN_MODEL = new jp.apple.appleextended.item.ItemBlockTrainModel(BLOCK_TRAIN_MODEL);
+        public static final Item ITEM_TRAIN_MODEL = new ItemBlockTrainModel(BLOCK_TRAIN_MODEL);
 
         @SubscribeEvent
         public static void onBlockRegister(RegistryEvent.Register<Block> event) {

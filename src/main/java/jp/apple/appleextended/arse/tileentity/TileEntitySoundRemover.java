@@ -14,12 +14,17 @@
 
 package jp.apple.appleextended.arse.tileentity;
 
+import jp.apple.appleextended.arse.core.ARSE;
+import jp.apple.appleextended.arse.network.PacketArsePlaySound;
 import jp.ngt.rtm.entity.train.EntityTrainBase;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.AxisAlignedBB;
+
+import java.util.List;
 
 public class TileEntitySoundRemover extends TileEntity implements ITickable {
     private boolean useRS = false;
@@ -45,7 +50,7 @@ public class TileEntitySoundRemover extends TileEntity implements ITickable {
             }
             AxisAlignedBB aabb = new AxisAlignedBB(pos.getX() - 3, pos.getY() - 3, pos.getZ() - 3,
                     pos.getX() + 4, pos.getY() + 4, pos.getZ() + 4);
-            java.util.List<Entity> entities = world.getEntitiesWithinAABB(Entity.class, aabb);
+            List<Entity> entities = world.getEntitiesWithinAABB(Entity.class, aabb);
 
             for (Entity entity : entities) {
                 if (entity instanceof EntityTrainBase) {
@@ -58,8 +63,8 @@ public class TileEntitySoundRemover extends TileEntity implements ITickable {
 
                         train.velocityChanged = true;
 
-                        jp.apple.appleextended.arse.core.ARSE.network.sendToAll(
-                                new jp.apple.appleextended.arse.network.PacketArsePlaySound(train, "none", false));
+                        ARSE.network.sendToAll(
+                                new PacketArsePlaySound(train, "none", false));
 
                         System.out.println("[ARSE] Force Stopped: " + train.getEntityId());
                     }
@@ -77,7 +82,7 @@ public class TileEntitySoundRemover extends TileEntity implements ITickable {
         this.markDirty();
 
         if (this.world != null) {
-            net.minecraft.block.state.IBlockState state = this.world.getBlockState(this.pos);
+            IBlockState state = this.world.getBlockState(this.pos);
             this.world.notifyBlockUpdate(this.pos, state, state, 3);
         }
     }

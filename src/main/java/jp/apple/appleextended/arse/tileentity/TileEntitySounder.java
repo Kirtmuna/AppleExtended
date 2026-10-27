@@ -17,6 +17,7 @@ package jp.apple.appleextended.arse.tileentity;
 import jp.apple.appleextended.arse.core.ARSE;
 import jp.apple.appleextended.arse.network.PacketArsePlaySound;
 import jp.ngt.rtm.entity.train.EntityTrainBase;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
@@ -24,6 +25,8 @@ import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.AxisAlignedBB;
+
+import java.util.List;
 
 public class TileEntitySounder extends TileEntity implements ITickable {
     private String selectedSound = "minecraft:block.note.pling";
@@ -69,7 +72,7 @@ public class TileEntitySounder extends TileEntity implements ITickable {
 
             AxisAlignedBB aabb = new AxisAlignedBB(pos.getX() - 3, pos.getY() - 3, pos.getZ() - 3,
                     pos.getX() + 4, pos.getY() + 4, pos.getZ() + 4);
-            java.util.List<Entity> entities = world.getEntitiesWithinAABB(Entity.class, aabb);
+            List<Entity> entities = world.getEntitiesWithinAABB(Entity.class, aabb);
 
             for (Entity entity : entities) {
                 if (entity instanceof EntityTrainBase) {
@@ -129,7 +132,7 @@ public class TileEntitySounder extends TileEntity implements ITickable {
 
     private void sync() {
         if (this.world != null) {
-            net.minecraft.block.state.IBlockState state = this.world.getBlockState(this.pos);
+            IBlockState state = this.world.getBlockState(this.pos);
             this.world.notifyBlockUpdate(this.pos, state, state, 3);
         }
     }

@@ -38,12 +38,12 @@ public class Sounder extends Block {
     }
 
     @Override
-    public boolean hasTileEntity(net.minecraft.block.state.IBlockState state) {
+    public boolean hasTileEntity(IBlockState state) {
         return true;
     }
 
     @Override
-    public TileEntity createTileEntity(World world, net.minecraft.block.state.IBlockState state) {
+    public TileEntity createTileEntity(World world, IBlockState state) {
         return new TileEntitySounder();
     }
 

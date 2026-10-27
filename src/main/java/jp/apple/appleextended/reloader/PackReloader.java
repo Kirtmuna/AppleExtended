@@ -14,6 +14,7 @@
 
 package jp.apple.appleextended.reloader;
 
+import com.anatawa12.fixRtm.UtilsKt;
 import com.anatawa12.fixRtm.rtm.modelpack.init.UnconstructSetsQueue;
 import jp.ngt.ngtlib.io.NGTFileLoader;
 import jp.ngt.ngtlib.io.NGTJson;
@@ -33,6 +34,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.List;
+import java.util.Map;
 import java.util.Queue;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -109,8 +111,8 @@ public class PackReloader {
 
         manager.modelSetMapLock.writeLock().lock();
         try {
-            manager.allModelSetMap.values().forEach(java.util.Map::clear);
-            manager.smpModelSetMap.values().forEach(java.util.Map::clear);
+            manager.allModelSetMap.values().forEach(Map::clear);
+            manager.smpModelSetMap.values().forEach(Map::clear);
             manager.clearCache();
             manager.modelLoaded = false;
             manager.modelConstructed = false;
@@ -148,7 +150,7 @@ public class PackReloader {
             manager.modelSetMapLock.writeLock().lock();
             try {
                 ResourceConfig config = (ResourceConfig) NGTJson.getObjectFromJson(
-                        com.anatawa12.fixRtm.UtilsKt.joinLinesForJsonReading(jsonLines),
+                        UtilsKt.joinLinesForJsonReading(jsonLines),
                         type.cfgClass
                 );
                 config.file = file;

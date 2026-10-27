@@ -14,7 +14,9 @@
 
 package jp.apple.appleextended.artpe.tileentity;
 
+import jp.ngt.rtm.RTMResource;
 import jp.ngt.rtm.modelpack.IResourceSelector;
+import jp.ngt.rtm.modelpack.ResourceType;
 import jp.ngt.rtm.modelpack.state.ResourceState;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
@@ -36,21 +38,21 @@ public class TileEntityTrainPlacer extends TileEntity implements IResourceSelect
     @Override
     public ResourceState getResourceState() {
         String modelName = (editingIndex < trainModels.size()) ? trainModels.get(editingIndex) : "";
-        jp.ngt.rtm.modelpack.ResourceType type = getTrainResourceType(modelName);
+        ResourceType type = getTrainResourceType(modelName);
         ResourceState state = new ResourceState(type, this);
         state.setResourceName(modelName != null ? modelName : "");
         return state;
     }
 
-    private jp.ngt.rtm.modelpack.ResourceType getTrainResourceType(String modelName) {
-        if (modelName == null || modelName.isEmpty()) return jp.ngt.rtm.RTMResource.TRAIN_EC;
+    private ResourceType getTrainResourceType(String modelName) {
+        if (modelName == null || modelName.isEmpty()) return RTMResource.TRAIN_EC;
         String lower = modelName.toLowerCase();
-        if (lower.contains("ec_") || lower.matches(".*\\bec\\b.*")) return jp.ngt.rtm.RTMResource.TRAIN_EC;
-        if (lower.contains("dc_") || lower.matches(".*\\bdc\\b.*")) return jp.ngt.rtm.RTMResource.TRAIN_DC;
-        if (lower.contains("cc_") || lower.matches(".*\\bcc\\b.*")) return jp.ngt.rtm.RTMResource.TRAIN_CC;
-        if (lower.contains("tc_") || lower.matches(".*\\btc\\b.*")) return jp.ngt.rtm.RTMResource.TRAIN_TC;
-        if (lower.contains("test")) return jp.ngt.rtm.RTMResource.TRAIN_TEST;
-        return jp.ngt.rtm.RTMResource.TRAIN_EC;
+        if (lower.contains("ec_") || lower.matches(".*\\bec\\b.*")) return RTMResource.TRAIN_EC;
+        if (lower.contains("dc_") || lower.matches(".*\\bdc\\b.*")) return RTMResource.TRAIN_DC;
+        if (lower.contains("cc_") || lower.matches(".*\\bcc\\b.*")) return RTMResource.TRAIN_CC;
+        if (lower.contains("tc_") || lower.matches(".*\\btc\\b.*")) return RTMResource.TRAIN_TC;
+        if (lower.contains("test")) return RTMResource.TRAIN_TEST;
+        return RTMResource.TRAIN_EC;
     }
 
     @Override

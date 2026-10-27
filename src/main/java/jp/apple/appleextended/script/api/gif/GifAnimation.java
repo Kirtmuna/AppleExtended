@@ -71,9 +71,9 @@ public class GifAnimation {
                 g2d = masterImage.createGraphics();
             } else {
                 if ("restoreToBackgroundColor".equals(prevDisposalMethod)) {
-                    g2d.setComposite(java.awt.AlphaComposite.Clear);
+                    g2d.setComposite(AlphaComposite.Clear);
                     g2d.fillRect(prevLeft, prevTop, prevWidth, prevHeight);
-                    g2d.setComposite(java.awt.AlphaComposite.SrcOver);
+                    g2d.setComposite(AlphaComposite.SrcOver);
                 }
             }
 

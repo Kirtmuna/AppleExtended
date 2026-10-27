@@ -21,6 +21,7 @@ import jp.ngt.rtm.RTMResource;
 import jp.ngt.rtm.item.ItemWithModel;
 import jp.ngt.rtm.modelpack.ResourceType;
 import jp.ngt.rtm.modelpack.state.ResourceState;
+import jp.ngt.rtm.rail.BlockLargeRailBase;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.gui.GuiScreen;
@@ -111,7 +112,7 @@ public class ItemBlockTrainModel extends ItemWithModel {
                             trainTe.getResourceState().readFromNBT(itemState.writeToNBT());
 
                             Block hitBlock = world.getBlockState(pos).getBlock();
-                            if (hitBlock instanceof jp.ngt.rtm.rail.BlockLargeRailBase) {
+                            if (hitBlock instanceof BlockLargeRailBase) {
                                 trainTe.setOffset(0, 0.2325F, 0, false);
                             }
 

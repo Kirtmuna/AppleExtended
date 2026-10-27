@@ -1,6 +1,9 @@
 package jp.apple.appleextended.script;
 
+import com.anatawa12.fixRtm.scripting.FIXScriptUtil;
+import jp.ngt.ngtlib.io.NGTLog;
 import net.minecraft.util.ResourceLocation;
+import org.codehaus.groovy.jsr223.GroovyScriptEngineImpl;
 
 import javax.script.*;
 import java.io.IOException;
@@ -11,7 +14,7 @@ import java.nio.charset.StandardCharsets;
 public final class GroovyScriptUtil {
 
     private static final String SCRIPT_NAME_PROPERTY =
-            com.anatawa12.fixRtm.scripting.FIXScriptUtil.SCRIPT_NAME_PROPERTY;
+            FIXScriptUtil.SCRIPT_NAME_PROPERTY;
 
     private GroovyScriptUtil() {
     }
@@ -55,9 +58,9 @@ public final class GroovyScriptUtil {
     }
 
     public static Object doScriptFunction(ScriptEngine engine, String func, Object... args) {
-        if (engine instanceof org.codehaus.groovy.jsr223.GroovyScriptEngineImpl) {
-            ClassLoader cl = ((org.codehaus.groovy.jsr223.GroovyScriptEngineImpl) engine).getClassLoader();
-            jp.ngt.ngtlib.io.NGTLog.debug("[GroovyScriptUtil] exec classloader identityHash="
+        if (engine instanceof GroovyScriptEngineImpl) {
+            ClassLoader cl = ((GroovyScriptEngineImpl) engine).getClassLoader();
+            NGTLog.debug("[GroovyScriptUtil] exec classloader identityHash="
                     + System.identityHashCode(cl) + " class=" + cl.getClass().getName());
         }
         try {

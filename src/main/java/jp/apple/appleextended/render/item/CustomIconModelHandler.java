@@ -17,6 +17,7 @@ package jp.apple.appleextended.render.item;
 import jp.ngt.rtm.RTMItem;
 import jp.ngt.rtm.item.ItemWithModel;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.*;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.EntityLivingBase;
@@ -61,7 +62,7 @@ public class CustomIconModelHandler {
 
         @Override
         public TextureAtlasSprite getParticleTexture() {
-            return net.minecraft.client.Minecraft.getMinecraft().getTextureMapBlocks().getMissingSprite();
+            return Minecraft.getMinecraft().getTextureMapBlocks().getMissingSprite();
         }
 
         @Override

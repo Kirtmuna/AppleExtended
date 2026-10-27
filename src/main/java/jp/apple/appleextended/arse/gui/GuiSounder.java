@@ -17,6 +17,8 @@ package jp.apple.appleextended.arse.gui;
 import jp.apple.appleextended.arse.core.ARSE;
 import jp.apple.appleextended.arse.network.PacketArseSetSound;
 import jp.apple.appleextended.arse.tileentity.TileEntitySounder;
+import jp.ngt.rtm.sound.MovingSoundMaker;
+import net.minecraft.client.audio.ISound;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.util.ResourceLocation;
@@ -87,7 +89,7 @@ public class GuiSounder extends GuiScreen {
             return;
         try {
 
-            net.minecraft.client.audio.ISound testSound = jp.ngt.rtm.sound.MovingSoundMaker.create(mc.player, soundPath,
+            ISound testSound = MovingSoundMaker.create(mc.player, soundPath,
                     false);
             if (testSound != null) {
                 mc.getSoundHandler().playSound(testSound);

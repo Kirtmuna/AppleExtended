@@ -14,6 +14,8 @@
 
 package jp.apple.appleextended.highlight;
 
+import jp.apple.appleextended.item.ItemBlockTrainModel;
+import jp.ngt.mcte.item.ItemMiniature;
 import jp.ngt.rtm.item.ItemInstalledObject;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -63,11 +65,11 @@ public class HighlightItemChecker {
 
     public static boolean isMiniatureItem(ItemStack stack) {
         if (stack.isEmpty()) return false;
-        return stack.getItem() instanceof jp.ngt.mcte.item.ItemMiniature;
+        return stack.getItem() instanceof ItemMiniature;
     }
 
     public static boolean isItemBlockTrainModel(ItemStack stack) {
         if (stack.isEmpty()) return false;
-        return stack.getItem() instanceof jp.apple.appleextended.item.ItemBlockTrainModel;
+        return stack.getItem() instanceof ItemBlockTrainModel;
     }
 }

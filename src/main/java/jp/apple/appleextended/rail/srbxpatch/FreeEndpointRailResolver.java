@@ -20,6 +20,12 @@ package jp.apple.appleextended.rail.srbxpatch;
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.IdentityHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -163,7 +169,7 @@ public final class FreeEndpointRailResolver {
         double ex = number(endpoint, "posX").doubleValue(), ez = number(endpoint, "posZ").doubleValue();
         double ey = number(endpoint, "posY").doubleValue();
         if (projection(x - bx, z - bz, exitYaw) <= 0 || Math.hypot(x - ex, z - ez) > movement + 0.25) return null;
-        java.util.Set<Object> visited = java.util.Collections.newSetFromMap(new java.util.IdentityHashMap<Object, Boolean>());
+        Set<Object> visited = Collections.newSetFromMap(new IdentityHashMap<Object, Boolean>());
         Object selected = null;
         int fx = (int) Math.floor(ex), fy = (int) Math.floor(ey), fz = (int) Math.floor(ez);
         for (int dx = -1; dx <= 1; dx++)
@@ -201,7 +207,7 @@ public final class FreeEndpointRailResolver {
         // live member of the same logical group with a matching physical endpoint.
         if (current.getClass().getName().contains("SectionCore") && (Boolean) call(current, "isRailSection")) {
             Object positions = call(current, "getRailGroupCorePositions"), selected = null;
-            java.util.List<?> corePositions = (java.util.List<?>) positions;
+            List<?> corePositions = (List<?>) positions;
             int size = corePositions.size();
             if (size >= 0 && size <= 4096) for (int i = 0; i < size; i++) {
                 int[] p = (int[]) corePositions.get(i);
@@ -285,8 +291,8 @@ public final class FreeEndpointRailResolver {
 
     private static final class Members {
         private final Class<?> type;
-        private final java.util.Map<String, Field> fields = new java.util.HashMap<String, Field>();
-        private final java.util.Map<String, Method> methods = new java.util.HashMap<String, Method>();
+        private final Map<String, Field> fields = new HashMap<String, Field>();
+        private final Map<String, Method> methods = new HashMap<String, Method>();
 
         Members(Class<?> type) {
             this.type = type;
