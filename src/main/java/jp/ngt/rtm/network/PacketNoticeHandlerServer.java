@@ -14,6 +14,7 @@
 
 package jp.ngt.rtm.network;
 
+import com.anatawa12.fixRtm.ThreadUtil;
 import jp.ngt.rtm.RTMCore;
 import jp.ngt.rtm.RTMItem;
 import jp.ngt.rtm.block.decoration.DecorationStore;
@@ -41,7 +42,7 @@ public class PacketNoticeHandlerServer implements IMessageHandler<PacketNotice, 
     @Override
     public IMessage onMessage(PacketNotice message, MessageContext ctx) {
         EntityPlayer player = ctx.getServerHandler().player;
-        com.anatawa12.fixRtm.ThreadUtil.runOnServerThread(() -> doMessage(message, player));
+        ThreadUtil.runOnServerThread(() -> doMessage(message, player));
         return null;
     }
 

@@ -14,6 +14,7 @@
 
 package jp.ngt.rtm.event;
 
+import jp.apple.appleextended.config.AppleConfig;
 import jp.ngt.ngtlib.io.NGTLog;
 import jp.ngt.ngtlib.util.NGTUtil;
 import jp.ngt.ngtlib.util.NGTUtilClient;
@@ -108,7 +109,7 @@ public final class RTMKeyHandlerClient {
                 } else {
                     this.notchTimer++;
 
-                    if (this.notchTimer > jp.apple.appleextended.config.AppleConfig.notchRepeatInterval) {
+                    if (this.notchTimer > AppleConfig.notchRepeatInterval) {
                         if (isLeftDown) train.syncNotch(-1);
                         else train.syncNotch(1);
 

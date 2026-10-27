@@ -14,6 +14,10 @@
 
 package jp.ngt.rtm.entity.train.util;
 
+import jp.ngt.rtm.entity.vehicle.EntityVehicleBase;
+import jp.ngt.rtm.modelpack.cfg.TrainConfig;
+import jp.ngt.rtm.modelpack.cfg.VehicleBaseConfig;
+
 public enum TrainState {
     Door_Close(TrainStateType.Door, 0, "close"),
     Door_OpenRight(TrainStateType.Door, 1, "open_right"),
@@ -68,18 +72,18 @@ public enum TrainState {
         Direction(0, "train_dir", 0, 1),
         Notch(1, "notch", -8, 5) {
             @Override
-            protected byte getMin0(jp.ngt.rtm.entity.vehicle.EntityVehicleBase<?> train) {
-                jp.ngt.rtm.modelpack.cfg.VehicleBaseConfig config = train.getResourceState().getResourceSet().getConfig();
-                if (config instanceof jp.ngt.rtm.modelpack.cfg.TrainConfig)
-                    return (byte) -(((jp.ngt.rtm.modelpack.cfg.TrainConfig) config).deccelerations.length - 1);
+            protected byte getMin0(EntityVehicleBase<?> train) {
+                VehicleBaseConfig config = train.getResourceState().getResourceSet().getConfig();
+                if (config instanceof TrainConfig)
+                    return (byte) -(((TrainConfig) config).deccelerations.length - 1);
                 return super.getMin0(train);
             }
 
             @Override
-            protected byte getMax0(jp.ngt.rtm.entity.vehicle.EntityVehicleBase<?> train) {
-                jp.ngt.rtm.modelpack.cfg.VehicleBaseConfig config = train.getResourceState().getResourceSet().getConfig();
-                if (config instanceof jp.ngt.rtm.modelpack.cfg.TrainConfig)
-                    return (byte) ((jp.ngt.rtm.modelpack.cfg.TrainConfig) config).accelerateions.length;
+            protected byte getMax0(EntityVehicleBase<?> train) {
+                VehicleBaseConfig config = train.getResourceState().getResourceSet().getConfig();
+                if (config instanceof TrainConfig)
+                    return (byte) ((TrainConfig) config).accelerateions.length;
                 return super.getMax0(train);
             }
         },
@@ -114,7 +118,7 @@ public enum TrainState {
             return Direction;
         }
 
-        public byte clap(byte value, jp.ngt.rtm.entity.vehicle.EntityVehicleBase<?> train) {
+        public byte clap(byte value, EntityVehicleBase<?> train) {
             byte min = getMin(train);
             byte max = getMax(train);
             return value < min ? min
@@ -122,7 +126,7 @@ public enum TrainState {
                     : value;
         }
 
-        public byte getMax(jp.ngt.rtm.entity.vehicle.EntityVehicleBase<?> train) {
+        public byte getMax(EntityVehicleBase<?> train) {
             try {
                 return getMax0(train);
             } catch (Throwable t) {
@@ -131,11 +135,11 @@ public enum TrainState {
             }
         }
 
-        protected byte getMax0(jp.ngt.rtm.entity.vehicle.EntityVehicleBase<?> train) {
+        protected byte getMax0(EntityVehicleBase<?> train) {
             return max;
         }
 
-        public byte getMin(jp.ngt.rtm.entity.vehicle.EntityVehicleBase<?> train) {
+        public byte getMin(EntityVehicleBase<?> train) {
             try {
                 return getMin0(train);
             } catch (Throwable t) {
@@ -144,7 +148,7 @@ public enum TrainState {
             }
         }
 
-        protected byte getMin0(jp.ngt.rtm.entity.vehicle.EntityVehicleBase<?> train) {
+        protected byte getMin0(EntityVehicleBase<?> train) {
             return min;
         }
     }

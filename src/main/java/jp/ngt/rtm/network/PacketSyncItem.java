@@ -14,6 +14,7 @@
 
 package jp.ngt.rtm.network;
 
+import com.anatawa12.fixRtm.ThreadUtil;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -54,7 +55,7 @@ public class PacketSyncItem implements IMessage, IMessageHandler<PacketSyncItem,
     @Override
     public IMessage onMessage(PacketSyncItem message, MessageContext ctx) {
         World world = ctx.getServerHandler().player.world;
-        com.anatawa12.fixRtm.ThreadUtil.runOnServerThread(() -> doMessage(message, world));
+        ThreadUtil.runOnServerThread(() -> doMessage(message, world));
         return null;
     }
 

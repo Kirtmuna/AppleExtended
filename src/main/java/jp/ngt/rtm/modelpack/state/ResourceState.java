@@ -14,6 +14,7 @@
 
 package jp.ngt.rtm.modelpack.state;
 
+import com.anatawa12.fixRtm.rtm.HooksKt;
 import jp.ngt.rtm.RTMCore;
 import jp.ngt.rtm.entity.util.CollisionObj;
 import jp.ngt.rtm.modelpack.ModelPackManager;
@@ -101,7 +102,7 @@ public class ResourceState<T extends ResourceSet> {
 
     public T getResourceSet() {
         if (this.modelSet == null || this.modelSet.isDummy()) {
-            this.modelSet = (T) com.anatawa12.fixRtm.rtm.HooksKt.eraseNullForModelSet(ModelPackManager.INSTANCE.getResourceSet(this.type, this.modelName), this.type);
+            this.modelSet = (T) HooksKt.eraseNullForModelSet(ModelPackManager.INSTANCE.getResourceSet(this.type, this.modelName), this.type);
             if (!this.modelSet.isDummy()) {
                 this.modelSet.dataFormatter.initDataMap(this.dataMap);
             }

@@ -14,6 +14,7 @@
 
 package jp.ngt.rtm.block.tileentity;
 
+import com.anatawa12.fixRtm.rtm.block.tileentity.TileEntityMechanismKt;
 import jp.ngt.ngtlib.block.BlockUtil;
 import jp.ngt.ngtlib.block.TileEntityCustom;
 import jp.ngt.ngtlib.io.NGTLog;
@@ -30,6 +31,7 @@ import jp.ngt.rtm.modelpack.cfg.MechanismConfig;
 import jp.ngt.rtm.modelpack.modelset.ModelSetMechanism;
 import jp.ngt.rtm.modelpack.modelset.ModelSetWire;
 import jp.ngt.rtm.modelpack.state.ResourceState;
+import net.minecraft.crash.CrashReportCategory;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -636,8 +638,8 @@ public class TileEntityMechanism extends TileEntityCustom implements IResourceSe
     }
 
     @Override
-    public void addInfoToCrashReport(net.minecraft.crash.CrashReportCategory reportCategory) {
+    public void addInfoToCrashReport(CrashReportCategory reportCategory) {
         super.addInfoToCrashReport(reportCategory);
-        com.anatawa12.fixRtm.rtm.block.tileentity.TileEntityMechanismKt.addInfoToCrashReport(this, reportCategory);
+        TileEntityMechanismKt.addInfoToCrashReport(this, reportCategory);
     }
 }

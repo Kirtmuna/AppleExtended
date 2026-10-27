@@ -14,6 +14,7 @@
 
 package jp.ngt.rtm.rail;
 
+import jp.apple.appleextended.compat.ReplaySyncManager;
 import jp.ngt.ngtlib.renderer.GLHelper;
 import jp.ngt.ngtlib.util.NGTUtilClient;
 import jp.ngt.rtm.modelpack.modelset.ModelSetRail;
@@ -44,7 +45,7 @@ public class RenderLargeRail extends TileEntitySpecialRenderer<TileEntityLargeRa
     }
 
     private void renderTileEntityLargeRail(TileEntityLargeRailCore rail, double par2, double par4, double par6, float par8) {
-        jp.apple.appleextended.compat.ReplaySyncManager.checkRailModel(rail);
+        ReplaySyncManager.checkRailModel(rail);
         if (!rail.isLoaded()) {
             return;
         }

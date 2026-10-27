@@ -14,6 +14,7 @@
 
 package jp.ngt.rtm.network;
 
+import com.anatawa12.fixRtm.ThreadUtil;
 import io.netty.buffer.ByteBuf;
 import jp.ngt.rtm.entity.train.util.Formation;
 import jp.ngt.rtm.entity.train.util.FormationManager;
@@ -50,7 +51,7 @@ public class PacketFormation implements IMessage, IMessageHandler<PacketFormatio
 
     @Override
     public IMessage onMessage(PacketFormation message, MessageContext ctx) {
-        com.anatawa12.fixRtm.ThreadUtil.runOnMainThread(ctx.side, () -> doMessage(message));
+        ThreadUtil.runOnMainThread(ctx.side, () -> doMessage(message));
         return null;
     }
 

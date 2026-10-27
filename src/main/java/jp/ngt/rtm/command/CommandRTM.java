@@ -19,6 +19,8 @@ import jp.ngt.rtm.RTMCore;
 import jp.ngt.rtm.entity.train.EntityBogie;
 import jp.ngt.rtm.entity.train.EntityTrainBase;
 import jp.ngt.rtm.entity.train.parts.EntityVehiclePart;
+import jp.ngt.rtm.entity.train.util.Formation;
+import jp.ngt.rtm.entity.train.util.FormationEntry;
 import jp.ngt.rtm.entity.train.util.TrainState.TrainStateType;
 import jp.ngt.rtm.network.PacketNotice;
 import net.minecraft.command.CommandBase;
@@ -32,11 +34,12 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.MathHelper;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class CommandRTM extends CommandBase {
 
-    private static final java.util.List<String> stateArray = java.util.Arrays.asList("door", "pan", "speed");
+    private static final List<String> stateArray = Arrays.asList("door", "pan", "speed");
 
     @Override
     public String getName() {
@@ -107,11 +110,11 @@ public class CommandRTM extends CommandBase {
             if (args[0].equalsIgnoreCase("drf")) {
                 if (player.getRidingEntity() instanceof EntityTrainBase) {
                     EntityTrainBase ridingTrain = (EntityTrainBase) player.getRidingEntity();
-                    jp.ngt.rtm.entity.train.util.Formation formation = ridingTrain.getFormation();
+                    Formation formation = ridingTrain.getFormation();
 
                     if (formation != null && formation.entries != null) {
                         int count = 0;
-                        for (jp.ngt.rtm.entity.train.util.FormationEntry entry : formation.entries) {
+                        for (FormationEntry entry : formation.entries) {
                             if (entry != null && entry.train != null) {
                                 entry.train.setDead();
                                 count++;

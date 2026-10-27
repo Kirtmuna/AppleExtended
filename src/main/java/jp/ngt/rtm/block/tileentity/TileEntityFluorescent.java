@@ -14,10 +14,13 @@
 
 package jp.ngt.rtm.block.tileentity;
 
+import jp.ngt.ngtlib.math.NGTMath;
 import jp.ngt.rtm.RTMResource;
 import jp.ngt.rtm.modelpack.ResourceType;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ITickable;
+import net.minecraft.util.math.MathHelper;
 
 public class TileEntityFluorescent extends TileEntityOrnament implements ITickable {
     private int count = 0;
@@ -63,8 +66,8 @@ public class TileEntityFluorescent extends TileEntityOrnament implements ITickab
     }
 
     @Override
-    public void setRotation(net.minecraft.entity.player.EntityPlayer player, float rotationInterval, boolean synch) {
-        int yaw = net.minecraft.util.math.MathHelper.floor(jp.ngt.ngtlib.math.NGTMath.normalizeAngle(-player.rotationYaw + 180.0D + (rotationInterval / 2.0D)) / (double) rotationInterval);
+    public void setRotation(EntityPlayer player, float rotationInterval, boolean synch) {
+        int yaw = MathHelper.floor(NGTMath.normalizeAngle(-player.rotationYaw + 180.0D + (rotationInterval / 2.0D)) / (double) rotationInterval);
         if (this.dirF >= 4) {
             yaw += 90 / rotationInterval;
         }

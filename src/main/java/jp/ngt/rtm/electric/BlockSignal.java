@@ -14,16 +14,22 @@
 
 package jp.ngt.rtm.electric;
 
+import com.anatawa12.fixRtm.rtm.block.BlockOrnamentMain;
+import jp.apple.appleextended.gui.AppleGuiHelper;
 import jp.ngt.ngtlib.block.BlockArgHolder;
 import jp.ngt.ngtlib.block.BlockContainerCustomWithMeta;
 import jp.ngt.ngtlib.block.TileEntityPlaceable;
 import jp.ngt.rtm.RTMCore;
 import jp.ngt.rtm.RTMItem;
+import jp.ngt.rtm.item.ItemInstalledObject;
 import jp.ngt.rtm.item.ItemInstalledObject.IstlObjType;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 
 public class BlockSignal extends BlockContainerCustomWithMeta implements IBlockConnective {
@@ -42,10 +48,10 @@ public class BlockSignal extends BlockContainerCustomWithMeta implements IBlockC
             int x = holder.getBlockPos().getX();
             int y = holder.getBlockPos().getY();
             int z = holder.getBlockPos().getZ();
-            if (holder.getPlayer().inventory.getCurrentItem().getItem() == jp.ngt.rtm.RTMItem.crowbar) {
+            if (holder.getPlayer().inventory.getCurrentItem().getItem() == RTMItem.crowbar) {
                 TileEntity te = holder.getWorld().getTileEntity(holder.getBlockPos());
                 if (te instanceof TileEntityPlaceable) {
-                    jp.apple.appleextended.gui.AppleGuiHelper.openOffsetGui(te);
+                    AppleGuiHelper.openOffsetGui(te);
                 }
                 return true;
             }
@@ -82,7 +88,7 @@ public class BlockSignal extends BlockContainerCustomWithMeta implements IBlockC
     }
 
     @Override
-    public net.minecraft.item.ItemStack getPickBlock(net.minecraft.block.state.IBlockState state, net.minecraft.util.math.RayTraceResult target, World world, net.minecraft.util.math.BlockPos pos, net.minecraft.entity.player.EntityPlayer player) {
-        return com.anatawa12.fixRtm.rtm.block.BlockOrnamentMain.getPickBlock(world, pos, jp.ngt.rtm.item.ItemInstalledObject.IstlObjType.FLUORESCENT);
+    public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
+        return BlockOrnamentMain.getPickBlock(world, pos, ItemInstalledObject.IstlObjType.FLUORESCENT);
     }
 }

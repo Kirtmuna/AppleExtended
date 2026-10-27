@@ -14,6 +14,7 @@
 
 package jp.ngt.rtm.network;
 
+import com.anatawa12.fixRtm.ThreadUtil;
 import io.netty.buffer.ByteBuf;
 import jp.ngt.ngtlib.network.PacketCustom;
 import jp.ngt.ngtlib.util.NGTUtil;
@@ -49,7 +50,7 @@ public class PacketSignal extends PacketCustom implements IMessageHandler<Packet
 
     @Override
     public IMessage onMessage(PacketSignal message, MessageContext ctx) {
-        com.anatawa12.fixRtm.ThreadUtil.runOnClientThread(() -> doMessage(message));
+        ThreadUtil.runOnClientThread(() -> doMessage(message));
         return null;
     }
 

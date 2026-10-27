@@ -14,6 +14,7 @@
 
 package jp.ngt.rtm.electric;
 
+import com.anatawa12.fixRtm.rtm.block.BlockOrnamentMain;
 import jp.ngt.ngtlib.block.BlockArgHolder;
 import jp.ngt.rtm.RTMCore;
 import jp.ngt.rtm.RTMItem;
@@ -21,10 +22,12 @@ import jp.ngt.rtm.block.BlockMachineBase;
 import jp.ngt.rtm.item.ItemInstalledObject.IstlObjType;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 
 public class BlockSpeaker extends BlockMachineBase implements IBlockConnective {
@@ -66,7 +69,7 @@ public class BlockSpeaker extends BlockMachineBase implements IBlockConnective {
     }
 
     @Override
-    public ItemStack getPickBlock(net.minecraft.block.state.IBlockState state, net.minecraft.util.math.RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
-        return com.anatawa12.fixRtm.rtm.block.BlockOrnamentMain.getPickBlock(world, pos, IstlObjType.SPEAKER);
+    public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
+        return BlockOrnamentMain.getPickBlock(world, pos, IstlObjType.SPEAKER);
     }
 }

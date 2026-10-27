@@ -14,6 +14,8 @@
 
 package jp.ngt.rtm.modelpack.init;
 
+import com.anatawa12.fixRtm.FixRtm;
+import com.anatawa12.fixRtm.rtm.modelpack.init.ExModelPackConstructThread;
 import jp.ngt.ngtlib.io.NGTLog;
 import jp.ngt.ngtlib.util.NGTUtilClient;
 import jp.ngt.rtm.RTMCore;
@@ -131,7 +133,7 @@ public final class ModelPackLoadThread extends Thread {
                 crashreport = NGTUtilClient.getMinecraft().addGraphicsAndWorldToCrashReport(crashreport);
                 NGTUtilClient.getMinecraft().displayCrashReport(crashreport);
             } else {
-                com.anatawa12.fixRtm.FixRtm.INSTANCE.reportCrash(crashreport);
+                FixRtm.INSTANCE.reportCrash(crashreport);
             }
         } finally {
             if (this.displayWindow && !this.debug) {
@@ -159,7 +161,7 @@ public final class ModelPackLoadThread extends Thread {
 
 
         NGTLog.startTimer();
-        com.anatawa12.fixRtm.rtm.modelpack.init.ExModelPackConstructThread thread2 = new com.anatawa12.fixRtm.rtm.modelpack.init.ExModelPackConstructThread(this.threadSide, this);
+        ExModelPackConstructThread thread2 = new ExModelPackConstructThread(this.threadSide, this);
         thread2.start();
         ModelPackManager.INSTANCE.load(this);
         while (!thread2.setFinish()) {

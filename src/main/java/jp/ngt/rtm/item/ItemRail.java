@@ -19,6 +19,7 @@ import jp.ngt.ngtlib.math.NGTMath;
 import jp.ngt.ngtlib.math.PooledVec3;
 import jp.ngt.ngtlib.math.Vec3;
 import jp.ngt.ngtlib.util.NGTUtil;
+import jp.ngt.rtm.RTMBlock;
 import jp.ngt.rtm.RTMItem;
 import jp.ngt.rtm.RTMResource;
 import jp.ngt.rtm.modelpack.ModelPackManager;
@@ -34,6 +35,7 @@ import jp.ngt.rtm.rail.TileEntityLargeRailCore;
 import jp.ngt.rtm.rail.util.RailPosition;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -186,7 +188,7 @@ public class ItemRail extends ItemWithModel {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public net.minecraft.client.gui.GuiScreen newGuiScreen(ItemArgHolder holder) {
+    public GuiScreen newGuiScreen(ItemArgHolder holder) {
         return newGuiSelectModel(holder);
     }
 
@@ -238,7 +240,7 @@ public class ItemRail extends ItemWithModel {
         if (list.isEmpty()) {
             return false;
         } else {
-            int i = BlockMarker.getMarkerDir(jp.ngt.rtm.RTMBlock.marker, com.anatawa12.fixRtm.rtm.rail.BlockMarker.getFaceMeta(player));
+            int i = BlockMarker.getMarkerDir(RTMBlock.marker, com.anatawa12.fixRtm.rtm.rail.BlockMarker.getFaceMeta(player));
             RailPosition railposition = list.get(0);
             int j = i - railposition.direction;
             int k = railposition.blockX;

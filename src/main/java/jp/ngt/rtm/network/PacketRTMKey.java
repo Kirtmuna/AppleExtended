@@ -14,6 +14,7 @@
 
 package jp.ngt.rtm.network;
 
+import com.anatawa12.fixRtm.ThreadUtil;
 import io.netty.buffer.ByteBuf;
 import jp.ngt.rtm.event.RTMKeyHandlerServer;
 import net.minecraft.entity.player.EntityPlayer;
@@ -54,7 +55,7 @@ public class PacketRTMKey implements IMessage, IMessageHandler<PacketRTMKey, IMe
     @Override
     public IMessage onMessage(PacketRTMKey message, MessageContext ctx) {
         World world = ctx.getServerHandler().player.world;
-        com.anatawa12.fixRtm.ThreadUtil.runOnServerThread(() -> doMessage(message, world));
+        ThreadUtil.runOnServerThread(() -> doMessage(message, world));
         return null;
     }
 

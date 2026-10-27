@@ -14,6 +14,7 @@
 
 package jp.ngt.rtm.network;
 
+import com.anatawa12.fixRtm.ThreadUtil;
 import io.netty.buffer.ByteBuf;
 import jp.ngt.ngtlib.block.BlockUtil;
 import jp.ngt.ngtlib.network.PacketCustom;
@@ -67,7 +68,7 @@ public class PacketMarkerRPClient extends PacketCustom implements IMessageHandle
     public IMessage onMessage(PacketMarkerRPClient message, MessageContext ctx) {
         World world = ctx.getServerHandler().player.world;
         EntityPlayerMP player = ctx.getServerHandler().player;
-        com.anatawa12.fixRtm.ThreadUtil.runOnServerThread(() -> {
+        ThreadUtil.runOnServerThread(() -> {
             this.some(message, player, world);
         });
         return null;

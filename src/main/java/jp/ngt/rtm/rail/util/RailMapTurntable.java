@@ -14,6 +14,7 @@
 
 package jp.ngt.rtm.rail.util;
 
+import com.anatawa12.fixRtm.Deprecation;
 import jp.ngt.ngtlib.math.PooledVec3;
 import jp.ngt.ngtlib.math.StraightLine;
 import jp.ngt.ngtlib.math.Vec3;
@@ -26,7 +27,7 @@ public final class RailMapTurntable extends RailMapBasic {
     @Deprecated
     public RailMapTurntable(RailPosition par1, RailPosition par2, int x, int y, int z, int r) {
         this(par1, par2, x, y, z, r, 0);
-        com.anatawa12.fixRtm.Deprecation.found("RailMapTurntable#RailMapTurntable");
+        Deprecation.found("RailMapTurntable#RailMapTurntable");
     }
 
     public RailMapTurntable(RailPosition par1, RailPosition par2, int x, int y, int z, int r, int version) {

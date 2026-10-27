@@ -14,6 +14,7 @@
 
 package jp.ngt.rtm.entity.train;
 
+import com.anatawa12.fixRtm.rtm.entity.train.EntityBogieKt;
 import jp.apple.appleextended.rail.srbxpatch.FreeEndpointRailResolver;
 import jp.ngt.ngtlib.math.NGTMath;
 import jp.ngt.ngtlib.math.PooledVec3;
@@ -33,7 +34,9 @@ import jp.ngt.rtm.rail.TileEntityLargeRailBase;
 import jp.ngt.rtm.rail.TileEntityLargeRailCore;
 import jp.ngt.rtm.rail.TileEntityLargeRailSwitchCore;
 import jp.ngt.rtm.rail.util.RailMap;
+import jp.ngt.rtm.world.IChunkLoader;
 import jp.ngt.rtm.world.RTMChunkManager;
+import net.minecraft.crash.CrashReportCategory;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.MoverType;
@@ -55,7 +58,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
 
-public final class EntityBogie extends Entity implements Lockable, jp.ngt.rtm.world.IChunkLoader {
+public final class EntityBogie extends Entity implements Lockable, IChunkLoader {
     private Ticket ticket;
     private int prevChunkCoordX = Integer.MIN_VALUE;
     private int prevChunkCoordZ = Integer.MIN_VALUE;
@@ -664,13 +667,13 @@ public final class EntityBogie extends Entity implements Lockable, jp.ngt.rtm.wo
     @Override
     public void onRemovedFromWorld() {
         super.onRemovedFromWorld();
-        com.anatawa12.fixRtm.rtm.entity.train.EntityBogieKt.onRemovedFromWorld(this);
+        EntityBogieKt.onRemovedFromWorld(this);
     }
 
     @Override
-    public void addEntityCrashInfo(net.minecraft.crash.CrashReportCategory category) {
+    public void addEntityCrashInfo(CrashReportCategory category) {
         super.addEntityCrashInfo(category);
-        com.anatawa12.fixRtm.rtm.entity.train.EntityBogieKt.addEntityCrashInfo(this, category);
+        EntityBogieKt.addEntityCrashInfo(this, category);
     }
 
     private void updateChunks() {

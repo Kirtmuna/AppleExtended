@@ -14,9 +14,12 @@
 
 package jp.ngt.rtm.rail.util;
 
+import com.anatawa12.fixRtm.Deprecation;
+import com.anatawa12.fixRtm.rtm.rail.util.SwitchTypeSingleCrossFixRTMV1;
 import net.minecraft.world.World;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public final class RailMaker {
@@ -27,7 +30,7 @@ public final class RailMaker {
     @Deprecated
     public RailMaker(World world, List<RailPosition> par2) {
         this(world, par2, 0);
-        com.anatawa12.fixRtm.Deprecation.found("RailMaker#RailMaker");
+        Deprecation.found("RailMaker#RailMaker");
     }
 
     public RailMaker(World world, List<RailPosition> par2, int fixRTMRailMapVersion) {
@@ -39,11 +42,11 @@ public final class RailMaker {
     @Deprecated
     public RailMaker(World world, RailPosition[] par2) {
         this(world, par2, 0);
-        com.anatawa12.fixRtm.Deprecation.found("RailMaker#RailMaker");
+        Deprecation.found("RailMaker#RailMaker");
     }
 
     public RailMaker(World world, RailPosition[] par2, int fixRTMRailMapVersion) {
-        this(world, new ArrayList<>(java.util.Arrays.asList(par2)), fixRTMRailMapVersion);
+        this(world, new ArrayList<>(Arrays.asList(par2)), fixRTMRailMapVersion);
     }
 
     private SwitchType getSwitchType() {
@@ -64,7 +67,7 @@ public final class RailMaker {
 
             if (i0 == 2) {
                 if (fixRTMRailMapVersion >= 1)
-                    return new com.anatawa12.fixRtm.rtm.rail.util.SwitchTypeSingleCrossFixRTMV1(fixRTMRailMapVersion);
+                    return new SwitchTypeSingleCrossFixRTMV1(fixRTMRailMapVersion);
                 return new SwitchType.SwitchSingleCross(fixRTMRailMapVersion);
             } else if (i0 == 4) {
                 for (int i = 0; i < this.rpList.size(); ++i) {

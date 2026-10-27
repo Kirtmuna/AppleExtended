@@ -35,7 +35,7 @@ public class MovingSoundTileEntity extends MovingSoundCustom {
         this.xPosF = (float) this.entity.getPos().getX() + 0.5F;
         this.yPosF = (float) this.entity.getPos().getY() + 0.5F;
         this.zPosF = (float) this.entity.getPos().getZ() + 0.5F;
-        this.volume = jp.apple.appleextended.config.AppleConfig.crossingSoundRange / 16.0F;
+        this.volume = AppleConfig.crossingSoundRange / 16.0F;
     }
 
     @Override

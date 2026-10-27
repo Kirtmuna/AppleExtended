@@ -14,6 +14,7 @@
 
 package jp.ngt.rtm.rail;
 
+import com.anatawa12.fixRtm.asm.config.MainConfig;
 import jp.ngt.ngtlib.block.BlockUtil;
 import jp.ngt.ngtlib.math.NGTMath;
 import jp.ngt.ngtlib.renderer.GLHelper;
@@ -193,7 +194,7 @@ public final class RenderMarkerBlock extends TileEntitySpecialRenderer<TileEntit
 
             for (int l = -1; l <= 1; ++l) {
                 float f3 = f2 * (float) l;
-                if (!com.anatawa12.fixRtm.asm.config.MainConfig.markerDistanceMoreRealPosition) {
+                if (!MainConfig.markerDistanceMoreRealPosition) {
                     ngttessellator.addVertex(-0.4F + f3, 0.0F, 0.4F + f2);
                     ngttessellator.addVertex(-0.4F + f3, 0.0F, -0.4F + f2);
                     ngttessellator.addVertex(0.4F + f3, 0.0F, -0.4F + f2);
@@ -221,7 +222,7 @@ public final class RenderMarkerBlock extends TileEntitySpecialRenderer<TileEntit
             for (int k1 = -1; k1 <= 1; ++k1) {
                 float f4 = f5 * (float) k1;
                 GL11.glPushMatrix();
-                if (!com.anatawa12.fixRtm.asm.config.MainConfig.markerDistanceMoreRealPosition) {
+                if (!MainConfig.markerDistanceMoreRealPosition) {
                     GL11.glTranslatef(f4, 0.0F, f5);
                 } else {
                     GL11.glTranslatef(f4, 0.0F, f5 - 0.5F);
@@ -285,7 +286,7 @@ public final class RenderMarkerBlock extends TileEntitySpecialRenderer<TileEntit
 
         GL11.glPopMatrix();
 
-        if (com.anatawa12.fixRtm.asm.config.MainConfig.showRailLength) {
+        if (MainConfig.showRailLength) {
             GL11.glPushMatrix();
             GL11.glTranslatef(x, y, z);
 

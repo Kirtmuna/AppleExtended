@@ -15,6 +15,7 @@
 package jp.ngt.rtm.entity.train.parts;
 
 import jp.ngt.ngtlib.util.NGTUtil;
+import jp.ngt.rtm.entity.train.EntityTrainBase;
 import jp.ngt.rtm.entity.vehicle.EntityVehicleBase;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
@@ -27,6 +28,7 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -160,13 +162,13 @@ public class EntityFloor extends EntityVehiclePart {
 
         EntityVehicleBase<?> vehicle = this.getVehicle();
 
-        if (!(passenger instanceof EntityPlayer) || !(vehicle instanceof jp.ngt.rtm.entity.train.EntityTrainBase))
+        if (!(passenger instanceof EntityPlayer) || !(vehicle instanceof EntityTrainBase))
             return;
 
         EntityPlayer player = ((EntityPlayer) passenger);
 
-        float yaw = net.minecraft.util.math.MathHelper.wrapDegrees(vehicle.rotationYaw - vehicle.prevRotationYaw);
-        float pitch = net.minecraft.util.math.MathHelper.wrapDegrees(vehicle.rotationPitch - vehicle.prevRotationPitch);
+        float yaw = MathHelper.wrapDegrees(vehicle.rotationYaw - vehicle.prevRotationYaw);
+        float pitch = MathHelper.wrapDegrees(vehicle.rotationPitch - vehicle.prevRotationPitch);
 
         player.renderYawOffset -= yaw;
         player.rotationYaw -= yaw;

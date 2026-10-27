@@ -14,6 +14,7 @@
 
 package jp.ngt.rtm.network;
 
+import com.anatawa12.fixRtm.ThreadUtil;
 import io.netty.buffer.ByteBuf;
 import jp.ngt.ngtlib.network.PacketCustom;
 import jp.ngt.rtm.block.tileentity.TileEntityMovingMachine;
@@ -72,7 +73,7 @@ public class PacketMovingMachine extends PacketCustom implements IMessageHandler
     @Override
     public IMessage onMessage(PacketMovingMachine message, MessageContext ctx) {
         World world = ctx.getServerHandler().player.world;
-        com.anatawa12.fixRtm.ThreadUtil.runOnServerThread(() -> doMessage(message, world));
+        ThreadUtil.runOnServerThread(() -> doMessage(message, world));
         return null;
     }
 

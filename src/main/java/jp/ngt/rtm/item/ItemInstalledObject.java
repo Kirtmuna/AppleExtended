@@ -14,6 +14,7 @@
 
 package jp.ngt.rtm.item;
 
+import com.anatawa12.fixRtm.rtm.item.ItemWithModelEx;
 import jp.ngt.ngtlib.block.BlockUtil;
 import jp.ngt.ngtlib.item.ItemArgHolderBase.ItemArgHolder;
 import jp.ngt.ngtlib.item.SerializableItemType;
@@ -28,6 +29,8 @@ import jp.ngt.rtm.entity.EntityATC;
 import jp.ngt.rtm.entity.EntityBumpingPost;
 import jp.ngt.rtm.entity.EntityInstalledObject;
 import jp.ngt.rtm.entity.EntityTrainDetector;
+import jp.ngt.rtm.gui.GuiSelectTexture;
+import jp.ngt.rtm.gui.GuiSignboard;
 import jp.ngt.rtm.modelpack.IResourceSelector;
 import jp.ngt.rtm.modelpack.ResourceType;
 import jp.ngt.rtm.modelpack.modelset.ModelSetMachine;
@@ -38,6 +41,7 @@ import jp.ngt.rtm.rail.util.RailMap;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -118,7 +122,7 @@ public class ItemInstalledObject extends ItemWithModel {
                     TileEntityFluorescent tileentityfluorescent = (TileEntityFluorescent) BlockUtil.getTileEntity(world, i, j, k);
                     tileentityfluorescent.setDir(b0);
                     tileentityfluorescent.setRotation(entityplayer, entityplayer.isSneaking() ? 1.0F : 15.0F, true);
-                    com.anatawa12.fixRtm.rtm.item.ItemWithModelEx.applyOffsetToTileEntity(itemstack, tileentityfluorescent);
+                    ItemWithModelEx.applyOffsetToTileEntity(itemstack, tileentityfluorescent);
                     this.updateResource(tileentityfluorescent, itemstack);
                 }
             } else if (iteminstalledobject$istlobjtype == IstlObjType.CROSSING) {
@@ -127,7 +131,7 @@ public class ItemInstalledObject extends ItemWithModel {
                     BlockUtil.setBlock(world, i, j, k, block, 0, 3);
                     TileEntityCrossingGate tileentitycrossinggate = (TileEntityCrossingGate) BlockUtil.getTileEntity(world, i, j, k);
                     tileentitycrossinggate.setRotation(entityplayer, 15.0F, true);
-                    com.anatawa12.fixRtm.rtm.item.ItemWithModelEx.applyOffsetToTileEntity(itemstack, tileentitycrossinggate);
+                    ItemWithModelEx.applyOffsetToTileEntity(itemstack, tileentitycrossinggate);
                     this.updateResource(tileentitycrossinggate, itemstack);
                 }
             } else if (iteminstalledobject$istlobjtype == IstlObjType.RAILLOAD_SIGN) {
@@ -136,7 +140,7 @@ public class ItemInstalledObject extends ItemWithModel {
                     BlockUtil.setBlock(world, i, j, k, block, 0, 3);
                     TileEntityRailroadSign tileentityrailroadsign = (TileEntityRailroadSign) BlockUtil.getTileEntity(world, i, j, k);
                     tileentityrailroadsign.setRotation(entityplayer, 15.0F, true);
-                    com.anatawa12.fixRtm.rtm.item.ItemWithModelEx.applyOffsetToTileEntity(itemstack, tileentityrailroadsign);
+                    ItemWithModelEx.applyOffsetToTileEntity(itemstack, tileentityrailroadsign);
                     this.updateResource(tileentityrailroadsign, itemstack);
                 }
             } else if (iteminstalledobject$istlobjtype == IstlObjType.SIGNAL) {
@@ -170,7 +174,7 @@ public class ItemInstalledObject extends ItemWithModel {
                 BlockUtil.setBlock(world, i, j, k, block, l1, 3);
                 TileEntityTurnstile tileentityturnstile = (TileEntityTurnstile) BlockUtil.getTileEntity(world, i, j, k);
                 tileentityturnstile.setRotation(entityplayer, 90.0F, true);
-                com.anatawa12.fixRtm.rtm.item.ItemWithModelEx.applyOffsetToTileEntity(itemstack, tileentityturnstile);
+                ItemWithModelEx.applyOffsetToTileEntity(itemstack, tileentityturnstile);
                 this.updateResource(tileentityturnstile, itemstack);
             } else if (iteminstalledobject$istlobjtype == IstlObjType.BUMPING_POST) {
                 if (enumfacing == EnumFacing.UP && this.setEntityOnRail(world, new EntityBumpingPost(world), i, j - 1, k, entityplayer, itemstack)) {
@@ -180,7 +184,7 @@ public class ItemInstalledObject extends ItemWithModel {
                 block = RTMBlock.linePole;
                 BlockUtil.setBlock(world, i, j, k, block, 0, 3);
                 TileEntityPole tileentitypole = (TileEntityPole) BlockUtil.getTileEntity(world, i, j, k);
-                com.anatawa12.fixRtm.rtm.item.ItemWithModelEx.applyOffsetToTileEntity(itemstack, tileentitypole);
+                ItemWithModelEx.applyOffsetToTileEntity(itemstack, tileentitypole);
                 this.updateResource(tileentitypole, itemstack);
             } else if (iteminstalledobject$istlobjtype == IstlObjType.STAIR) {
                 block = RTMBlock.scaffoldStairs;
@@ -200,7 +204,7 @@ public class ItemInstalledObject extends ItemWithModel {
                     BlockUtil.setBlock(world, i, j, k, block, 0, 3);
                     TileEntityPoint tileentitypoint = (TileEntityPoint) BlockUtil.getTileEntity(world, i, j, k);
                     tileentitypoint.setRotation(entityplayer, 15.0F, false);
-                    com.anatawa12.fixRtm.rtm.item.ItemWithModelEx.applyOffsetToTileEntity(itemstack, tileentitypoint);
+                    ItemWithModelEx.applyOffsetToTileEntity(itemstack, tileentitypoint);
                     this.updateResource(tileentitypoint, itemstack);
                 }
             } else if (iteminstalledobject$istlobjtype == IstlObjType.SIGNBOARD) {
@@ -209,7 +213,7 @@ public class ItemInstalledObject extends ItemWithModel {
                 TileEntitySignBoard tileentitysignboard = (TileEntitySignBoard) BlockUtil.getTileEntity(world, i, j, k);
                 int j2 = NGTMath.floor(NGTMath.normalizeAngle((double) entityplayer.rotationYaw + 180.0D) / 90.0D + 0.5D) & 3;
                 tileentitysignboard.setDirection((byte) j2);
-                com.anatawa12.fixRtm.rtm.item.ItemWithModelEx.applyOffsetToTileEntity(itemstack, tileentitysignboard);
+                ItemWithModelEx.applyOffsetToTileEntity(itemstack, tileentitysignboard);
                 this.updateResource(tileentitysignboard, itemstack);
             } else if (iteminstalledobject$istlobjtype == IstlObjType.TICKET_VENDOR) {
                 block = RTMBlock.ticketVendor;
@@ -222,7 +226,7 @@ public class ItemInstalledObject extends ItemWithModel {
                 BlockUtil.setBlock(world, i, j, k, block, sideIndex, 3);
                 TileEntityLight tileentitylight = (TileEntityLight) BlockUtil.getTileEntity(world, i, j, k);
                 tileentitylight.setRotation(entityplayer, 15.0F, true);
-                com.anatawa12.fixRtm.rtm.item.ItemWithModelEx.applyOffsetToTileEntity(itemstack, tileentitylight);
+                ItemWithModelEx.applyOffsetToTileEntity(itemstack, tileentitylight);
                 this.updateResource(tileentitylight, itemstack);
             } else if (iteminstalledobject$istlobjtype == IstlObjType.FLAG) {
                 block = RTMBlock.flag;
@@ -242,7 +246,7 @@ public class ItemInstalledObject extends ItemWithModel {
                 block = RTMBlock.insulator;
                 BlockUtil.setBlock(world, i, j, k, block, sideIndex, 3);
                 TileEntityInsulator tileentityinsulator = (TileEntityInsulator) BlockUtil.getTileEntity(world, i, j, k);
-                com.anatawa12.fixRtm.rtm.item.ItemWithModelEx.applyOffsetToTileEntity(itemstack, tileentityinsulator);
+                ItemWithModelEx.applyOffsetToTileEntity(itemstack, tileentityinsulator);
                 this.updateResource(tileentityinsulator, itemstack);
             } else if (iteminstalledobject$istlobjtype == IstlObjType.CONNECTOR_IN || iteminstalledobject$istlobjtype == IstlObjType.CONNECTOR_OUT) {
                 Block target = BlockUtil.getBlock(world, blockpos);
@@ -253,7 +257,7 @@ public class ItemInstalledObject extends ItemWithModel {
                     block = RTMBlock.connector;
                     BlockUtil.setBlock(world, i, j, k, block, sideIndex, 3);
                     TileEntityConnector tileentityconnector = (TileEntityConnector) BlockUtil.getTileEntity(world, i, j, k);
-                    com.anatawa12.fixRtm.rtm.item.ItemWithModelEx.applyOffsetToTileEntity(itemstack, tileentityconnector);
+                    ItemWithModelEx.applyOffsetToTileEntity(itemstack, tileentityconnector);
                     this.updateResource(tileentityconnector, itemstack);
                     tileentityconnector.setConnectionTo(blockpos.getX(), blockpos.getY(), blockpos.getZ(), ConnectionType.DIRECT, null);
                 }
@@ -270,7 +274,7 @@ public class ItemInstalledObject extends ItemWithModel {
                 BlockUtil.setBlock(world, i, j, k, block, 0, 3);
                 TileEntityPlantOrnament tileentityplantornament = (TileEntityPlantOrnament) BlockUtil.getTileEntity(world, i, j, k);
                 tileentityplantornament.setRotation(entityplayer, entityplayer.isSneaking() ? 1.0F : 15.0F, true);
-                com.anatawa12.fixRtm.rtm.item.ItemWithModelEx.applyOffsetToTileEntity(itemstack, tileentityplantornament);
+                ItemWithModelEx.applyOffsetToTileEntity(itemstack, tileentityplantornament);
                 this.updateResource(tileentityplantornament, itemstack);
             } else if (iteminstalledobject$istlobjtype == IstlObjType.SPEAKER) {
                 block = RTMBlock.speaker;
@@ -407,19 +411,19 @@ public class ItemInstalledObject extends ItemWithModel {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public net.minecraft.client.gui.GuiScreen newGuiScreen(ItemArgHolder holder) {
+    public GuiScreen newGuiScreen(ItemArgHolder holder) {
         int i = holder.getItemStack().getItemDamage();
         IstlObjType iteminstalledobject$istlobjtype = IstlObjType.getType(i);
         if (iteminstalledobject$istlobjtype != IstlObjType.RAILLOAD_SIGN && iteminstalledobject$istlobjtype != IstlObjType.FLAG) {
             return iteminstalledobject$istlobjtype == IstlObjType.SIGNBOARD ? newGuiSignboard(holder) : newGuiSelectModel(holder);
         } else {
-            return new jp.ngt.rtm.gui.GuiSelectTexture(new ResourceSelector(holder), null);
+            return new GuiSelectTexture(new ResourceSelector(holder), null);
         }
     }
 
     @SideOnly(Side.CLIENT)
-    private net.minecraft.client.gui.GuiScreen newGuiSignboard(ItemArgHolder holder) {
-        return new jp.ngt.rtm.gui.GuiSignboard(new ResourceSelector(holder));
+    private GuiScreen newGuiSignboard(ItemArgHolder holder) {
+        return new GuiSignboard(new ResourceSelector(holder));
     }
 
     public int getGuiId(ItemStack stack) {

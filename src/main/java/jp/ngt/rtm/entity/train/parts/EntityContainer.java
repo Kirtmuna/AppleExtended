@@ -18,6 +18,7 @@ import jp.ngt.ngtlib.item.ItemUtil;
 import jp.ngt.ngtlib.math.PooledVec3;
 import jp.ngt.ngtlib.math.Vec3;
 import jp.ngt.rtm.RTMCore;
+import jp.ngt.rtm.RTMItem;
 import jp.ngt.rtm.RTMResource;
 import jp.ngt.rtm.entity.train.EntityBogie;
 import jp.ngt.rtm.entity.vehicle.EntityVehicleBase;
@@ -306,6 +307,6 @@ public class EntityContainer extends EntityCargoWithModel<ModelSetContainer> imp
 
     @Override
     protected ItemStack getItem() {
-        return new ItemStack(jp.ngt.rtm.RTMItem.itemCargo, 1, 0);
+        return new ItemStack(RTMItem.itemCargo, 1, 0);
     }
 }

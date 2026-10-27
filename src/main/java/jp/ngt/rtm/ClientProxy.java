@@ -14,6 +14,7 @@
 
 package jp.ngt.rtm;
 
+import jp.apple.appleextended.config.AppleConfig;
 import jp.ngt.ngtlib.io.NGTFileLoader;
 import jp.ngt.ngtlib.io.NGTJson;
 import jp.ngt.ngtlib.io.NGTLog;
@@ -225,7 +226,7 @@ public class ClientProxy extends CommonProxy {
         } else {
             MovingSoundCustom ms = MovingSoundMaker.create(entity, sound, false);
             if (ms != null) {
-                ms.setSoundRange(jp.apple.appleextended.config.AppleConfig.hornSoundRange);
+                ms.setSoundRange(AppleConfig.hornSoundRange);
                 this.playSound(ms, vol, pitch);
             }
         }

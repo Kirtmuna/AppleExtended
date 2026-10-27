@@ -14,19 +14,22 @@
 
 package jp.ngt.rtm.block.tileentity;
 
+import com.anatawa12.fixRtm.rtm.block.tileentity.TileEntityOrnamentKt;
 import jp.ngt.ngtlib.block.BlockUtil;
+import jp.ngt.ngtlib.block.TileEntityPlaceable;
 import jp.ngt.ngtlib.math.NGTMath;
 import jp.ngt.rtm.modelpack.IResourceSelector;
 import jp.ngt.rtm.modelpack.ResourceType;
 import jp.ngt.rtm.modelpack.modelset.ModelSetOrnament;
 import jp.ngt.rtm.modelpack.state.ResourceState;
+import net.minecraft.crash.CrashReportCategory;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public abstract class TileEntityOrnament extends jp.ngt.ngtlib.block.TileEntityPlaceable implements IResourceSelector {
+public abstract class TileEntityOrnament extends TileEntityPlaceable implements IResourceSelector {
     private ResourceState<ModelSetOrnament> state = new ResourceState<>(this.getSubType(), this);
     private byte attachedSide;
     private float randomScale;
@@ -109,8 +112,8 @@ public abstract class TileEntityOrnament extends jp.ngt.ngtlib.block.TileEntityP
     protected abstract ResourceType getSubType();
 
     @Override
-    public void addInfoToCrashReport(net.minecraft.crash.CrashReportCategory reportCategory) {
+    public void addInfoToCrashReport(CrashReportCategory reportCategory) {
         super.addInfoToCrashReport(reportCategory);
-        com.anatawa12.fixRtm.rtm.block.tileentity.TileEntityOrnamentKt.addInfoToCrashReport(this, reportCategory);
+        TileEntityOrnamentKt.addInfoToCrashReport(this, reportCategory);
     }
 }

@@ -14,6 +14,7 @@
 
 package jp.ngt.rtm.world;
 
+import com.anatawa12.fixRtm.rtm.world.RTMChunkManagerKt;
 import com.google.common.collect.LinkedListMultimap;
 import com.google.common.collect.ListMultimap;
 import jp.ngt.ngtlib.block.BlockUtil;
@@ -51,7 +52,7 @@ public final class RTMChunkManager implements LoadingCallback, OrderedLoadingCal
     }
 
     public void getChunksAround(Set<ChunkPos> set, int xChunk, int zChunk, int radius) {
-        com.anatawa12.fixRtm.rtm.world.RTMChunkManagerKt.getChunksAround(set, xChunk, zChunk, radius);
+        RTMChunkManagerKt.getChunksAround(set, xChunk, zChunk, radius);
     }
 
     public Ticket getNewTicket(World world, Type type) {

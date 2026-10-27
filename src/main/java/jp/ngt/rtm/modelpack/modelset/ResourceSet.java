@@ -14,6 +14,7 @@
 
 package jp.ngt.rtm.modelpack.modelset;
 
+import com.anatawa12.fixRtm.rtm.modelpack.ModelState;
 import jp.ngt.rtm.modelpack.cfg.ResourceConfig;
 import jp.ngt.rtm.modelpack.state.DataFormatter;
 import net.minecraftforge.fml.relauncher.Side;
@@ -25,7 +26,7 @@ public abstract class ResourceSet<T extends ResourceConfig> {
     private boolean isDummySet;
 
     public byte[] md5;
-    public com.anatawa12.fixRtm.rtm.modelpack.ModelState state = com.anatawa12.fixRtm.rtm.modelpack.ModelState.INITIALIZED;
+    public ModelState state = ModelState.INITIALIZED;
 
     public ResourceSet() {
         this.cfg = this.getDummyConfig();

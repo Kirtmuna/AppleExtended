@@ -14,6 +14,7 @@
 
 package jp.ngt.rtm.rail.util;
 
+import com.anatawa12.fixRtm.Deprecation;
 import jp.ngt.ngtlib.math.BezierCurve;
 import jp.ngt.ngtlib.math.ILine;
 import jp.ngt.ngtlib.math.NGTMath;
@@ -34,7 +35,7 @@ public class RailMapBasic extends RailMap {
     @Deprecated
     public RailMapBasic(RailPosition par1, RailPosition par2) {
         this(par1, par2, 0);
-        com.anatawa12.fixRtm.Deprecation.found("RailMapBasic#RailMapBasic");
+        Deprecation.found("RailMapBasic#RailMapBasic");
     }
 
     public RailMapBasic(RailPosition par1, RailPosition par2, int version) {

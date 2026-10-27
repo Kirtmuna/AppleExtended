@@ -14,6 +14,7 @@
 
 package jp.ngt.rtm.network;
 
+import com.anatawa12.fixRtm.ThreadUtil;
 import io.netty.buffer.ByteBuf;
 import jp.ngt.ngtlib.block.BlockUtil;
 import jp.ngt.ngtlib.util.PermissionManager;
@@ -61,7 +62,7 @@ public class PacketSelectResource implements IMessage, IMessageHandler<PacketSel
     @Override
     public IMessage onMessage(PacketSelectResource message, MessageContext ctx) {
         EntityPlayer entityplayer = ctx.getServerHandler().player;
-        com.anatawa12.fixRtm.ThreadUtil.runOnServerThread(() -> doMessage(message, entityplayer));
+        ThreadUtil.runOnServerThread(() -> doMessage(message, entityplayer));
         return null;
     }
 

@@ -31,6 +31,7 @@ import jp.ngt.rtm.modelpack.cfg.TrainConfig;
 import jp.ngt.rtm.modelpack.state.ResourceState;
 import jp.ngt.rtm.rail.TileEntityLargeRailBase;
 import jp.ngt.rtm.rail.util.RailMap;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
@@ -88,7 +89,7 @@ public final class ItemTrain extends ItemWithModel {
         RailMap railmap = TileEntityLargeRailBase.getRailMapFromCoordinates(world, entityplayer, i, j, k);
         if (railmap == null) {
             return holder.success();
-        } else if (!checkObstacle((jp.ngt.rtm.modelpack.cfg.TrainConfig) resourcestate.getResourceSet().getConfig(), entityplayer, world, i, j, k, railmap)) {
+        } else if (!checkObstacle((TrainConfig) resourcestate.getResourceSet().getConfig(), entityplayer, world, i, j, k, railmap)) {
             return holder.success();
         } else {
             PosRotation pr = computePosRotation(railmap, i, k, -entityplayer.rotationYaw);
@@ -220,7 +221,7 @@ public final class ItemTrain extends ItemWithModel {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public net.minecraft.client.gui.GuiScreen newGuiScreen(ItemArgHolder holder) {
+    public GuiScreen newGuiScreen(ItemArgHolder holder) {
         return newGuiSelectModel(holder);
     }
 

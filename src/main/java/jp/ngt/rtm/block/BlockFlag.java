@@ -14,14 +14,20 @@
 
 package jp.ngt.rtm.block;
 
+import com.anatawa12.fixRtm.rtm.block.BlockOrnamentMain;
 import jp.ngt.ngtlib.block.BlockArgHolder;
 import jp.ngt.ngtlib.block.BlockContainerCustom;
 import jp.ngt.rtm.RTMCore;
 import jp.ngt.rtm.block.tileentity.TileEntityFlag;
+import jp.ngt.rtm.item.ItemInstalledObject;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 
 public class BlockFlag extends BlockContainerCustom {
@@ -48,7 +54,7 @@ public class BlockFlag extends BlockContainerCustom {
     }
 
     @Override
-    public net.minecraft.item.ItemStack getPickBlock(net.minecraft.block.state.IBlockState state, net.minecraft.util.math.RayTraceResult target, World world, net.minecraft.util.math.BlockPos pos, EntityPlayer player) {
-        return com.anatawa12.fixRtm.rtm.block.BlockOrnamentMain.getPickBlock(world, pos, jp.ngt.rtm.item.ItemInstalledObject.IstlObjType.FLAG);
+    public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
+        return BlockOrnamentMain.getPickBlock(world, pos, ItemInstalledObject.IstlObjType.FLAG);
     }
 }

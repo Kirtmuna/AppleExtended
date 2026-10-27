@@ -27,6 +27,7 @@ import jp.ngt.rtm.entity.vehicle.*;
 import jp.ngt.rtm.modelpack.ResourceType;
 import jp.ngt.rtm.modelpack.state.ResourceState;
 import net.minecraft.block.BlockRailBase;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -189,7 +190,7 @@ public class ItemVehicle extends ItemWithModel {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public net.minecraft.client.gui.GuiScreen newGuiScreen(ItemArgHolder holder) {
+    public GuiScreen newGuiScreen(ItemArgHolder holder) {
         return newGuiSelectModel(holder);
     }
 

@@ -14,6 +14,7 @@
 
 package jp.ngt.rtm.sound;
 
+import com.anatawa12.fixRtm.rtm.HooksKt;
 import jp.ngt.ngtlib.io.NGTJson;
 import jp.ngt.ngtlib.io.NGTLog;
 import jp.ngt.ngtlib.io.NGTText;
@@ -115,7 +116,7 @@ public final class MovingSoundMaker {
             String json = NGTText.getText(new ResourceLocation(domain, "sounds.json"), true);
             Map<String, SoundListDummy> map = NGTJson.getGson().fromJson(json, TYPE);
 
-            com.anatawa12.fixRtm.rtm.HooksKt.MovingSoundMaker_loadSoundJson_nullCheck(map, domain);
+            HooksKt.MovingSoundMaker_loadSoundJson_nullCheck(map, domain);
             for (Entry<String, SoundListDummy> entry : map.entrySet()) {
                 if (!entry.getValue().sounds.isEmpty()) {
                     Object obj = entry.getValue().sounds.get(0);

@@ -14,6 +14,14 @@
 
 package jp.ngt.rtm.modelpack;
 
+import com.anatawa12.fixRtm.DummyModelPackManager;
+import com.anatawa12.fixRtm.UtilsKt;
+import com.anatawa12.fixRtm.asm.config.MainConfig;
+import com.anatawa12.fixRtm.network.NetworkHandler;
+import com.anatawa12.fixRtm.network.SentAllModels;
+import com.anatawa12.fixRtm.rtm.modelpack.init.UnconstructSetsQueue;
+import jp.apple.appleextended.script.ScriptLoader;
+import jp.apple.appleextended.script.api.gif.ScriptGifRenderer;
 import jp.ngt.ngtlib.io.*;
 import jp.ngt.ngtlib.renderer.model.*;
 import jp.ngt.ngtlib.util.NGTUtil;
@@ -41,6 +49,8 @@ import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.util.*;
 import java.util.Map.Entry;
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -54,8 +64,8 @@ public final class ModelPackManager {
     public final Map<ResourceType, Map<String, ResourceSet>> allModelSetMap = new HashMap<>(256);
     public final Map<ResourceType, Map<String, ResourceSet>> smpModelSetMap = new HashMap<>(256);
     public final Map<String, ResourceSet> dummyMap = new HashMap<>(32);
-    public final java.util.concurrent.locks.ReadWriteLock modelSetMapLock = new java.util.concurrent.locks.ReentrantReadWriteLock();
-    public final com.anatawa12.fixRtm.rtm.modelpack.init.UnconstructSetsQueue unconstructSets = new com.anatawa12.fixRtm.rtm.modelpack.init.UnconstructSetsQueue();
+    public final ReadWriteLock modelSetMapLock = new ReentrantReadWriteLock();
+    public final UnconstructSetsQueue unconstructSets = new UnconstructSetsQueue();
 
     private final Map<String, IModelNGT> modelCache = new HashMap<>(128);
     private final Map<String, Map<String, ResourceLocation>> resourceCache = new HashMap<>(256);
@@ -161,7 +171,7 @@ public final class ModelPackManager {
 
     public String registerResourceSet(ResourceType type, File file) throws IOException {
         List<String> json = NGTText.readText(file, null);
-        ResourceConfig resourceconfig = (ResourceConfig) NGTJson.getObjectFromJson(com.anatawa12.fixRtm.UtilsKt.joinLinesForJsonReading(json), type.cfgClass);
+        ResourceConfig resourceconfig = (ResourceConfig) NGTJson.getObjectFromJson(UtilsKt.joinLinesForJsonReading(json), type.cfgClass);
         resourceconfig.file = file;
         return this.registerResourceSet(type, resourceconfig, NGTText.append(json, false));
     }
@@ -170,7 +180,7 @@ public final class ModelPackManager {
         cfg.init();
         ResourceSet resourceset = this.getNewModelSet(type, new Class[]{type.cfgClass}, cfg);
         if (resourceset != null) {
-            if (!com.anatawa12.fixRtm.asm.config.MainConfig.reduceConstructModelLog) {
+            if (!MainConfig.reduceConstructModelLog) {
                 NGTLog.debug("Registr resource : %s (%s)", cfg.getName(), type.name);
             } else {
                 NGTLog.trace("Registr resource : %s (%s)", cfg.getName(), type.name);
@@ -199,7 +209,7 @@ public final class ModelPackManager {
                 ++i;
             }
         }
-        com.anatawa12.fixRtm.network.NetworkHandler.sendPacketEPM(new com.anatawa12.fixRtm.network.SentAllModels(), player);
+        NetworkHandler.sendPacketEPM(new SentAllModels(), player);
     }
 
     public void addModelSetName(int count, String typeName, String name) {
@@ -245,7 +255,7 @@ public final class ModelPackManager {
         Map<ResourceType, Map<String, ResourceSet>> map = flag ? this.smpModelSetMap : this.allModelSetMap;
         T t = (T) map.get(resourcetype).get(name);
         if (t == null) {
-            return (T) com.anatawa12.fixRtm.DummyModelPackManager.getSet(type, name);
+            return (T) DummyModelPackManager.getSet(type, name);
         }
         return t;
     }
@@ -359,7 +369,7 @@ public final class ModelPackManager {
         this.resourceCache.clear();
         this.scriptCache.clear();
         this.fileCache.clear();
-        jp.apple.appleextended.script.ScriptLoader.clearGroovyCache();
-        jp.apple.appleextended.script.api.gif.ScriptGifRenderer.clearCache();
+        ScriptLoader.clearGroovyCache();
+        ScriptGifRenderer.clearCache();
     }
 }

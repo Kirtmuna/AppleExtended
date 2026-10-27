@@ -14,6 +14,7 @@
 
 package jp.ngt.rtm.block;
 
+import com.anatawa12.fixRtm.rtm.block.BlockOrnamentMain;
 import jp.ngt.ngtlib.block.BlockArgHolder;
 import jp.ngt.ngtlib.block.BlockContainerCustomWithMeta;
 import jp.ngt.ngtlib.block.BlockSet;
@@ -22,11 +23,15 @@ import jp.ngt.rtm.RTMItem;
 import jp.ngt.rtm.RTMMaterial;
 import jp.ngt.rtm.RTMSound;
 import jp.ngt.rtm.block.tileentity.TileEntityPipe;
+import jp.ngt.rtm.item.ItemInstalledObject;
 import jp.ngt.rtm.item.ItemInstalledObject.IstlObjType;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 
 import java.util.List;
@@ -98,12 +103,12 @@ public class BlockPipe extends BlockContainerCustomWithMeta {
     }
 
     @Override
-    protected boolean onBlockActivated(jp.ngt.ngtlib.block.BlockArgHolder holder, float hitX, float hitY, float hitZ) {
-        return com.anatawa12.fixRtm.rtm.block.BlockOrnamentMain.onBlockActivated(holder);
+    protected boolean onBlockActivated(BlockArgHolder holder, float hitX, float hitY, float hitZ) {
+        return BlockOrnamentMain.onBlockActivated(holder);
     }
 
     @Override
-    public ItemStack getPickBlock(net.minecraft.block.state.IBlockState state, net.minecraft.util.math.RayTraceResult target, World world, net.minecraft.util.math.BlockPos pos, net.minecraft.entity.player.EntityPlayer player) {
-        return com.anatawa12.fixRtm.rtm.block.BlockOrnamentMain.getPickBlock(world, pos, jp.ngt.rtm.item.ItemInstalledObject.IstlObjType.PIPE);
+    public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
+        return BlockOrnamentMain.getPickBlock(world, pos, ItemInstalledObject.IstlObjType.PIPE);
     }
 }

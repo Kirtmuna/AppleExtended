@@ -18,6 +18,7 @@ import jp.ngt.ngtlib.item.ItemArgHolderBase.ItemArgHolder;
 import jp.ngt.rtm.RTMResource;
 import jp.ngt.rtm.modelpack.ResourceType;
 import jp.ngt.rtm.modelpack.state.ResourceState;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
 import net.minecraftforge.fml.relauncher.Side;
@@ -39,7 +40,7 @@ public class ItemWire extends ItemWithModel {
     }
 
     @SideOnly(Side.CLIENT)
-    public net.minecraft.client.gui.GuiScreen newGuiScreen(ItemArgHolder holder) {
+    public GuiScreen newGuiScreen(ItemArgHolder holder) {
         return newGuiSelectModel(holder);
     }
 

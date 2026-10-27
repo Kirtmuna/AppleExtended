@@ -14,18 +14,23 @@
 
 package jp.ngt.rtm.entity.train.parts;
 
+import com.anatawa12.fixRtm.rtm.entity.train.parts.EntityCargoWithModelKt;
 import jp.apple.appleextended.compat.ReplaySyncManager;
 import jp.ngt.ngtlib.network.PacketNBT;
 import jp.ngt.rtm.RTMCore;
+import jp.ngt.rtm.RTMItem;
 import jp.ngt.rtm.entity.vehicle.EntityVehicleBase;
+import jp.ngt.rtm.item.ItemWithModel;
 import jp.ngt.rtm.modelpack.IResourceSelector;
 import jp.ngt.rtm.modelpack.ResourceType;
 import jp.ngt.rtm.modelpack.modelset.ModelSetBase;
 import jp.ngt.rtm.modelpack.state.ResourceState;
+import net.minecraft.crash.CrashReportCategory;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 
 public abstract class EntityCargoWithModel<T extends ModelSetBase> extends EntityCargo implements IResourceSelector {
@@ -115,18 +120,18 @@ public abstract class EntityCargoWithModel<T extends ModelSetBase> extends Entit
     protected abstract ResourceType getSubType();
 
     @Override
-    public void addEntityCrashInfo(net.minecraft.crash.CrashReportCategory category) {
+    public void addEntityCrashInfo(CrashReportCategory category) {
         super.addEntityCrashInfo(category);
-        com.anatawa12.fixRtm.rtm.entity.train.parts.EntityCargoWithModelKt.addEntityCrashInfo(this, category);
+        EntityCargoWithModelKt.addEntityCrashInfo(this, category);
     }
 
     @Override
-    public ItemStack getPickedResult(net.minecraft.util.math.RayTraceResult target) {
+    public ItemStack getPickedResult(RayTraceResult target) {
         if (target.entityHit instanceof EntityCargoWithModel) {
             EntityCargoWithModel<?> cargo = (EntityCargoWithModel<?>) target.entityHit;
             ItemStack itemStack = this.getItem();
 
-            ((jp.ngt.rtm.item.ItemWithModel) jp.ngt.rtm.RTMItem.itemCargo).setModelState(itemStack, cargo.getResourceState());
+            ((ItemWithModel) RTMItem.itemCargo).setModelState(itemStack, cargo.getResourceState());
             return itemStack;
         } else {
             return null;

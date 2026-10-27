@@ -14,6 +14,7 @@
 
 package jp.ngt.rtm.render;
 
+import com.anatawa12.fixRtm.asm.config.MainConfig;
 import jp.ngt.ngtlib.io.NGTLog;
 import jp.ngt.ngtlib.io.ScriptUtil;
 import jp.ngt.ngtlib.math.NGTMath;
@@ -137,7 +138,7 @@ public abstract class PartsRenderer<T, MS extends ModelSetBase> {
                 }
             }
 
-            if (!com.anatawa12.fixRtm.asm.config.MainConfig.actionPartsImprovements
+            if (!MainConfig.actionPartsImprovements
                     || d0 <= NGTUtilClient.getMinecraft().playerController.getBlockReachDistance())
                 return this.targetsList.get(i - 1);
         }
@@ -185,7 +186,7 @@ public abstract class PartsRenderer<T, MS extends ModelSetBase> {
         }
 
         if (pass == RenderPass.PICK
-                && com.anatawa12.fixRtm.asm.config.MainConfig.actionPartsImprovements
+                && MainConfig.actionPartsImprovements
                 && NGTUtilClient.getMinecraft().currentScreen != null) {
             this.hittedParts.put(t, null);
             this.checkMouseAction(t);

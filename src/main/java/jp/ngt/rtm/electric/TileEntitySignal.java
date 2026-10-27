@@ -14,6 +14,8 @@
 
 package jp.ngt.rtm.electric;
 
+import com.anatawa12.fixRtm.rtm.electric.TileEntitySignalKt;
+import jp.apple.appleextended.compat.ReplaySyncManager;
 import jp.ngt.ngtlib.block.BlockUtil;
 import jp.ngt.ngtlib.block.TileEntityPlaceable;
 import jp.ngt.rtm.RTMResource;
@@ -23,6 +25,7 @@ import jp.ngt.rtm.modelpack.modelset.ModelSetSignal;
 import jp.ngt.rtm.modelpack.state.ResourceState;
 import jp.ngt.rtm.modelpack.state.ResourceStateWithBlock;
 import net.minecraft.block.Block;
+import net.minecraft.crash.CrashReportCategory;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
@@ -47,7 +50,7 @@ public class TileEntitySignal extends TileEntityPlaceable implements IProvideEle
 
     @Override
     public void readFromNBT(NBTTagCompound nbt) {
-        jp.apple.appleextended.compat.ReplaySyncManager.patchResourceSelectorMetadata(this, nbt);
+        ReplaySyncManager.patchResourceSelectorMetadata(this, nbt);
         super.readFromNBT(nbt);
         this.state.readFromNBT(nbt.getCompoundTag("State"));
         this.blockDirection = nbt.getInteger("blockDir");
@@ -85,7 +88,7 @@ public class TileEntitySignal extends TileEntityPlaceable implements IProvideEle
             this.tick = 0;
         }
         if (this.world.isRemote) {
-            jp.apple.appleextended.compat.ReplaySyncManager.checkModelSync(this);
+            ReplaySyncManager.checkModelSync(this);
         }
         if (!this.getWorld().isRemote) {
             this.executer.execScript(this);
@@ -195,8 +198,8 @@ public class TileEntitySignal extends TileEntityPlaceable implements IProvideEle
     }
 
     @Override
-    public void addInfoToCrashReport(net.minecraft.crash.CrashReportCategory reportCategory) {
+    public void addInfoToCrashReport(CrashReportCategory reportCategory) {
         super.addInfoToCrashReport(reportCategory);
-        com.anatawa12.fixRtm.rtm.electric.TileEntitySignalKt.addInfoToCrashReport(this, reportCategory);
+        TileEntitySignalKt.addInfoToCrashReport(this, reportCategory);
     }
 }

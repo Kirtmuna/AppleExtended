@@ -15,6 +15,8 @@
 package jp.ngt.rtm.electric;
 
 import jp.ngt.ngtlib.block.BlockUtil;
+import jp.ngt.ngtlib.block.TileEntityPlaceable;
+import jp.ngt.ngtlib.math.Vec3;
 import jp.ngt.rtm.RTMCore;
 import jp.ngt.rtm.RTMItem;
 import jp.ngt.rtm.electric.Connection.ConnectionType;
@@ -33,10 +35,11 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.world.World;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
 
-public abstract class TileEntityElectricalWiring extends jp.ngt.ngtlib.block.TileEntityPlaceable implements ITickable {
+public abstract class TileEntityElectricalWiring extends TileEntityPlaceable implements ITickable {
     protected List<Connection> connections = new ArrayList<>();
 
     public boolean isActivated;
@@ -91,8 +94,8 @@ public abstract class TileEntityElectricalWiring extends jp.ngt.ngtlib.block.Til
         return this.connections;
     }
 
-    public jp.ngt.ngtlib.math.Vec3 getWirePos() {
-        return jp.ngt.ngtlib.math.Vec3.ZERO;
+    public Vec3 getWirePos() {
+        return Vec3.ZERO;
     }
 
     /**
@@ -338,7 +341,7 @@ public abstract class TileEntityElectricalWiring extends jp.ngt.ngtlib.block.Til
                     .map(TileEntityElectricalWiring.class::cast)
                     .filter(tile -> tile.isActivated)
                     .filter(tile -> tile.getDistanceSq(x, y, z) < dis1)
-                    .min(java.util.Comparator.comparingDouble(o -> o.getDistanceSq(x, y, z)))
+                    .min(Comparator.comparingDouble(o -> o.getDistanceSq(x, y, z)))
                     .orElse(null);
             if (teew != null) {
                 return teew;
@@ -350,7 +353,7 @@ public abstract class TileEntityElectricalWiring extends jp.ngt.ngtlib.block.Til
             return list.stream()
                     .map(entity -> entity.tileEW)
                     .filter(tileEW -> tileEW.isActivated)
-                    .min(java.util.Comparator.comparingDouble(o -> o.getDistanceSq(x, y, z)))
+                    .min(Comparator.comparingDouble(o -> o.getDistanceSq(x, y, z)))
                     .orElse(null);
         }
 

@@ -15,6 +15,7 @@
 package jp.ngt.rtm.block.tileentity;
 
 import jp.ngt.ngtlib.block.BlockUtil;
+import jp.ngt.ngtlib.block.TileEntityPlaceable;
 import jp.ngt.rtm.RTMResource;
 import jp.ngt.rtm.modelpack.IResourceSelector;
 import jp.ngt.rtm.modelpack.cfg.SignboardConfig;
@@ -27,7 +28,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class TileEntitySignBoard extends jp.ngt.ngtlib.block.TileEntityPlaceable implements IResourceSelector, ITickable {
+public class TileEntitySignBoard extends TileEntityPlaceable implements IResourceSelector, ITickable {
     private ResourceStateSignboard state = new ResourceStateSignboard(RTMResource.SIGNBOARD, this);
 
     public boolean isGettingPower;

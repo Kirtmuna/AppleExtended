@@ -34,6 +34,9 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public final class RTMItem {
     public static Item bogie;
     public static Item installedObject;
@@ -242,7 +245,7 @@ public final class RTMItem {
         }
     }
 
-    public static final java.util.Map<ModelResourceLocation, Item> MODEL_TO_ITEM = new java.util.HashMap<>();
+    public static final Map<ModelResourceLocation, Item> MODEL_TO_ITEM = new HashMap<>();
 
     @SideOnly(Side.CLIENT)
     public static void registerItemModel(Item item, int meta, String name) {

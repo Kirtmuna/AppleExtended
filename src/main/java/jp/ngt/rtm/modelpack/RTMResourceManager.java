@@ -14,8 +14,10 @@
 
 package jp.ngt.rtm.modelpack;
 
+import com.anatawa12.fixRtm.rtm.RTMResourceManagerKt;
 import com.google.common.collect.Lists;
 import jp.ngt.ngtlib.io.NGTFileLoader;
+import net.minecraft.client.resources.FallbackResourceManager;
 import net.minecraft.client.resources.IResource;
 import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.client.resources.SimpleResource;
@@ -25,13 +27,14 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.io.*;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 @SideOnly(Side.CLIENT)
-public final class RTMResourceManager extends net.minecraft.client.resources.FallbackResourceManager implements IResourceManager {
+public final class RTMResourceManager extends FallbackResourceManager implements IResourceManager {
     private final Map<ResourceLocation, IResource> resourceCache = new HashMap<>();
     private final MetadataSerializer serializer;
     private final File domain;
@@ -44,7 +47,7 @@ public final class RTMResourceManager extends net.minecraft.client.resources.Fal
 
     @Override
     public Set getResourceDomains() {
-        return java.util.Collections.<String>emptySet();
+        return Collections.<String>emptySet();
     }
 
     @Override
@@ -65,7 +68,7 @@ public final class RTMResourceManager extends net.minecraft.client.resources.Fal
             if (!suffix.isEmpty()) {
                 String zipPath = NGTFileLoader.getArchivePath(absPath, suffix);
                 try {
-                    stream = com.anatawa12.fixRtm.rtm.RTMResourceManagerKt.getInputStreamFromZip(zipPath, par1);
+                    stream = RTMResourceManagerKt.getInputStreamFromZip(zipPath, par1);
                 } catch (IOException ioexception) {
                     ioexception.printStackTrace();
                 }

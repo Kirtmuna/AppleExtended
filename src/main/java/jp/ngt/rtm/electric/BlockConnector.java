@@ -14,7 +14,9 @@
 
 package jp.ngt.rtm.electric;
 
+import jp.ngt.ngtlib.block.BlockArgHolder;
 import jp.ngt.ngtlib.block.BlockUtil;
+import jp.ngt.rtm.RTMCore;
 import jp.ngt.rtm.RTMItem;
 import jp.ngt.rtm.item.ItemInstalledObject;
 import net.minecraft.block.material.Material;
@@ -108,13 +110,13 @@ public class BlockConnector extends BlockElectricalWiring {
     }
 
     @Override
-    public boolean onBlockActivated(jp.ngt.ngtlib.block.BlockArgHolder holder, float hitX, float hitY, float hitZ) {
+    public boolean onBlockActivated(BlockArgHolder holder, float hitX, float hitY, float hitZ) {
         if (holder.getPlayer().isSneaking()) {
             if (holder.getWorld().isRemote) {
                 int x = holder.getBlockPos().getX();
                 int y = holder.getBlockPos().getY();
                 int z = holder.getBlockPos().getZ();
-                holder.getPlayer().openGui(jp.ngt.rtm.RTMCore.instance, jp.ngt.rtm.RTMCore.guiIdSelectTileEntityModel, holder.getWorld(), x, y, z);
+                holder.getPlayer().openGui(RTMCore.instance, RTMCore.guiIdSelectTileEntityModel, holder.getWorld(), x, y, z);
             }
             return true;
         }

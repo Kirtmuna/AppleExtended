@@ -14,6 +14,8 @@
 
 package jp.ngt.rtm.electric;
 
+import com.anatawa12.fixRtm.rtm.block.BlockOrnamentMain;
+import jp.apple.appleextended.gui.AppleGuiHelper;
 import jp.ngt.ngtlib.block.BlockArgHolder;
 import jp.ngt.ngtlib.util.NGTUtil;
 import jp.ngt.rtm.RTMCore;
@@ -52,7 +54,7 @@ public class BlockTicketVendor extends BlockMachineBase {
         if (NGTUtil.isEquippedItem(player, RTMItem.crowbar)) {
             if (world.isRemote) {
                 TileEntity te = world.getTileEntity(pos);
-                jp.apple.appleextended.gui.AppleGuiHelper.openOffsetGui(te);
+                AppleGuiHelper.openOffsetGui(te);
             }
         } else {
             if (!player.isSneaking()) {
@@ -74,6 +76,6 @@ public class BlockTicketVendor extends BlockMachineBase {
 
     @Override
     public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
-        return com.anatawa12.fixRtm.rtm.block.BlockOrnamentMain.getPickBlock(world, pos, IstlObjType.TICKET_VENDOR);
+        return BlockOrnamentMain.getPickBlock(world, pos, IstlObjType.TICKET_VENDOR);
     }
 }

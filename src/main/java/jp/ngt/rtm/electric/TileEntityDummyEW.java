@@ -14,6 +14,7 @@
 
 package jp.ngt.rtm.electric;
 
+import jp.ngt.ngtlib.math.Vec3;
 import jp.ngt.rtm.entity.EntityElectricalWiring;
 
 public class TileEntityDummyEW extends TileEntityElectricalWiring {
@@ -53,7 +54,7 @@ public class TileEntityDummyEW extends TileEntityElectricalWiring {
     }
 
     @Override
-    public jp.ngt.ngtlib.math.Vec3 getWirePos() {
-        return new jp.ngt.ngtlib.math.Vec3(0.0, -0.5, 0.0);
+    public Vec3 getWirePos() {
+        return new Vec3(0.0, -0.5, 0.0);
     }
 }

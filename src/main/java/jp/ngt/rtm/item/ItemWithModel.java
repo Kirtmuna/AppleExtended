@@ -14,21 +14,27 @@
 
 package jp.ngt.rtm.item;
 
+import com.anatawa12.fixRtm.rtm.item.ItemWithModelEx;
+import jp.apple.appleextended.render.item.ClientIconSetup;
 import jp.ngt.ngtlib.io.NGTLog;
 import jp.ngt.ngtlib.item.ItemArgHolderBase.ItemArgHolder;
 import jp.ngt.ngtlib.item.ItemCustom;
 import jp.ngt.ngtlib.network.PacketNBT;
+import jp.ngt.rtm.gui.GuiSelectModel;
 import jp.ngt.rtm.modelpack.IResourceSelector;
 import jp.ngt.rtm.modelpack.ModelPackManager;
 import jp.ngt.rtm.modelpack.ResourceType;
 import jp.ngt.rtm.modelpack.modelset.ResourceSet;
 import jp.ngt.rtm.modelpack.state.ResourceState;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraftforge.fml.relauncher.FMLLaunchHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -41,8 +47,8 @@ public abstract class ItemWithModel<T extends ResourceSet> extends ItemCustom {
     public ItemWithModel() {
         super();
         this.setHasSubtypes(true);
-        if (net.minecraftforge.fml.relauncher.FMLLaunchHandler.side() == Side.CLIENT) {
-            jp.apple.appleextended.render.item.ClientIconSetup.apply(this);
+        if (FMLLaunchHandler.side() == Side.CLIENT) {
+            ClientIconSetup.apply(this);
         }
     }
 
@@ -50,7 +56,7 @@ public abstract class ItemWithModel<T extends ResourceSet> extends ItemCustom {
     protected ActionResult<ItemStack> onItemRightClick(ItemArgHolder holder) {
         if (holder.getWorld().isRemote) {
             if (this.getModelType(holder.getItemStack()) != null) {
-                net.minecraft.client.Minecraft.getMinecraft().displayGuiScreen(newGuiScreen(holder));
+                Minecraft.getMinecraft().displayGuiScreen(newGuiScreen(holder));
             } else {
                 NGTLog.debug("No Type");
             }
@@ -59,12 +65,12 @@ public abstract class ItemWithModel<T extends ResourceSet> extends ItemCustom {
     }
 
     @SideOnly(Side.CLIENT)
-    protected final net.minecraft.client.gui.GuiScreen newGuiSelectModel(ItemArgHolder holder) {
-        return new jp.ngt.rtm.gui.GuiSelectModel(holder.getWorld(), new ResourceSelector(holder));
+    protected final GuiScreen newGuiSelectModel(ItemArgHolder holder) {
+        return new GuiSelectModel(holder.getWorld(), new ResourceSelector(holder));
     }
 
     @SideOnly(Side.CLIENT)
-    public abstract net.minecraft.client.gui.GuiScreen newGuiScreen(ItemArgHolder holder);
+    public abstract GuiScreen newGuiScreen(ItemArgHolder holder);
 
     @SideOnly(Side.CLIENT)
     @Override
@@ -83,7 +89,7 @@ public abstract class ItemWithModel<T extends ResourceSet> extends ItemCustom {
         if (state != null && state.getDataMap().getEntries().size() > 0) {
             list.add(TextFormatting.DARK_PURPLE + "(+DataMap)");
         }
-        if (com.anatawa12.fixRtm.rtm.item.ItemWithModelEx.hasOffset(stack)) {
+        if (ItemWithModelEx.hasOffset(stack)) {
             list.add(TextFormatting.DARK_PURPLE + "(+Offset)");
         }
     }

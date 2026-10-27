@@ -14,6 +14,7 @@
 
 package jp.ngt.rtm.network;
 
+import com.anatawa12.fixRtm.ThreadUtil;
 import io.netty.buffer.ByteBuf;
 import jp.ngt.ngtlib.network.PacketCustom;
 import jp.ngt.rtm.entity.train.util.TrainState;
@@ -56,7 +57,7 @@ public class PacketSetTrainState extends PacketCustom implements IMessageHandler
     @Override
     public IMessage onMessage(PacketSetTrainState message, MessageContext ctx) {
         EntityPlayer entityplayer = ctx.getServerHandler().player;
-        com.anatawa12.fixRtm.ThreadUtil.runOnServerThread(() -> doMessage(message, entityplayer));
+        ThreadUtil.runOnServerThread(() -> doMessage(message, entityplayer));
         return null;
     }
 

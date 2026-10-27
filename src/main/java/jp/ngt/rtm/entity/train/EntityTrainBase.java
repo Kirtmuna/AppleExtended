@@ -14,7 +14,11 @@
 
 package jp.ngt.rtm.entity.train;
 
+import com.anatawa12.fixRtm.network.NetworkHandler;
+import com.anatawa12.fixRtm.network.RequestFormation;
 import jp.apple.appleextended.ats.AtsAeTickHandler;
+import jp.apple.appleextended.compat.ReplaySyncManager;
+import jp.apple.appleextended.train.TrainPlatformHandler;
 import jp.ngt.ngtlib.io.NGTLog;
 import jp.ngt.ngtlib.math.NGTMath;
 import jp.ngt.ngtlib.math.PooledVec3;
@@ -61,6 +65,9 @@ import net.minecraftforge.common.ForgeChunkManager.Type;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import java.util.Arrays;
+import java.util.LinkedHashSet;
+import java.util.Objects;
 import java.util.Random;
 import java.util.Set;
 
@@ -117,7 +124,7 @@ public abstract class EntityTrainBase extends EntityVehicleBase<ModelSetTrain> i
         this.getDataManager().register(TRAIN_SPEED, 0.0f);
         this.getDataManager().register(CAB_DIRECTION, false);
 
-        jp.apple.appleextended.compat.ReplaySyncManager.registerData(this);
+        ReplaySyncManager.registerData(this);
     }
 
     @Override
@@ -151,7 +158,7 @@ public abstract class EntityTrainBase extends EntityVehicleBase<ModelSetTrain> i
 
     @Override
     protected void readEntityFromNBT(NBTTagCompound nbt) {
-        jp.apple.appleextended.compat.ReplaySyncManager.patchMetadata(this, nbt);
+        ReplaySyncManager.patchMetadata(this, nbt);
         super.readEntityFromNBT(nbt);
 
         if (nbt.hasKey("FormationEntry", 10)) {
@@ -182,9 +189,9 @@ public abstract class EntityTrainBase extends EntityVehicleBase<ModelSetTrain> i
         Formation fm = FormationManager.getInstance().getFormation(fid);
         if (fm == null) {
             this.formation = FormationManager.getInstance().createNewFormation(this);
-            if (!jp.ngt.ngtlib.util.NGTUtil.isServer()) {
-                com.anatawa12.fixRtm.network.NetworkHandler.sendPacketServer(
-                        new com.anatawa12.fixRtm.network.RequestFormation(fid));
+            if (!NGTUtil.isServer()) {
+                NetworkHandler.sendPacketServer(
+                        new RequestFormation(fid));
             }
             return;
         }
@@ -231,7 +238,7 @@ public abstract class EntityTrainBase extends EntityVehicleBase<ModelSetTrain> i
 
     @Override
     public void onVehicleUpdate() {
-        jp.apple.appleextended.compat.ReplaySyncManager.syncModel(this, false);
+        ReplaySyncManager.syncModel(this, false);
 
         this.updateSpeed();
 
@@ -241,7 +248,7 @@ public abstract class EntityTrainBase extends EntityVehicleBase<ModelSetTrain> i
 
         super.onVehicleUpdate();
 
-        jp.apple.appleextended.train.TrainPlatformHandler.updateStandingEntities(this);
+        TrainPlatformHandler.updateStandingEntities(this);
 
         if (this.world.isRemote) {
             this.spawnSmoke();
@@ -762,7 +769,7 @@ public abstract class EntityTrainBase extends EntityVehicleBase<ModelSetTrain> i
 
     @Override
     public void updateResourceState() {
-        jp.apple.appleextended.compat.ReplaySyncManager.syncModel(this, true);
+        ReplaySyncManager.syncModel(this, true);
 
         super.updateResourceState();
         this.updateTrainSize();
@@ -945,10 +952,10 @@ public abstract class EntityTrainBase extends EntityVehicleBase<ModelSetTrain> i
                 super.setVehicleState(TrainState.TrainStateType.Notch, (byte) par1);
 
                 if (i < 0 && par1 - i > 0 && !this.world.isRemote) {
-                    java.util.Arrays.stream(getFormation().entries)
-                            .filter(java.util.Objects::nonNull)
+                    Arrays.stream(getFormation().entries)
+                            .filter(Objects::nonNull)
                             .map(entry -> entry.train)
-                            .filter(java.util.Objects::nonNull)
+                            .filter(Objects::nonNull)
                             .forEach(train -> train.playBrakeReleaseSound(par1 >= 0));
                 }
                 return true;
@@ -962,7 +969,7 @@ public abstract class EntityTrainBase extends EntityVehicleBase<ModelSetTrain> i
         int prevNotch = this.getNotch();
         int EB_NOTCH = -(this.getResourceState().getResourceSet().getConfig().deccelerations.length - 1);
         if (prevNotch != EB_NOTCH) {
-            this.setVehicleState(jp.ngt.rtm.entity.train.util.TrainState.TrainStateType.Notch, (byte) EB_NOTCH);
+            this.setVehicleState(TrainState.TrainStateType.Notch, (byte) EB_NOTCH);
         }
     }
 
@@ -1028,7 +1035,7 @@ public abstract class EntityTrainBase extends EntityVehicleBase<ModelSetTrain> i
     }
 
     private Ticket ticket;
-    private final Set<ChunkPos> loadedChunks = new java.util.LinkedHashSet<>();
+    private final Set<ChunkPos> loadedChunks = new LinkedHashSet<>();
     private int prevChunkCoordX = Integer.MIN_VALUE;
     private int prevChunkCoordZ = Integer.MIN_VALUE;
     private int prevChunkLoaderRadius = Integer.MIN_VALUE;

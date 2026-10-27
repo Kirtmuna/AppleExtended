@@ -14,6 +14,7 @@
 
 package jp.ngt.rtm.network;
 
+import com.anatawa12.fixRtm.ThreadUtil;
 import io.netty.buffer.ByteBuf;
 import jp.ngt.ngtlib.network.PacketCustom;
 import jp.ngt.rtm.electric.TileEntitySignalConverter;
@@ -55,7 +56,7 @@ public class PacketSignalConverter extends PacketCustom implements IMessageHandl
     @Override
     public IMessage onMessage(PacketSignalConverter message, MessageContext ctx) {
         World world = ctx.getServerHandler().player.world;
-        com.anatawa12.fixRtm.ThreadUtil.runOnServerThread(() -> doMessage(message, world));
+        ThreadUtil.runOnServerThread(() -> doMessage(message, world));
         return null;
     }
 

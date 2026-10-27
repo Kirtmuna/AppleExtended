@@ -14,6 +14,7 @@
 
 package jp.ngt.rtm.rail;
 
+import com.anatawa12.fixRtm.asm.config.MainConfig;
 import jp.apple.appleextended.rail.TileEntityLargeRailSectionCore;import jp.apple.appleextended.rail.util.RailChunkSectioner;import jp.apple.appleextended.rail.util.RailMapSection;import jp.apple.appleextended.rail.util.RailSection;import jp.ngt.ngtlib.block.BlockArgHolder;
 import jp.ngt.ngtlib.block.BlockContainerCustomWithMeta;
 import jp.ngt.ngtlib.block.BlockUtil;
@@ -41,13 +42,18 @@ import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
-import java.util.List;import java.util.UUID;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 public class BlockMarker extends BlockContainerCustomWithMeta {
     public final MarkerType markerType;
@@ -77,7 +83,7 @@ public class BlockMarker extends BlockContainerCustomWithMeta {
     @Override
     @SideOnly(Side.CLIENT)
     public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> items) {
-        if (com.anatawa12.fixRtm.asm.config.MainConfig.mergeMarker) {
+        if (MainConfig.mergeMarker) {
             items.add(new ItemStack(this, 1, 8));
             return;
         }
@@ -181,12 +187,12 @@ public class BlockMarker extends BlockContainerCustomWithMeta {
                         && yMin <= tile.getY() && tile.getY() <= yMax
                         && zMin <= tile.getZ() && tile.getZ() <= zMax)
                 .filter(tile -> Math.abs(tile.getY() - y) < k)
-                .sorted(java.util.Comparator.<TileEntity>comparingInt(v -> v.getPos().getX())
+                .sorted(Comparator.<TileEntity>comparingInt(v -> v.getPos().getX())
                         .thenComparingInt(v -> v.getPos().getY())
                         .thenComparingInt(v -> v.getPos().getZ()))
                 .map(TileEntityMarker::getMarkerRP)
-                .filter(java.util.Objects::nonNull)
-                .collect(java.util.stream.Collectors.toCollection(ArrayList::new));
+                .filter(Objects::nonNull)
+                .collect(Collectors.toCollection(ArrayList::new));
 
         list.sort((arg0, arg1) -> {
             if (arg0.switchType != arg1.switchType) {
@@ -293,7 +299,7 @@ public class BlockMarker extends BlockContainerCustomWithMeta {
         SwitchType switchtype = railmaker.getSwitch();
         if (switchtype == null) {
             if (world != null && !world.isRemote)
-                player.sendMessage(new net.minecraft.util.text.TextComponentTranslation("message.rail.switch_type", list.get(0).blockX, list.get(0).blockY, list.get(0).blockZ));
+                player.sendMessage(new TextComponentTranslation("message.rail.switch_type", list.get(0).blockX, list.get(0).blockY, list.get(0).blockZ));
             return false;
         } else {
             RailMap[] arailmap = switchtype.getAllRailMap();
@@ -487,7 +493,7 @@ public class BlockMarker extends BlockContainerCustomWithMeta {
 
     @Override
     protected ItemStack getItem(int damage) {
-        if (com.anatawa12.fixRtm.asm.config.MainConfig.mergeMarker) {
+        if (MainConfig.mergeMarker) {
             return new ItemStack(this, 1, 8);
         } else {
             return new ItemStack(this, 1, damage & 4);

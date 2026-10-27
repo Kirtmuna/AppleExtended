@@ -14,6 +14,7 @@
 
 package jp.ngt.rtm.electric;
 
+import com.anatawa12.fixRtm.rtm.electric.TileEntityConnectorBaseKt;
 import jp.ngt.ngtlib.block.BlockUtil;
 import jp.ngt.ngtlib.math.PooledVec3;
 import jp.ngt.ngtlib.math.Vec3;
@@ -23,6 +24,7 @@ import jp.ngt.rtm.modelpack.cfg.ConnectorConfig;
 import jp.ngt.rtm.modelpack.modelset.ModelSetConnector;
 import jp.ngt.rtm.modelpack.modelset.ResourceSet;
 import jp.ngt.rtm.modelpack.state.ResourceState;
+import net.minecraft.crash.CrashReportCategory;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.fml.relauncher.Side;
@@ -154,8 +156,8 @@ public abstract class TileEntityConnectorBase extends TileEntityElectricalWiring
     }
 
     @Override
-    public void addInfoToCrashReport(net.minecraft.crash.CrashReportCategory reportCategory) {
+    public void addInfoToCrashReport(CrashReportCategory reportCategory) {
         super.addInfoToCrashReport(reportCategory);
-        com.anatawa12.fixRtm.rtm.electric.TileEntityConnectorBaseKt.addInfoToCrashReport(this, reportCategory);
+        TileEntityConnectorBaseKt.addInfoToCrashReport(this, reportCategory);
     }
 }

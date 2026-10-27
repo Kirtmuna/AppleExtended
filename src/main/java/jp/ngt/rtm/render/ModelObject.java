@@ -35,6 +35,7 @@ import org.lwjgl.opengl.GL11;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -57,7 +58,7 @@ public class ModelObject {
     public ModelObject(ModelSource par1, ModelSetBase par2, PartsRenderer par3, Object... args) {
         String s = par1.modelFile;
         this.model = ModelPackManager.INSTANCE.loadModel(s, 4, true, par2.getConfig(), par2.md5);
-        boolean objMtlCompatibilityMode = FileType.OBJ.match(s) && !s.equals(s.toLowerCase(java.util.Locale.ROOT));
+        boolean objMtlCompatibilityMode = FileType.OBJ.match(s) && !s.equals(s.toLowerCase(Locale.ROOT));
         Material[] amaterial = this.getMaterials(this.getTextureMap(par1.textures), objMtlCompatibilityMode);
         this.textures = new TextureSet[amaterial.length];
         boolean useLight = false;

@@ -14,6 +14,7 @@
 
 package jp.ngt.rtm.network;
 
+import com.anatawa12.fixRtm.ThreadUtil;
 import jp.ngt.ngtlib.util.NGTUtil;
 import jp.ngt.rtm.RTMCore;
 import jp.ngt.rtm.block.decoration.DecorationStore;
@@ -24,16 +25,19 @@ import jp.ngt.rtm.modelpack.state.DataMap;
 import jp.ngt.rtm.rail.TileEntityTurnTableCore;
 import jp.ngt.rtm.sound.SpeakerSounds;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.PlayerCapabilities;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
+import java.lang.reflect.Field;
+
 public class PacketNoticeHandlerClient implements IMessageHandler<PacketNotice, IMessage> {
     @Override
     public IMessage onMessage(PacketNotice message, MessageContext ctx) {
-        com.anatawa12.fixRtm.ThreadUtil.runOnClientThread(() -> doMessage(message));
+        ThreadUtil.runOnClientThread(() -> doMessage(message));
         return null;
     }
 
@@ -85,8 +89,8 @@ public class PacketNoticeHandlerClient implements IMessageHandler<PacketNotice, 
                 String[] sa0 = msg.split(",");
                 float speed = Float.parseFloat(sa0[1]);
                 try {
-                    java.lang.reflect.Field f =
-                            net.minecraft.entity.player.PlayerCapabilities.class.getDeclaredField("field_75096_f");
+                    Field f =
+                            PlayerCapabilities.class.getDeclaredField("field_75096_f");
                     f.setAccessible(true);
                     f.set(NGTUtil.getClientPlayer().capabilities, speed * 0.05F);
                 } catch (Exception e) {

@@ -14,6 +14,7 @@
 
 package jp.ngt.rtm.network;
 
+import com.anatawa12.fixRtm.ThreadUtil;
 import io.netty.buffer.ByteBuf;
 import jp.ngt.ngtlib.util.NGTUtil;
 import jp.ngt.rtm.entity.EntityMMBoundingBox;
@@ -63,7 +64,7 @@ public class PacketMoveMM implements IMessage, IMessageHandler<PacketMoveMM, IMe
 
     @Override
     public IMessage onMessage(PacketMoveMM message, MessageContext ctx) {
-        com.anatawa12.fixRtm.ThreadUtil.runOnClientThread(() -> doMessage(message));
+        ThreadUtil.runOnClientThread(() -> doMessage(message));
         return null;
     }
 

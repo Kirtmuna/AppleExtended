@@ -14,6 +14,7 @@
 
 package jp.ngt.rtm.entity.vehicle;
 
+import com.anatawa12.fixRtm.rtm.entity.vehicle.EntityVehicleBaseKt;
 import jp.ngt.ngtlib.entity.EntityCustom;
 import jp.ngt.ngtlib.math.NGTMath;
 import jp.ngt.ngtlib.math.PooledVec3;
@@ -35,6 +36,7 @@ import jp.ngt.rtm.modelpack.state.ResourceState;
 import jp.ngt.rtm.network.PacketNotice;
 import jp.ngt.rtm.network.PacketSetTrainState;
 import jp.ngt.rtm.network.PacketVehicleMovement;
+import net.minecraft.crash.CrashReportCategory;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.MoverType;
@@ -46,6 +48,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -111,7 +114,7 @@ public abstract class EntityVehicleBase<T extends ModelSetVehicleBase> extends E
         }
     }
 
-    private final java.util.ArrayDeque<Snapshot> snapshotBuffer = new java.util.ArrayDeque<>();
+    private final ArrayDeque<Snapshot> snapshotBuffer = new ArrayDeque<>();
     private double targetOffset = Double.NaN;
     private double smoothedOffset = Double.NaN;
 
@@ -739,7 +742,7 @@ public abstract class EntityVehicleBase<T extends ModelSetVehicleBase> extends E
     public void onRemovedFromWorld() {
         this.removeWeatherEffectDummy();
         super.onRemovedFromWorld();
-        com.anatawa12.fixRtm.rtm.entity.vehicle.EntityVehicleBaseKt.onRemovedFromWorld(this);
+        EntityVehicleBaseKt.onRemovedFromWorld(this);
     }
 
     private void removeWeatherEffectDummy() {
@@ -758,8 +761,8 @@ public abstract class EntityVehicleBase<T extends ModelSetVehicleBase> extends E
     }
 
     @Override
-    public void addEntityCrashInfo(net.minecraft.crash.CrashReportCategory category) {
+    public void addEntityCrashInfo(CrashReportCategory category) {
         super.addEntityCrashInfo(category);
-        com.anatawa12.fixRtm.rtm.entity.vehicle.EntityVehicleBaseKt.addEntityCrashInfo(this, category);
+        EntityVehicleBaseKt.addEntityCrashInfo(this, category);
     }
 }

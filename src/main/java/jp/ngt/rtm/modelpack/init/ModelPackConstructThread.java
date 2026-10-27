@@ -14,6 +14,7 @@
 
 package jp.ngt.rtm.modelpack.init;
 
+import com.anatawa12.fixRtm.rtm.modelpack.ModelState;
 import jp.ngt.ngtlib.io.NGTLog;
 import jp.ngt.ngtlib.util.NGTUtilClient;
 import jp.ngt.rtm.modelpack.ModelPackManager;
@@ -64,7 +65,7 @@ public class ModelPackConstructThread extends Thread {
                     set.constructOnClient();
                     set.finishConstruct();
                 }
-                set.state = com.anatawa12.fixRtm.rtm.modelpack.ModelState.CONSTRUCTED;
+                set.state = ModelState.CONSTRUCTED;
                 NGTLog.debug("Construct Model : %s (%d / %d)", set.getConfig().getName(),
                         this.index + 1, ModelPackManager.INSTANCE.unconstructSets.size());
                 ++this.index;

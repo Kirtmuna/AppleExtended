@@ -14,6 +14,8 @@
 
 package jp.ngt.rtm.modelpack.cfg;
 
+import java.util.Arrays;
+
 public class TrainConfig extends VehicleBaseConfig implements IConfigWithType {
     private String trainName;
     private String trainType;
@@ -109,7 +111,7 @@ public class TrainConfig extends VehicleBaseConfig implements IConfigWithType {
 
         if (this.accelerateions == null || (!this.notDisplayCab && this.accelerateions.length != this.maxSpeed.length)) {
             this.accelerateions = new float[this.maxSpeed.length];
-            java.util.Arrays.fill(this.accelerateions, this.accelerateion);
+            Arrays.fill(this.accelerateions, this.accelerateion);
         }
 
         if (this.deccelerations == null || (!this.notDisplayCab && this.deccelerations.length != 9)) {

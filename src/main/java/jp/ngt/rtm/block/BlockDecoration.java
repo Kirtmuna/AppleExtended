@@ -14,10 +14,16 @@
 
 package jp.ngt.rtm.block;
 
+import com.anatawa12.fixRtm.rtm.block.BlockDecorationKt;
 import jp.ngt.ngtlib.block.BlockContainerCustom;
 import jp.ngt.rtm.block.tileentity.TileEntityDecoration;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 
 public class BlockDecoration extends BlockContainerCustom {
@@ -30,7 +36,7 @@ public class BlockDecoration extends BlockContainerCustom {
         return new TileEntityDecoration();
     }
 
-    public net.minecraft.item.ItemStack getPickBlock(net.minecraft.block.state.IBlockState state, net.minecraft.util.math.RayTraceResult target, World world, net.minecraft.util.math.BlockPos pos, net.minecraft.entity.player.EntityPlayer player) {
-        return com.anatawa12.fixRtm.rtm.block.BlockDecorationKt.getPickBlock(world, pos);
+    public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
+        return BlockDecorationKt.getPickBlock(world, pos);
     }
 }

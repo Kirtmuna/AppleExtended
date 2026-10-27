@@ -36,6 +36,7 @@ import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.fml.common.network.internal.FMLNetworkHandler;
 
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -54,7 +55,7 @@ public final class VehicleTrackerEntry extends EntityTrackerEntry {
     private Entity rider;
     private boolean isTrain;
     
-    private final java.util.Set<Integer> trackedPlayerIds = new java.util.HashSet<>();
+    private final Set<Integer> trackedPlayerIds = new HashSet<>();
 
     public VehicleTrackerEntry(Entity par2) {
         super(par2, 256, 256, RTMEntity.FREQ_VEHICLE, false);
@@ -239,7 +240,7 @@ public final class VehicleTrackerEntry extends EntityTrackerEntry {
                 newEntry.trackingPlayers.addAll(entry.trackingPlayers);
 
 
-                java.util.Set<EntityTrackerEntry> entries = getTrackedEntities(tracker);
+                Set<EntityTrackerEntry> entries = getTrackedEntities(tracker);
                 if (entries != null) {
                     entries.remove(entry);
                     entries.add(newEntry);

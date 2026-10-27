@@ -14,6 +14,8 @@
 
 package jp.ngt.rtm.rail.util;
 
+import com.anatawa12.fixRtm.Deprecation;
+
 public final class RailMapSwitch extends RailMapBasic {
     public final RailDir startDir, endDir;
     private boolean isOpen;
@@ -21,7 +23,7 @@ public final class RailMapSwitch extends RailMapBasic {
     @Deprecated
     public RailMapSwitch(RailPosition par1, RailPosition par2, RailDir sDir, RailDir eDir) {
         this(par1, par2, sDir, eDir, 0);
-        com.anatawa12.fixRtm.Deprecation.found("RailMapSwitch#RailMapSwitch");
+        Deprecation.found("RailMapSwitch#RailMapSwitch");
     }
 
     public RailMapSwitch(RailPosition par1, RailPosition par2, RailDir sDir, RailDir eDir, int version) {

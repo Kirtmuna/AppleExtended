@@ -14,6 +14,7 @@
 
 package jp.ngt.rtm.entity.vehicle;
 
+import com.anatawa12.fixRtm.rtm.entity.vehicle.EntityTrolleyKt;
 import jp.ngt.ngtlib.math.NGTMath;
 import jp.ngt.ngtlib.math.Vec3;
 import jp.ngt.ngtlib.network.PacketNBT;
@@ -24,6 +25,7 @@ import jp.ngt.rtm.RTMResource;
 import jp.ngt.rtm.modelpack.IResourceSelector;
 import jp.ngt.rtm.modelpack.modelset.ModelSetVehicle;
 import jp.ngt.rtm.modelpack.state.ResourceState;
+import net.minecraft.crash.CrashReportCategory;
 import net.minecraft.entity.item.EntityMinecartEmpty;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -185,8 +187,8 @@ public class EntityTrolley extends EntityMinecartEmpty implements IResourceSelec
     }
 
     @Override
-    public void addEntityCrashInfo(net.minecraft.crash.CrashReportCategory category) {
+    public void addEntityCrashInfo(CrashReportCategory category) {
         super.addEntityCrashInfo(category);
-        com.anatawa12.fixRtm.rtm.entity.vehicle.EntityTrolleyKt.addEntityCrashInfo(this, category);
+        EntityTrolleyKt.addEntityCrashInfo(this, category);
     }
 }

@@ -14,6 +14,7 @@
 
 package jp.ngt.rtm.rail;
 
+import jp.apple.appleextended.compat.ReplaySyncManager;
 import jp.ngt.ngtlib.block.BlockUtil;
 import jp.ngt.ngtlib.math.AABBInt;
 import jp.ngt.ngtlib.renderer.GLHelper;
@@ -41,6 +42,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public abstract class TileEntityLargeRailCore extends TileEntityLargeRailBase implements IResourceSelector {
@@ -74,7 +76,7 @@ public abstract class TileEntityLargeRailCore extends TileEntityLargeRailBase im
 
     @Override
     public void readFromNBT(NBTTagCompound nbt) {
-        jp.apple.appleextended.compat.ReplaySyncManager.patchRailMetadata(this, nbt);
+        ReplaySyncManager.patchRailMetadata(this, nbt);
 
         super.readFromNBT(nbt);
         this.readRailStates(nbt);
@@ -393,7 +395,7 @@ public abstract class TileEntityLargeRailCore extends TileEntityLargeRailBase im
 
     public List<int[]> getRailGroupCorePositions() {
         int[] pos = this.getStartPoint();
-        return java.util.Collections.singletonList(new int[]{pos[0], pos[1], pos[2]});
+        return Collections.singletonList(new int[]{pos[0], pos[1], pos[2]});
     }
 
     public boolean isLogicalRailOccupied() {

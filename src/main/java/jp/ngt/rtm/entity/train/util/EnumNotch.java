@@ -14,6 +14,8 @@
 
 package jp.ngt.rtm.entity.train.util;
 
+import jp.ngt.ngtlib.io.ScriptUtil;
+import jp.ngt.rtm.entity.train.EntityTrainBase;
 import jp.ngt.rtm.modelpack.cfg.TrainConfig;
 
 public enum EnumNotch {
@@ -102,7 +104,7 @@ public enum EnumNotch {
         return inertia;
     }
 
-    public static float getAcceleration(int notch, float prevSpeed, TrainConfig cfg, jp.ngt.rtm.entity.train.EntityTrainBase train) {
+    public static float getAcceleration(int notch, float prevSpeed, TrainConfig cfg, EntityTrainBase train) {
         if (notch == 0) {
             return 0.0F;
         } else if (notch > 0) {
@@ -110,7 +112,7 @@ public enum EnumNotch {
             if (prevSpeed >= cfg.maxSpeed[notch])
                 return 0.0F;
             if (cfg.useVariableAcceleration) {
-                Object obj = jp.ngt.ngtlib.io.ScriptUtil.doScriptIgnoreError(
+                Object obj = ScriptUtil.doScriptIgnoreError(
                         train.getResourceState().getResourceSet().serverSE,
                         "getAcceleration",
                         train,
@@ -122,7 +124,7 @@ public enum EnumNotch {
         } else {
             float deceleration;
             if (cfg.useVariableDeceleration) {
-                Object obj = jp.ngt.ngtlib.io.ScriptUtil.doScriptIgnoreError(
+                Object obj = ScriptUtil.doScriptIgnoreError(
                         train.getResourceState().getResourceSet().serverSE,
                         "getDeceleration",
                         train,

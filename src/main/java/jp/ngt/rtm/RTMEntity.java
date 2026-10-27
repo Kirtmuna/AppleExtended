@@ -14,6 +14,7 @@
 
 package jp.ngt.rtm;
 
+import com.anatawa12.fixRtm.rtm.entity.RenderEntityElectricalWiring;
 import jp.ngt.ngtlib.util.IMod;
 import jp.ngt.ngtlib.util.NGTRegHandler;
 import jp.ngt.ngtlib.util.NGTUtilClient;
@@ -78,8 +79,8 @@ public final class RTMEntity {
         NGTUtilClient.registerEntityRender(WeatherEffectDummy.class, RenderWeatherEffectDummy.class);
         NGTUtilClient.registerEntityRender(EntityBogie.class, RenderBogie.class);
         NGTUtilClient.registerEntityRender(EntityFloor.class, RenderSeat.class);
-        NGTUtilClient.registerEntityRender(EntityATC.class, com.anatawa12.fixRtm.rtm.entity.RenderEntityElectricalWiring.class);
-        NGTUtilClient.registerEntityRender(EntityTrainDetector.class, com.anatawa12.fixRtm.rtm.entity.RenderEntityElectricalWiring.class);
+        NGTUtilClient.registerEntityRender(EntityATC.class, RenderEntityElectricalWiring.class);
+        NGTUtilClient.registerEntityRender(EntityTrainDetector.class, RenderEntityElectricalWiring.class);
         NGTUtilClient.registerEntityRender(EntityBumpingPost.class, RenderEntityInstalledObject.class);
         NGTUtilClient.registerEntityRender(EntityContainer.class, RenderContainer.class);
         NGTUtilClient.registerEntityRender(EntityArtillery.class, RenderArtillery.class);

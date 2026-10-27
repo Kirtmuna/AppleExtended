@@ -14,16 +14,23 @@
 
 package jp.ngt.rtm.block;
 
+import com.anatawa12.fixRtm.rtm.block.BlockOrnamentMain;
+import jp.apple.appleextended.gui.AppleGuiHelper;
 import jp.ngt.ngtlib.block.BlockArgHolder;
 import jp.ngt.ngtlib.block.BlockContainerCustomWithMeta;
+import jp.ngt.ngtlib.util.NGTUtil;
 import jp.ngt.rtm.RTMCore;
+import jp.ngt.rtm.RTMItem;
 import jp.ngt.rtm.block.tileentity.TileEntityMachineBase;
+import jp.ngt.rtm.item.ItemInstalledObject;
 import jp.ngt.rtm.modelpack.cfg.MachineConfig;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
@@ -40,9 +47,9 @@ public abstract class BlockMachineBase extends BlockContainerCustomWithMeta {
 
     protected boolean clickMachine(World world, int x, int y, int z, EntityPlayer player) {
         if (world.isRemote) {
-            if (jp.ngt.ngtlib.util.NGTUtil.isEquippedItem(player, jp.ngt.rtm.RTMItem.crowbar)) {
-                TileEntity te = world.getTileEntity(new net.minecraft.util.math.BlockPos(x, y, z));
-                jp.apple.appleextended.gui.AppleGuiHelper.openOffsetGui(te);
+            if (NGTUtil.isEquippedItem(player, RTMItem.crowbar)) {
+                TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
+                AppleGuiHelper.openOffsetGui(te);
                 return true;
             }
 
@@ -65,7 +72,7 @@ public abstract class BlockMachineBase extends BlockContainerCustomWithMeta {
     @Override
     @Deprecated
     public int getLightValue(IBlockState state, IBlockAccess world, BlockPos pos) {
-        net.minecraft.tileentity.TileEntity tile = world.getTileEntity(pos);
+        TileEntity tile = world.getTileEntity(pos);
         if (!(tile instanceof TileEntityMachineBase)) return super.getLightValue(state);
         TileEntityMachineBase tileentitymachinebase = (TileEntityMachineBase) tile;
         if (tileentitymachinebase == null) {
@@ -77,7 +84,7 @@ public abstract class BlockMachineBase extends BlockContainerCustomWithMeta {
     }
 
     @Override
-    public net.minecraft.item.ItemStack getPickBlock(net.minecraft.block.state.IBlockState state, net.minecraft.util.math.RayTraceResult target, World world, net.minecraft.util.math.BlockPos pos, net.minecraft.entity.player.EntityPlayer player) {
-        return com.anatawa12.fixRtm.rtm.block.BlockOrnamentMain.getPickBlock(world, pos, jp.ngt.rtm.item.ItemInstalledObject.IstlObjType.FLUORESCENT);
+    public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
+        return BlockOrnamentMain.getPickBlock(world, pos, ItemInstalledObject.IstlObjType.FLUORESCENT);
     }
 }

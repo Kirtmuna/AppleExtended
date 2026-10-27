@@ -14,6 +14,7 @@
 
 package jp.ngt.rtm.entity.npc;
 
+import com.anatawa12.fixRtm.rtm.entity.npc.EntityNPCKt;
 import jp.ngt.ngtlib.io.NGTLog;
 import jp.ngt.ngtlib.math.NGTMath;
 import jp.ngt.ngtlib.network.PacketNBT;
@@ -27,6 +28,7 @@ import jp.ngt.rtm.modelpack.IResourceSelector;
 import jp.ngt.rtm.modelpack.cfg.NPCConfig;
 import jp.ngt.rtm.modelpack.modelset.ModelSetNPC;
 import jp.ngt.rtm.modelpack.state.ResourceState;
+import net.minecraft.crash.CrashReportCategory;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.EntityAITasks.EntityAITaskEntry;
@@ -462,8 +464,8 @@ public class EntityNPC extends EntityTameable implements IResourceSelector, IRan
     }
 
     @Override
-    public void addEntityCrashInfo(net.minecraft.crash.CrashReportCategory category) {
+    public void addEntityCrashInfo(CrashReportCategory category) {
         super.addEntityCrashInfo(category);
-        com.anatawa12.fixRtm.rtm.entity.npc.EntityNPCKt.addEntityCrashInfo(this, category);
+        EntityNPCKt.addEntityCrashInfo(this, category);
     }
 }

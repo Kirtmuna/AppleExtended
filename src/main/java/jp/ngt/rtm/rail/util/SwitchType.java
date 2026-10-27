@@ -14,6 +14,8 @@
 
 package jp.ngt.rtm.rail.util;
 
+import com.anatawa12.fixRtm.Deprecation;
+import com.anatawa12.fixRtm.UtilsKt;
 import net.minecraft.entity.Entity;
 import net.minecraft.world.World;
 
@@ -29,7 +31,7 @@ public abstract class SwitchType {
     @Deprecated
     protected SwitchType(int par1) {
         this(par1, 0);
-        com.anatawa12.fixRtm.Deprecation.found("SwitchType#SwitchType");
+        Deprecation.found("SwitchType#SwitchType");
     }
 
     protected SwitchType(int par1, int fixRTMRailMapVersion) {
@@ -78,7 +80,7 @@ public abstract class SwitchType {
         @Deprecated
         public SwitchBasic() {
             this(0);
-            com.anatawa12.fixRtm.Deprecation.found("SwitchBasic#SwitchBasic");
+            Deprecation.found("SwitchBasic#SwitchBasic");
         }
 
         public SwitchBasic(int fixRTMRailMapVersion) {
@@ -130,7 +132,7 @@ public abstract class SwitchType {
         @Deprecated
         public SwitchSingleCross() {
             this(0);
-            com.anatawa12.fixRtm.Deprecation.found("SwitchSingleCross#SwitchSingleCross");
+            Deprecation.found("SwitchSingleCross#SwitchSingleCross");
         }
 
         public SwitchSingleCross(int fixRTMRailMapVersion) {
@@ -164,7 +166,7 @@ public abstract class SwitchType {
             }
             arailmapswitch[2] = new RailMapSwitch(railposition, railposition1, raildir, raildir1, fixRTMRailMapVersion);
 
-            if (!com.anatawa12.fixRtm.UtilsKt.isAllNotNull(arailmapswitch))
+            if (!UtilsKt.isAllNotNull(arailmapswitch))
                 return false;
 
             this.railMaps = arailmapswitch;
@@ -219,7 +221,7 @@ public abstract class SwitchType {
         @Deprecated
         public SwitchScissorsCross() {
             this(0);
-            com.anatawa12.fixRtm.Deprecation.found("SwitchScissorsCross#SwitchScissorsCross");
+            Deprecation.found("SwitchScissorsCross#SwitchScissorsCross");
         }
 
         public SwitchScissorsCross(int fixRTMRailMapVersion) {
@@ -360,7 +362,7 @@ public abstract class SwitchType {
         @Deprecated
         public SwitchDiamondCross() {
             this(0);
-            com.anatawa12.fixRtm.Deprecation.found("SwitchDiamondCross#SwitchDiamondCross");
+            Deprecation.found("SwitchDiamondCross#SwitchDiamondCross");
         }
 
         public SwitchDiamondCross(int fixRTMRailMapVersion) {

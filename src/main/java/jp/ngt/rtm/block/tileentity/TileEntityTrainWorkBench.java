@@ -16,9 +16,11 @@ package jp.ngt.rtm.block.tileentity;
 
 import jp.ngt.ngtlib.block.TileEntityCustom;
 import jp.ngt.ngtlib.item.ItemUtil;
+import jp.ngt.ngtlib.util.NGTUtil;
 import jp.ngt.rtm.RTMCore;
 import jp.ngt.rtm.gui.ContainerRTMWorkBench;
 import jp.ngt.rtm.network.PacketNotice;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -39,7 +41,7 @@ public class TileEntityTrainWorkBench extends TileEntityCustom implements ITicka
     @Override
     public void readFromNBT(NBTTagCompound nbt) {
         super.readFromNBT(nbt);
-        net.minecraft.block.state.IBlockState state = getWorld().getBlockState(getPos());
+        IBlockState state = getWorld().getBlockState(getPos());
         this.getWorld().notifyBlockUpdate(this.pos, state, state, 0);
         NBTTagList nbttaglist = nbt.getTagList("Items", 10);
         Arrays.fill(this.craftSlots, ItemStack.EMPTY);
@@ -117,7 +119,7 @@ public class TileEntityTrainWorkBench extends TileEntityCustom implements ITicka
     public void startCrafting(EntityPlayer player, boolean sendPacket) {
         this.craftingTime = 0;
         this.isCrafting = true;
-        this.isCreative = jp.ngt.ngtlib.util.NGTUtil.isServer() && player.capabilities.isCreativeMode;
+        this.isCreative = NGTUtil.isServer() && player.capabilities.isCreativeMode;
 
         ContainerRTMWorkBench container = (ContainerRTMWorkBench) player.openContainer;
         container.startCrafting();

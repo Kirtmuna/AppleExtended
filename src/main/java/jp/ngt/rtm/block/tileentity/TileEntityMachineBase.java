@@ -14,6 +14,8 @@
 
 package jp.ngt.rtm.block.tileentity;
 
+import com.anatawa12.fixRtm.rtm.block.tileentity.TileEntityMachineBaseKt;
+import jp.apple.appleextended.compat.ReplaySyncManager;
 import jp.ngt.ngtlib.block.BlockUtil;
 import jp.ngt.ngtlib.block.TileEntityPlaceable;
 import jp.ngt.ngtlib.math.Vec3;
@@ -23,6 +25,7 @@ import jp.ngt.rtm.modelpack.ResourceType;
 import jp.ngt.rtm.modelpack.ScriptExecuter;
 import jp.ngt.rtm.modelpack.modelset.ModelSetMachine;
 import jp.ngt.rtm.modelpack.state.ResourceState;
+import net.minecraft.crash.CrashReportCategory;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ITickable;
@@ -50,7 +53,7 @@ public abstract class TileEntityMachineBase extends TileEntityPlaceable implemen
 
     @Override
     public void readFromNBT(NBTTagCompound nbt) {
-        jp.apple.appleextended.compat.ReplaySyncManager.patchResourceSelectorMetadata(this, nbt);
+        ReplaySyncManager.patchResourceSelectorMetadata(this, nbt);
         super.readFromNBT(nbt);
         this.state.readFromNBT(nbt.getCompoundTag("State"));
         this.pitch = nbt.getFloat("Pitch");
@@ -72,7 +75,7 @@ public abstract class TileEntityMachineBase extends TileEntityPlaceable implemen
             this.tick = 0;
         }
         if (this.world.isRemote) {
-            jp.apple.appleextended.compat.ReplaySyncManager.checkModelSync(this);
+            ReplaySyncManager.checkModelSync(this);
         }
         if (!this.getWorld().isRemote) {
             this.executer.execScript(this);
@@ -146,9 +149,9 @@ public abstract class TileEntityMachineBase extends TileEntityPlaceable implemen
     public abstract ResourceType getSubType();
 
     @Override
-    public void addInfoToCrashReport(net.minecraft.crash.CrashReportCategory reportCategory) {
+    public void addInfoToCrashReport(CrashReportCategory reportCategory) {
         super.addInfoToCrashReport(reportCategory);
-        com.anatawa12.fixRtm.rtm.block.tileentity.TileEntityMachineBaseKt.addInfoToCrashReport(this, reportCategory);
+        TileEntityMachineBaseKt.addInfoToCrashReport(this, reportCategory);
     }
 
     @Override

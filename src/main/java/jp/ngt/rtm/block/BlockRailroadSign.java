@@ -14,6 +14,9 @@
 
 package jp.ngt.rtm.block;
 
+import com.anatawa12.fixRtm.UtilsKt;
+import com.anatawa12.fixRtm.gui.GuiId;
+import com.anatawa12.fixRtm.rtm.block.BlockOrnamentMain;
 import jp.ngt.ngtlib.block.BlockArgHolder;
 import jp.ngt.ngtlib.block.BlockContainerCustomWithMeta;
 import jp.ngt.ngtlib.block.BlockUtil;
@@ -29,6 +32,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
@@ -61,7 +65,7 @@ public class BlockRailroadSign extends BlockContainerCustomWithMeta {
             int z = holder.getBlockPos().getZ();
             EntityPlayer entityplayer = holder.getPlayer();
             if (holder.getPlayer().inventory.getCurrentItem().getItem() == RTMItem.crowbar) {
-                com.anatawa12.fixRtm.UtilsKt.openGui(holder.getPlayer(), com.anatawa12.fixRtm.gui.GuiId.ChangeOffset, holder.getWorld(), x, y, z);
+                UtilsKt.openGui(holder.getPlayer(), GuiId.ChangeOffset, holder.getWorld(), x, y, z);
                 return true;
             }
             entityplayer.openGui(RTMCore.instance, RTMCore.instance.guiIdSelectTileEntityTexture, holder.getWorld(), x, y, z);
@@ -70,7 +74,7 @@ public class BlockRailroadSign extends BlockContainerCustomWithMeta {
     }
 
     @Override
-    public ItemStack getPickBlock(IBlockState state, net.minecraft.util.math.RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
-        return com.anatawa12.fixRtm.rtm.block.BlockOrnamentMain.getPickBlock(world, pos, ItemInstalledObject.IstlObjType.RAILLOAD_SIGN);
+    public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
+        return BlockOrnamentMain.getPickBlock(world, pos, ItemInstalledObject.IstlObjType.RAILLOAD_SIGN);
     }
 }

@@ -17,6 +17,7 @@ package jp.ngt.rtm.entity.vehicle;
 import jp.ngt.ngtlib.io.NGTLog;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.world.World;
 
 public final class WeatherEffectDummy extends Entity {
@@ -94,7 +95,7 @@ public final class WeatherEffectDummy extends Entity {
     }
 
     @Override
-    public net.minecraft.util.math.AxisAlignedBB getEntityBoundingBox() {
+    public AxisAlignedBB getEntityBoundingBox() {
         return this.parent.getEntityBoundingBox();
     }
 }
