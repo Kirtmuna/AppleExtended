@@ -15,6 +15,7 @@
 package jp.apple.appleextended.train;
 
 import jp.apple.appleextended.config.AppleConfig;
+import jp.apple.appleextended.train.render.TrainBodySway;
 import jp.ngt.rtm.entity.train.EntityTrainBase;
 import jp.ngt.rtm.entity.train.parts.EntityVehiclePart;
 import jp.ngt.rtm.entity.vehicle.EntityVehicleBase;
@@ -59,6 +60,11 @@ public class PlayerCameraCant {
         float amount = ROLL_SIGN * roll;
         event.setRoll(event.getRoll() + amount * (float) Math.cos(delta));
         event.setPitch(event.getPitch() + amount * (float) Math.sin(delta));
+
+        if (AppleConfig.enableBodySway) {
+            TrainBodySway.update(train);
+            roll += TrainBodySway.getRoll(train, (float) event.getRenderPartialTicks());
+        }
     }
 
     private static EntityTrainBase findTrain(EntityPlayer player) {

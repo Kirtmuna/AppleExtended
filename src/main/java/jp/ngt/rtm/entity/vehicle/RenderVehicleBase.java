@@ -15,6 +15,7 @@
 package jp.ngt.rtm.entity.vehicle;
 
 import jp.apple.appleextended.config.AppleConfig;
+import jp.apple.appleextended.train.render.TrainBodySway;
 import jp.ngt.ngtlib.math.NGTMath;
 import jp.ngt.ngtlib.math.PooledVec3;
 import jp.ngt.ngtlib.math.Vec3;
@@ -76,6 +77,15 @@ public class RenderVehicleBase extends Render<EntityVehicleBase> {
         GL11.glRotatef(-f1, 1.0F, 0.0F, 0.0F);
         float f2 = vehicle.prevRotationRoll + (vehicle.rotationRoll - vehicle.prevRotationRoll) * par9;
         GL11.glRotatef(f2, 0.0F, 0.0F, 1.0F);
+        if (AppleConfig.enableBodySway && vehicle instanceof EntityTrainBase) {
+            TrainBodySway.update(vehicle);
+            float swayRoll = TrainBodySway.getRoll(vehicle, par9);
+            float swayPitch = TrainBodySway.getPitch(vehicle, par9);
+            GL11.glTranslatef(0.0F, TrainBodySway.ROLL_CENTER, 0.0F);
+            GL11.glRotatef(swayRoll, 0.0F, 0.0F, 1.0F);
+            GL11.glRotatef(-swayPitch, 1.0F, 0.0F, 0.0F);
+            GL11.glTranslatef(0.0F, -TrainBodySway.ROLL_CENTER, 0.0F);
+        }
         if (Minecraft.getMinecraft().getRenderManager().isDebugBoundingBox()) {
             this.debugCollision(vehicle);
         }

@@ -37,6 +37,7 @@ public class AppleConfig {
 
     public static boolean enableCantCamera = true;
     public static boolean enableSmoothLight = true;
+    public static boolean enableBodySway = true;
 
     private static Configuration config;
 
@@ -75,6 +76,8 @@ public class AppleConfig {
                     "Tilt the player's view along with the train's cant");
             enableSmoothLight = cfg.getBoolean("enableSmoothLight", CATEGORY_RENDER, true,
                     "Smooth the per-car brightness gradient between blocks");
+            enableBodySway = cfg.getBoolean("enableBodySway", CATEGORY_RENDER, true,
+                    "Sway the car body on its bogies");
 
         } catch (Exception e) {
             e.printStackTrace();

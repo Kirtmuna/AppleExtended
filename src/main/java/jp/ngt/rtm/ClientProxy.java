@@ -15,6 +15,7 @@
 package jp.ngt.rtm;
 
 import jp.apple.appleextended.config.AppleConfig;
+import jp.apple.appleextended.train.render.TrainBodySway;
 import jp.ngt.ngtlib.io.NGTFileLoader;
 import jp.ngt.ngtlib.io.NGTJson;
 import jp.ngt.ngtlib.io.NGTLog;
@@ -30,6 +31,7 @@ import jp.ngt.ngtlib.util.VersionChecker;
 import jp.ngt.rtm.block.ParticleSpark;
 import jp.ngt.rtm.block.tileentity.RenderDecoration;
 import jp.ngt.rtm.entity.EntityMeltedMetalFX;
+import jp.ngt.rtm.entity.train.EntityBogie;
 import jp.ngt.rtm.entity.train.EntityTrainBase;
 import jp.ngt.rtm.entity.train.parts.EntityArtillery;
 import jp.ngt.rtm.entity.train.util.FormationManager;
@@ -224,6 +226,9 @@ public class ClientProxy extends CommonProxy {
         if (NGTUtil.isServer()) {
             super.playSound(entity, sound, vol, pitch);
         } else {
+            if (entity instanceof EntityBogie && isJointSound(sound)) {
+                TrainBodySway.onJoint((EntityBogie) entity);
+            }
             MovingSoundCustom ms = MovingSoundMaker.create(entity, sound, false);
             if (ms != null) {
                 ms.setSoundRange(AppleConfig.hornSoundRange);
@@ -259,5 +264,10 @@ public class ClientProxy extends CommonProxy {
     @Override
     public FormationManager getFormationManager() {
         return NGTUtil.isServer() ? super.getFormationManager() : this.fmClient;
+    }
+
+    private static boolean isJointSound(String sound) {
+        return "rtm:sounds/train/joint.ogg".equals(sound)
+                || "rtm:sounds/train/joint_reverb.ogg".equals(sound);
     }
 }
