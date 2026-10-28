@@ -63,7 +63,7 @@ public class PlayerCameraCant {
 
         if (AppleConfig.enableBodySway) {
             TrainBodySway.update(train);
-            roll += TrainBodySway.getRoll(train, (float) event.getRenderPartialTicks());
+            roll = TrainBodySway.getTotalRoll(train, (float) event.getRenderPartialTicks());
         }
     }
 

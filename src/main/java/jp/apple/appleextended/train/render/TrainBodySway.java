@@ -154,7 +154,7 @@ public final class TrainBodySway {
 
     /**
      * ジョイントを台車が通るときのロールの揺れの強さ [度/秒]。左右の向きは毎回ランダム
-     * この値に「速度/SPEED_REF」を掛けた分が加わる。低速ではほぼ揺れない
+     * この値に「速度/SPEED_REF」を掛けた分が加わる。高速ではほぼ揺れない
      * <ul>
      *   <li>大きくする: 揺れが強くなる</li>
      *   <li>0にする: 揺れなくなる</li>
@@ -183,6 +183,7 @@ public final class TrainBodySway {
     private static final Map<EntityVehicleBase, State> STATES =
             Collections.synchronizedMap(new WeakHashMap<EntityVehicleBase, State>());
     private static final Random RAND = new Random();
+    private static final int MAX_CATCHUP_TICKS = 10;
 
     private static final class State {
         long tick = Long.MIN_VALUE;
@@ -210,7 +211,7 @@ public final class TrainBodySway {
         float k = Math.max(1.0F - s.lastSpeed / SPEED_REF, 0.0F);
         synchronized (s) {
             s.pendRoll += (RAND.nextBoolean() ? 1.0F : -1.0F) * JOINT_ROLL * k;
-            s.pendPitch += (bogie.getBogieId() == 0 ? 1.0F : -1.0F) * JOINT_PITCH * k;
+            s.pendPitch += (bogie.getBogieId() == 0 ? -1.0F : 1.0F) * JOINT_PITCH * k;
         }
     }
 
@@ -225,18 +226,17 @@ public final class TrainBodySway {
         if (s.tick == now) {
             return;
         }
-        boolean continuous = (now - s.tick == 1L);
+        boolean first = (s.tick == Long.MIN_VALUE);
+        long gap = first ? 0L : now - s.tick;
         s.tick = now;
 
-        double dx = v.posX - v.lastTickPosX;
-        double dz = v.posZ - v.lastTickPosZ;
-        float speed = (float) Math.sqrt(dx * dx + dz * dz) * 20.0F;
-        float yawRate = (float) Math.toRadians(NGTMath.wrapAngle(v.rotationYaw - s.lastYaw)) * 20.0F;
+        float speed = Math.abs(v.getSpeed()) * 20.0F;
+        float yawDelta = NGTMath.wrapAngle(v.rotationYaw - s.lastYaw);
         float lastSpeed = s.lastSpeed;
         s.lastSpeed = speed;
         s.lastYaw = v.rotationYaw;
 
-        if (!continuous) {
+        if (first || gap > MAX_CATCHUP_TICKS) {
             s.roll = s.rollV = s.pitch = s.pitchV = 0.0F;
             s.prevRoll = s.prevPitch = 0.0F;
             s.aLon = 0.0F;
@@ -246,37 +246,44 @@ public final class TrainBodySway {
             return;
         }
 
+        int steps = (int) gap;
+        float yawRate = (float) Math.toRadians(yawDelta) * 20.0F / steps;
         float aLat = clamp(speed * yawRate, MAX_ACCEL);
-        float aLon = clamp((speed - lastSpeed) * 20.0F, MAX_ACCEL);
-        s.aLon += (aLon - s.aLon) * LON_FILTER;
-
-        float rollTarget = clamp(ROLL_SIGN * ROLL_PER_LAT * aLat, MAX_ROLL);
-        float pitchTarget = clamp(PITCH_PER_LON * s.aLon, MAX_PITCH);
-
-        s.prevRoll = s.roll;
-        s.prevPitch = s.pitch;
-
-        float wr = (float) (2.0D * Math.PI * ROLL_FREQ);
-        s.rollV += (-wr * wr * (s.roll - rollTarget) - 2.0F * DAMPING * wr * s.rollV) * DT;
-        s.roll += s.rollV * DT;
-
-        float wp = (float) (2.0D * Math.PI * PITCH_FREQ);
-        s.pitchV += (-wp * wp * (s.pitch - pitchTarget) - 2.0F * DAMPING * wp * s.pitchV) * DT;
-        s.pitch += s.pitchV * DT;
-        
+        float aLonIn = clamp((speed - lastSpeed) * 20.0F / steps, MAX_ACCEL);
         float k = Math.min(speed / SPEED_REF, 1.0F);
-        s.rollV += (float) RAND.nextGaussian() * NOISE_ROLL * k;
-        s.pitchV += (float) RAND.nextGaussian() * NOISE_PITCH * k;
-        
-        synchronized (s) {
-            s.rollV += s.pendRoll;
-            s.pitchV += s.pendPitch;
-            s.pendRoll = 0.0F;
-            s.pendPitch = 0.0F;
-        }
 
-        s.roll = clamp(s.roll, MAX_ROLL);
-        s.pitch = clamp(s.pitch, MAX_PITCH);
+        for (int i = 0; i < steps; ++i) {
+            s.aLon += (aLonIn - s.aLon) * LON_FILTER;
+
+            float rollTarget = clamp(ROLL_SIGN * ROLL_PER_LAT * aLat, MAX_ROLL);
+            float pitchTarget = clamp(PITCH_PER_LON * s.aLon, MAX_PITCH);
+
+            if (i == steps - 1) {
+                s.prevRoll = s.roll;
+                s.prevPitch = s.pitch;
+            }
+
+            float wr = (float) (2.0D * Math.PI * ROLL_FREQ);
+            s.rollV += (-wr * wr * (s.roll - rollTarget) - 2.0F * DAMPING * wr * s.rollV) * DT;
+            s.roll += s.rollV * DT;
+
+            float wp = (float) (2.0D * Math.PI * PITCH_FREQ);
+            s.pitchV += (-wp * wp * (s.pitch - pitchTarget) - 2.0F * DAMPING * wp * s.pitchV) * DT;
+            s.pitch += s.pitchV * DT;
+
+            s.rollV += (float) RAND.nextGaussian() * NOISE_ROLL * k;
+            s.pitchV += (float) RAND.nextGaussian() * NOISE_PITCH * k;
+
+            synchronized (s) {
+                s.rollV += s.pendRoll;
+                s.pitchV += s.pendPitch;
+                s.pendRoll = 0.0F;
+                s.pendPitch = 0.0F;
+            }
+
+            s.roll = clamp(s.roll, MAX_ROLL);
+            s.pitch = clamp(s.pitch, MAX_PITCH);
+        }
     }
 
     /** 車体の追加ロール [度] */
@@ -293,5 +300,11 @@ public final class TrainBodySway {
 
     private static float clamp(float v, float max) {
         return v < -max ? -max : (v > max ? max : v);
+    }
+
+    /** 車体の最終ロール [度] = カントロール + 揺れ。プレイヤーカメラに渡す */
+    public static float getTotalRoll(EntityVehicleBase v, float partialTick) {
+        float base = v.prevRotationRoll + (v.rotationRoll - v.prevRotationRoll) * partialTick;
+        return base + getRoll(v, partialTick);
     }
 }
