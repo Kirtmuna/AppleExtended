@@ -17,6 +17,7 @@ package jp.apple.appleextended.highlight;
 import jp.apple.appleextended.item.ItemBlockTrainModel;
 import jp.ngt.mcte.item.ItemMiniature;
 import jp.ngt.rtm.item.ItemInstalledObject;
+import jp.ngt.rtm.item.ItemWire;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
@@ -47,6 +48,11 @@ public class HighlightItemChecker {
         if (!(stack.getItem() instanceof ItemInstalledObject)) return false;
         return ItemInstalledObject.IstlObjType.getType(stack.getMetadata())
                 == ItemInstalledObject.IstlObjType.INSULATOR;
+    }
+
+    public static boolean isWireItem(ItemStack stack) {
+        if (stack.isEmpty()) return false;
+        return stack.getItem() instanceof ItemWire;
     }
 
     public static boolean isCrossingItem(ItemStack stack) {

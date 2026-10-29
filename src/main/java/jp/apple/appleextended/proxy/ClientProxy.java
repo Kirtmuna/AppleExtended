@@ -58,7 +58,7 @@ public class ClientProxy implements IProxy {
         );
         HighlightRegistry.register(
                 HighlightEntry.builder()
-                        .item(stack -> HighlightItemChecker.isInsulatorItem(stack))
+                        .item(stack -> HighlightItemChecker.isInsulatorItem(stack)||HighlightItemChecker.isWireItem(stack))
                         .block(block -> block instanceof BlockInsulator)
                         .color(0.0F, 1.0F, 0.0F)
                         .build()
